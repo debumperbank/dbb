@@ -10,12 +10,13 @@ export async function POST(request: Request) {
   }
 
   const supabase = createClient();
-  const { error } = await supabase.from('inquiries').insert({
+  const { error } = await (supabase
+  .from('inquiries') as any)
+  .insert({
     name,
     email,
     phone: phone || null,
     message: message || null,
-    listing_id: listing_id || null,
   });
 
   if (error) {

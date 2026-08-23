@@ -13,14 +13,15 @@ export async function POST(request: Request) {
   }
 
   const supabase = createClient();
-  const { error } = await supabase.from('car_wash_bookings').insert({
+  const { error } = await (supabase
+  .from('car_wash_bookings') as any)
+  .insert({
     name,
     email,
     phone: phone || null,
     address,
-    requested_date: requested_date || null,
-    notes: notes || null,
   });
+  
 
   if (error) {
     console.error('Failed to save car wash booking:', error.message);

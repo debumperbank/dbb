@@ -10,8 +10,9 @@ export async function POST(request: Request) {
   }
 
   const supabase = createClient();
-  const { error } = await supabase.from('workshop_bookings').insert({
-    name,
+const { error } = await (supabase
+  .from('inquiries') as any)
+  .insert({    name,
     email,
     phone: phone || null,
     service_type: service_type || null,
