@@ -1,0 +1,53 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import type { BumprProduct } from '@/lib/types';
+import { formatPriceCents } from '@/lib/format';
+
+export function BumprSection({ products }: { products: BumprProduct[] }) {
+  return (
+    <section id="bumpr" className="px-8 py-24 bg-bg border-y border-[color:var(--line-dark)]">
+      <div className="max-w-site mx-auto grid md:grid-cols-[0.95fr_1.05fr] gap-14 items-center">
+        <div>
+          <div className="eyebrow"><span className="dot" />Eigen merk</div>
+          <h2 className="mt-3.5 mb-4.5 text-3xl md:text-4xl">BUMPR — verzorging uit de werkplaats</h2>
+          <p className="max-w-[42ch] text-[15.5px] leading-relaxed text-muted mb-6.5">
+            Elk product getest op de wagens die dagelijks bij ons binnenrijden. Geen marketingformule,
+            wel een recept dat werkt op echte lak, echte plastics en echt weer. Made in Holland.
+          </p>
+          <Link href="/bumpr" className="btn btn-primary">Bekijk BUMPR-reeks →</Link>
+        </div>
+        <div className="rounded-lg overflow-hidden border border-[color:var(--line-dark)]">
+          <Image
+            src="/bumpr-products.jpg"
+            alt="BUMPR productlijn — Ceramic Coating, Fast Detailer, Polish"
+            width={900}
+            height={1125}
+            className="w-full"
+          />
+        </div>
+      </div>
+
+      <div className="max-w-site mx-auto mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--line-dark)] border border-[color:var(--line-dark)]">
+        {products.map((p) => (
+          <div key={p.id} className={`relative px-5.5 py-6.5 ${p.is_bundle ? 'bg-bg-soft-2' : 'bg-bg-soft'}`}>
+            {p.is_bundle && (
+              <div className="absolute top-4 right-4 font-mono text-[9.5px] tracking-wide uppercase text-orange border border-orange px-2 py-0.5 rounded-[2px]">
+                Bundel
+              </div>
+            )}
+            <h3 className="text-[17px] font-semibold font-display mb-2">{p.name.replace('BUMPR ', '')}</h3>
+            <p className="text-[12.8px] text-muted leading-relaxed min-h-[66px]">{p.description}</p>
+            <div className="mt-4.5 flex items-baseline justify-between border-t border-[color:var(--line-dark)] pt-3.5">
+              <span className={`font-display text-[19px] ${p.is_bundle ? 'text-orange-bright' : 'text-orange'}`}>
+                {formatPriceCents(p.price_cents)}
+              </span>
+              <span className="text-[11px] text-muted">
+                {p.size_ml ? `${p.size_ml} ml` : '3 × 500 ml'}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}

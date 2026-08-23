@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --line-dark: rgba(244, 243, 240, 0.12);
+  --line-light: rgba(20, 21, 23, 0.13);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg text-paper antialiased;
+}
+
+h1, h2, h3 {
+  @apply font-display leading-[1.05] tracking-tight;
+}
+
+.eyebrow {
+  @apply font-mono text-[11.5px] tracking-[0.14em] uppercase text-orange flex items-center gap-2;
+}
+
+.eyebrow .dot {
+  @apply w-1.5 h-1.5 bg-orange rounded-full inline-block;
+}
+
+.btn {
+  @apply font-mono text-[12.5px] tracking-wide rounded-[3px] px-6 py-3.5 inline-flex items-center gap-2 transition-all border border-transparent;
+}
+
+.btn-primary {
+  @apply bg-orange text-[#101113] hover:bg-orange-bright hover:-translate-y-0.5;
+}
+
+.btn-ghost {
+  @apply border-[color:var(--line-dark)] text-paper hover:border-orange hover:text-orange;
+}
+
+.btn-ghost-light {
+  @apply border-[color:var(--line-light)] text-ink hover:border-orange hover:text-orange-deep;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.reveal {
+  animation: fadeUp 0.6s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
