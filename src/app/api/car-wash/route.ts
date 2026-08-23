@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await (supabase
   .from('car_wash_bookings') as any)
   .insert({
@@ -22,6 +22,10 @@ export async function POST(request: Request) {
     address,
   });
   
+  export default async function VoorraadPage() {
+  const car_wash_bookings = await getAllListings();
+  // ...
+}
 
   if (error) {
     console.error('Failed to save car wash booking:', error.message);

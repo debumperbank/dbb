@@ -5,8 +5,8 @@ import type { Database } from '@/lib/types';
 // Use this inside Server Components, Server Actions, and Route Handlers.
 // It runs with the anon key and is subject to Row Level Security, same
 // as the browser client — safe for reading public catalogue data.
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

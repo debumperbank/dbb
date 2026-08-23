@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Naam en e-mail zijn verplicht.' }, { status: 400 });
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 const { error } = await (supabase
   .from('inquiries') as any)
   .insert({    name,

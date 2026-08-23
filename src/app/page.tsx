@@ -9,7 +9,7 @@ import type { BumprProduct, ListingWithCar } from '@/lib/types';
 export const revalidate = 60;
 
 async function getFeaturedListings(): Promise<ListingWithCar[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('listings')
     .select('*, cars(*)')
@@ -26,7 +26,7 @@ async function getFeaturedListings(): Promise<ListingWithCar[]> {
 }
 
 async function getBumprProducts(): Promise<BumprProduct[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('bumpr_products')
     .select('*')
