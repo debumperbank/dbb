@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     // 1. Opslaan in Supabase
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await (supabase
       .from('car_wash_bookings') as any)

@@ -5,7 +5,7 @@ import type { ListingWithCar } from '@/lib/types';
 export const revalidate = 60;
 
 async function getAllListings(): Promise<ListingWithCar[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('listings')
     .select('*, cars(*)')

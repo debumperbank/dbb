@@ -5,7 +5,7 @@ import { formatPriceCents } from '@/lib/format';
 export const revalidate = 60;
 
 async function getBumprProducts(): Promise<BumprProduct[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('bumpr_products')
     .select('*')
