@@ -25,7 +25,7 @@ interface WorkshopRow {
 }
 
 async function getBookings() {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const [{ data: carWash }, { data: workshop }] = await Promise.all([
     supabase.from('car_wash_bookings').select('*').order('created_at', { ascending: false }),
     supabase.from('workshop_bookings').select('*').order('created_at', { ascending: false }),

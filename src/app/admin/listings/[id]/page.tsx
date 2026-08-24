@@ -10,7 +10,7 @@ interface Photo {
 }
 
 async function getListing(id: string) {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const { data: listing } = await supabase
     .from('listings')
     .select('*, cars(*)')

@@ -5,7 +5,7 @@ import type { ListingWithCar } from '@/lib/types';
 import { StatusForm, DeleteForm } from './row-actions';
 
 async function getAllListings(): Promise<ListingWithCar[]> {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const { data } = await supabase
     .from('listings')
     .select('*, cars(*)')

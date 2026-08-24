@@ -14,7 +14,7 @@ function slugify(input: string): string {
 }
 
 export async function createListing(formData: FormData) {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
 
   const make = String(formData.get('make') ?? '');
   const model = String(formData.get('model') ?? '');

@@ -13,7 +13,7 @@ interface InquiryRow {
 }
 
 async function getInquiries(): Promise<InquiryRow[]> {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const { data } = await supabase
     .from('inquiries')
     .select('*')
