@@ -22,10 +22,6 @@ export async function POST(request: Request) {
     address,
   });
   
-  export default async function VoorraadPage() {
-  const car_wash_bookings = await getAllListings();
-  // ...
-}
 
   if (error) {
     console.error('Failed to save car wash booking:', error.message);
