@@ -16,7 +16,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = await createClient();
+    // 1. Opslaan in Supabase
+    const supabase = createClient();
 
     const { error } = await (supabase
       .from('car_wash_bookings') as any)
@@ -31,9 +32,14 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Failed to save car wash booking:', error.message);
-      return NextResponse.json({ error: 'Kon aanvraag niet opslaan.' }, { status: 500 });
+
+      return NextResponse.json(
+        { error: 'Kon aanvraag niet opslaan.' },
+        { status: 500 }
+      );
     }
 
+    // 2. E-mail versturen — alleen als er een API-key geconfigureerd is.
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -50,19 +56,33 @@ E-mail: ${email}
 Telefoon: ${phone || '-'}
 Adres: ${address}
 Gewenste datum: ${requested_date || '-'}
-Notities:
+
+Opmerkingen:
 ${notes || '-'}
         `.trim(),
       });
 
       if (emailError) {
-        console.error('Failed to send notification email:', emailError.message);
+        console.error('Failed to send car wash email:', emailError);
+
+        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
+        return NextResponse.json(
+          {
+            ok: true,
+            warning: 'Aanvraag opgeslagen, maar e-mail kon niet worden verzonden.',
+          },
+          { status: 200 }
+        );
       }
     }
 
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error('Unexpected error in car wash booking route:', err);
-    return NextResponse.json({ error: 'Er is een onverwachte fout opgetreden.' }, { status: 500 });
+  } catch (error) {
+    console.error('Car wash booking failed:', error);
+
+    return NextResponse.json(
+      { error: 'Er ging iets mis bij het verwerken van de aanvraag.' },
+      { status: 500 }
+    );
   }
-} 
+}

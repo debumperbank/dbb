@@ -9,7 +9,7 @@ export const revalidate = 60;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function getListing(idOrSlug: string): Promise<ListingWithCar | null> {
-  const supabase = await createClient();
+  const supabase = createClient();
   const query = supabase.from('listings').select('*, cars(*)');
   const { data, error } = UUID_RE.test(idOrSlug)
     ? await query.eq('id', idOrSlug).maybeSingle()
@@ -20,7 +20,7 @@ async function getListing(idOrSlug: string): Promise<ListingWithCar | null> {
 }
 
 async function getRestorationHistory(carId: string): Promise<RestorationEvent[]> {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('restoration_events')
     .select('*')
@@ -31,15 +31,8 @@ async function getRestorationHistory(carId: string): Promise<RestorationEvent[]>
   return (data ?? []) as RestorationEvent[];
 }
 
-export default async function CarDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;   // ← change the type
-}) {
-  const { id } = await params;       // ← await it
-
-  const listing = await getListing(id);
-
+export default async function CarDetailPage({ params }: { params: { id: string } }) {
+  const listing = await getListing(params.id);
   if (!listing) notFound();
 
   const { cars: car } = listing;

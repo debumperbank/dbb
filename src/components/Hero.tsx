@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const stats = [
-  { num: '32 jr', lbl: 'actief sinds 1994' },
-  { num: '3.400+', lbl: 'wagens verkocht' },
-  { num: '5,0', lbl: 'gem. beoordeling' },
-  { num: '24u', lbl: 'mobiele car wash' },
+const values = [
+  { title: 'Praktijkervaring', sub: 'jarenlang in de schadehoek' },
+  { title: 'Ook mét schade', sub: 'inkoop tegen eerlijke prijs' },
+  { title: 'Tot in detail', sub: 'binnen, buiten & motorruimte' },
+  { title: 'Oldtimer liefhebber', sub: 'zelf rijdend met een E46 (2003)' },
 ];
 
 export function Hero() {
@@ -17,23 +17,24 @@ export function Hero() {
       />
       <div className="relative z-10 max-w-site mx-auto grid md:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
         <div>
-          <div className="eyebrow"><span className="dot" />Onafhankelijke garage &amp; atelier — Terneuzen, sinds 1994</div>
+          <div className="eyebrow"><span className="dot" />Onafhankelijke garage &amp; atelier — Terneuzen</div>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-[54px] max-w-[15ch]">
             Uw auto in <span className="text-orange">vertrouwde</span> handen.
           </h1>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-muted">
-            De Bumperbank verkoopt eerlijke tweedehandswagens, herstelt ze in eigen werkplaats en
-            houdt ze piekfijn — van mobiele car wash tot onze eigen BUMPR-verzorgingslijn.
+            De Bumperbank verkoopt eerlijke tweedehandswagens — ook met schade — herstelt ze in
+            eigen werkplaats en houdt ze piekfijn — van mobiele car wash tot onze eigen
+            BUMPR-verzorgingslijn.
           </p>
           <div className="mt-8 flex gap-3.5 flex-wrap">
             <Link href="/voorraad" className="btn btn-primary">Bekijk de voorraad →</Link>
             <Link href="/contact" className="btn btn-ghost">Plan de werkplaats</Link>
           </div>
           <div className="mt-13 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-[color:var(--line-dark)] pt-6">
-            {stats.map((s) => (
-              <div key={s.lbl}>
-                <div className="font-display text-[26px] text-orange">{s.num}</div>
-                <div className="text-[11.5px] text-muted mt-1">{s.lbl}</div>
+            {values.map((v) => (
+              <div key={v.title}>
+                <div className="font-display text-[15px] text-orange leading-snug">{v.title}</div>
+                <div className="text-[11.5px] text-muted mt-1">{v.sub}</div>
               </div>
             ))}
           </div>

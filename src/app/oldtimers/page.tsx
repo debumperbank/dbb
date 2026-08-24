@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const revalidate = 60;
 
 async function getOldtimers(): Promise<ListingWithCar[]> {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('listings')
     .select('*, cars(*)')

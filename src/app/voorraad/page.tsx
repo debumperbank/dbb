@@ -5,7 +5,7 @@ import type { ListingWithCar } from '@/lib/types';
 export const revalidate = 60;
 
 async function getAllListings(): Promise<ListingWithCar[]> {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('listings')
     .select('*, cars(*)')
@@ -21,10 +21,6 @@ async function getAllListings(): Promise<ListingWithCar[]> {
 }
 
 export default async function VoorraadPage() {
-  /**
-   * Retrieves all listings from the database.
-   * @returns {Promise<Listing[]>} A promise that resolves to an array of all listings.
-   */
   const listings = await getAllListings();
 
   return (

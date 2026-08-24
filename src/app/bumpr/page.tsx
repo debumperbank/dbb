@@ -1,12 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
 import type { BumprProduct } from '@/lib/types';
 import { formatPriceCents } from '@/lib/format';
-import { BumprOrderButton } from '@/components/BumprOrderModel';
 
 export const revalidate = 60;
 
 async function getBumprProducts(): Promise<BumprProduct[]> {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('bumpr_products')
     .select('*')
@@ -48,17 +47,7 @@ export default async function BumprPage() {
                 <span className="text-[11px] text-muted">
                   {p.size_ml ? `${p.size_ml} ml` : '3 × 500 ml'}
                 </span>
-                <div className="mt-4.5 flex items-baseline justify-between border-t border-[color:var(--line-dark)] pt-3.5">
-  <span className={`font-display text-[19px] ${p.is_bundle ? 'text-orange-bright' : 'text-orange'}`}>
-    {formatPriceCents(p.price_cents)}
-  </span>
-  <span className="text-[11px] text-muted">
-    {p.size_ml ? `${p.size_ml} ml` : '3 × 500 ml'}
-  </span>
-</div>
-
               </div>
-              <BumprOrderButton product={p} />
             </div>
           ))}
         </div>
