@@ -3,8 +3,6 @@ import { Resend } from 'resend';
 
 import { createClient } from '@/lib/supabase/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -40,13 +38,16 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. E-mail versturen
-    const { error: emailError } = await resend.emails.send({
-      from: 'Website <onboarding@resend.dev>',
-      to: ['debumberbank@gmail.com'],
-      replyTo: email,
-      subject: `Nieuwe aanvraag van ${name}`,
-      text: `
+    // 2. E-mail versturen — alleen als er een API-key geconfigureerd is.
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      const { error: emailError } = await resend.emails.send({
+        from: 'Website <onboarding@resend.dev>',
+        to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
+        replyTo: email,
+        subject: `Nieuwe aanvraag van ${name}`,
+        text: `
 Nieuwe aanvraag via de website
 
 Naam: ${name}
@@ -56,20 +57,20 @@ Listing ID: ${listing_id || '-'}
 
 Bericht:
 ${message || '-'}
-      `.trim(),
-    });
+        `.trim(),
+      });
 
-    if (emailError) {
-      console.error('Failed to send inquiry email:', emailError);
+      if (emailError) {
+        console.error('Failed to send inquiry email:', emailError);
 
-      // De aanvraag staat wel in Supabase, ook als de mail mislukt.
-      return NextResponse.json(
-        {
-          ok: true,
-          warning: 'Aanvraag opgeslagen, maar e-mail kon niet worden verzonden.',
-        },
-        { status: 200 }
-      );
+        return NextResponse.json(
+          {
+            ok: true,
+            warning: 'Aanvraag opgeslagen, maar e-mail kon niet worden verzonden.',
+          },
+          { status: 200 }
+        );
+      }
     }
 
     return NextResponse.json({ ok: true });
