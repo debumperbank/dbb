@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     // 1. Opslaan in Supabase
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await (supabase
       .from('inquiries') as any)
@@ -39,9 +39,6 @@ export async function POST(request: Request) {
     }
 
     // 2. E-mail versturen — alleen als er een API-key geconfigureerd is.
-    // De client wordt hier, ter plekke, aangemaakt (niet bovenaan het
-    // bestand) zodat een ontbrekende RESEND_API_KEY nooit de build breekt,
-    // enkel deze e-mailstap overslaat.
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -66,7 +63,6 @@ ${message || '-'}
       if (emailError) {
         console.error('Failed to send inquiry email:', emailError);
 
-        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

@@ -1,4 +1,4 @@
-import { ContactTabs } from '@/components/ContactTabs';
+import { ContactForm } from '@/components/ContactForm';
 
 export default function ContactPage() {
   return (
@@ -10,7 +10,7 @@ export default function ContactPage() {
           Vraag over een wagen, een herstelling, of de mobiele car wash — laat het ons weten en we
           nemen zo snel mogelijk contact op.
         </p>
-        <ContactTabs />
+        <ContactForm />
       </div>
     </main>
   );

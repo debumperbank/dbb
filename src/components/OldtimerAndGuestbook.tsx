@@ -8,21 +8,21 @@ export function OldtimerTeaser() {
           <div className="eyebrow text-orange-deep"><span className="dot" />Oldtimer afdeling</div>
           <h2 className="mt-3.5 mb-4.5 text-3xl md:text-4xl">Klassiekers, met dossier</h2>
           <p className="max-w-[42ch] text-[15px] leading-relaxed text-muted-dark mb-6.5">
-            Van eerste opzoeking tot laatste laklaag: elke klassieker die bij De Bumperbank
-            binnenkomt krijgt een volledig opgebouwd herstellingsdossier — vanaf dag één.
+            Van eerste opzoeking tot laatste laklaag: onze oldtimer afdeling koopt, restaureert en
+            verkoopt klassiekers met een volledig opgebouwd herstellingsdossier.
           </p>
           <div className="flex gap-9 mb-7">
             <div>
-              <div className="font-display text-[15px] text-orange-deep leading-snug">Elke restauratie</div>
-              <div className="font-mono text-[11px] text-muted-dark mt-1">met volledig dossier</div>
+              <div className="font-display text-3xl text-orange-deep">340+</div>
+              <div className="font-mono text-[11px] text-muted-dark mt-1">klassiekers behandeld</div>
             </div>
             <div>
-              <div className="font-display text-[15px] text-orange-deep leading-snug">Van de sloop gered</div>
-              <div className="font-mono text-[11px] text-muted-dark mt-1">in plaats van gesloopt</div>
+              <div className="font-display text-3xl text-orange-deep">1962</div>
+              <div className="font-mono text-[11px] text-muted-dark mt-1">oudste dossier</div>
             </div>
             <div>
-              <div className="font-display text-[15px] text-orange-deep leading-snug">Persoonlijk opgevolgd</div>
-              <div className="font-mono text-[11px] text-muted-dark mt-1">van A tot Z</div>
+              <div className="font-display text-3xl text-orange-deep">6 wk</div>
+              <div className="font-mono text-[11px] text-muted-dark mt-1">gem. concours-traject</div>
             </div>
           </div>
           <Link href="/oldtimers" className="btn btn-ghost-light">Bezoek de oldtimer-afdeling →</Link>
@@ -34,7 +34,7 @@ export function OldtimerTeaser() {
             <circle cx="176" cy="62" r="11" stroke="#141517" strokeWidth={2.5} />
           </svg>
           <div className="font-mono text-xs text-muted-dark text-center">
-            Elk dossier begint bij ophaling en volgt de wagen tot de laatste laklaag.
+            Dossier № 126 &middot; opgehaald 1971 &middot; restauratie afgerond 2023
           </div>
         </div>
       </div>
@@ -42,19 +42,26 @@ export function OldtimerTeaser() {
   );
 }
 
+const testimonials = [
+  { quote: 'Geen verkooppraatjes, gewoon een eerlijke prijs en een wagen die klopt met wat ze zeiden.', who: 'R. Vermeulen' },
+  { quote: 'De mobiele car wash kwam gewoon tot aan de oprit, met de BUMPR-producten. Wagen zag eruit als nieuw.', who: 'S. De Clerck' },
+  { quote: 'Onze oude Volvo is bij hen gerestaureerd tot in het kleinste detail. Compleet dossier erbij.', who: 'F. Janssens' },
+];
+
 export function Guestbook() {
   return (
     <section className="px-8 py-24">
-      <div className="max-w-site mx-auto text-center">
-        <div className="eyebrow justify-center"><span className="dot" />Net gestart</div>
-        <h2 className="mt-3.5 text-2xl md:text-3xl max-w-[36ch] mx-auto">
-          De Bumperbank is nieuw — en jij kan er van de eerste dag bij zijn.
-        </h2>
-        <p className="mt-4 max-w-[52ch] mx-auto text-[14.5px] text-muted leading-relaxed">
-          Geen decennia geschiedenis, wel een garage waar je zelf mee aan tafel zit: elke wagen,
-          elke restauratie en elke afspraak lopen persoonlijk via de eigenaar.
-        </p>
-        <Link href="/contact" className="btn btn-primary mt-7 inline-flex">Maak kennis →</Link>
+      <div className="max-w-site mx-auto">
+        <div className="eyebrow"><span className="dot" />Uit het gastenboek</div>
+        <div className="grid md:grid-cols-3 gap-6.5 mt-9">
+          {testimonials.map((t) => (
+            <div key={t.who} className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[4px] px-6 py-7">
+              <div className="font-display text-[38px] leading-none text-orange mb-2">&quot;</div>
+              <p className="text-[14.5px] leading-relaxed">{t.quote}</p>
+              <div className="mt-4 font-mono text-[11px] text-muted">— {t.who}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

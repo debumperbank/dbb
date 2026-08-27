@@ -11,7 +11,7 @@ export function Footer() {
           </span>
         </div>
         <span className="font-mono text-[11px] text-muted">
-          © {new Date().getFullYear()} DE BUMPERBANK — TERNEUZEN
+          © {new Date().getFullYear()} DE BUMPERBANK — TERNEUZEN — SINDS 1994
         </span>
       </div>
     </footer>

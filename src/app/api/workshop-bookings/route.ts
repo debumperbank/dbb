@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     // 1. Opslaan in Supabase
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await (supabase
       .from('workshop_bookings') as any)
@@ -65,7 +65,6 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send workshop booking email:', emailError);
 
-        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

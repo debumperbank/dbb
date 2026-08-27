@@ -87,31 +87,17 @@ export interface WorkshopBooking {
   notes: string | null;
 }
 
-// Minimal per-table typing so supabase-js can correctly infer
-// Insert/Update argument types (an index-signature Tables type
-// causes .update()/.insert() calls to resolve to `never`).
-type TableDef<Row, Insert, Update = Partial<Insert>> = {
-  Row: Row;
-  Insert: Insert;
-  Update: Update;
-  Relationships: [];
-};
-
+// Minimal Database shape so @supabase/ssr's generics are satisfied.
+// Expand per-table `Row`/`Insert`/`Update` shapes if you adopt the
+// generated-types workflow above.
 export type Database = {
   public: {
     Tables: {
-      cars: TableDef<Car, Omit<Car, 'id' | 'created_at'>>;
-      listings: TableDef<Listing, Omit<Listing, 'id' | 'created_at' | 'currency'>>;
-      restoration_events: TableDef<RestorationEvent, Omit<RestorationEvent, 'id'>>;
-      bumpr_products: TableDef<BumprProduct, Omit<BumprProduct, 'id'>>;
-      inquiries: TableDef<Inquiry & { id: string; created_at: string }, Inquiry>;
-      car_wash_bookings: TableDef<CarWashBooking & { id: string; created_at: string }, CarWashBooking>;
-      workshop_bookings: TableDef<WorkshopBooking & { id: string; created_at: string }, WorkshopBooking>;
-      sellers: TableDef<{ id: string; name: string }, { id?: string; name: string }>;
-      listing_photos: TableDef
-        { id: string; listing_id: string; url: string; sort_order: number },
-        { listing_id: string; url: string; sort_order?: number }
-      >;
+      [key: string]: {
+        Row: Record<string, unknown>;
+        Insert: Record<string, unknown>;
+        Update: Record<string, unknown>;
+      };
     };
   };
 };

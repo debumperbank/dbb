@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 import { Hero } from '@/components/Hero';
-import { OurStory } from '@/components/OurStory';
 import { StripBar, ServiceGrid } from '@/components/ServiceSections';
 import { StockGrid } from '@/components/StockGrid';
 import { BumprSection } from '@/components/BumprSection';
@@ -10,7 +9,7 @@ import type { BumprProduct, ListingWithCar } from '@/lib/types';
 export const revalidate = 60;
 
 async function getFeaturedListings(): Promise<ListingWithCar[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('listings')
     .select('*, cars(*)')
@@ -27,7 +26,7 @@ async function getFeaturedListings(): Promise<ListingWithCar[]> {
 }
 
 async function getBumprProducts(): Promise<BumprProduct[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('bumpr_products')
     .select('*')
@@ -49,7 +48,6 @@ export default async function HomePage() {
   return (
     <main>
       <Hero />
-      <OurStory />
       <StripBar />
       <ServiceGrid />
       <section id="voorraad" className="px-8 py-24 bg-bg-soft">

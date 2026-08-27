@@ -21,6 +21,10 @@ async function getAllListings(): Promise<ListingWithCar[]> {
 }
 
 export default async function VoorraadPage() {
+  /**
+   * Retrieves all listings from the database.
+   * @returns {Promise<Listing[]>} A promise that resolves to an array of all listings.
+   */
   const listings = await getAllListings();
 
   return (
