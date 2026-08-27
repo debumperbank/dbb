@@ -13,15 +13,15 @@ export function OldtimerTeaser() {
           </p>
           <div className="flex gap-9 mb-7">
             <div>
-              <div className="font-display text-3xl text-orange-deep">340+</div>
+              <div className="font-display text-3xl text-orange-deep">3+</div>
               <div className="font-mono text-[11px] text-muted-dark mt-1">klassiekers behandeld</div>
             </div>
             <div>
-              <div className="font-display text-3xl text-orange-deep">1962</div>
+              <div className="font-display text-3xl text-orange-deep">1992</div>
               <div className="font-mono text-[11px] text-muted-dark mt-1">oudste dossier</div>
             </div>
             <div>
-              <div className="font-display text-3xl text-orange-deep">6 wk</div>
+              <div className="font-display text-3xl text-orange-deep">1 wk</div>
               <div className="font-mono text-[11px] text-muted-dark mt-1">gem. concours-traject</div>
             </div>
           </div>
@@ -34,7 +34,7 @@ export function OldtimerTeaser() {
             <circle cx="176" cy="62" r="11" stroke="#141517" strokeWidth={2.5} />
           </svg>
           <div className="font-mono text-xs text-muted-dark text-center">
-            Dossier № 126 &middot; opgehaald 1971 &middot; restauratie afgerond 2023
+            Dossier № 12 &middot; opgehaald 1992 &middot; restauratie afgerond 2018
           </div>
         </div>
       </div>

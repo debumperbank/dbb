@@ -2,10 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const stats = [
-  { num: '32 jr', lbl: 'actief sinds 1994' },
-  { num: '3.400+', lbl: 'wagens verkocht' },
-  { num: '5,0', lbl: 'gem. beoordeling' },
-  { num: '24u', lbl: 'mobiele car wash' },
+  { num: '1 jr', lbl: 'actief sinds 2025' },
+  { num: '2+', lbl: 'wagens verkocht' },
+  { num: '4.7', lbl: 'gem. beoordeling' },
+  { num: '6+', lbl: 'mobiele car wash' },
 ];
 
 export function Hero() {
@@ -17,7 +17,7 @@ export function Hero() {
       />
       <div className="relative z-10 max-w-site mx-auto grid md:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
         <div>
-          <div className="eyebrow"><span className="dot" />Onafhankelijke garage &amp; atelier — Terneuzen, sinds 1994</div>
+          <div className="eyebrow"><span className="dot" />Onafhankelijke garage &amp; atelier — Hulst, sinds 2025</div>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-[54px] max-w-[15ch]">
             Uw auto in <span className="text-orange">vertrouwde</span> handen.
           </h1>
