@@ -66,6 +66,14 @@ create table if not exists restoration_events (
   created_at timestamptz not null default now()
 );
 
+create table if not exists restoration_event_photos (
+  id uuid primary key default gen_random_uuid(),
+  restoration_event_id uuid not null references restoration_events(id) on delete cascade,
+  url text not null,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
 -- ========== INQUIRIES (no shopping cart — every sale starts as a lead) ==========
 create table if not exists inquiries (
   id uuid primary key default gen_random_uuid(),
@@ -145,6 +153,7 @@ create index if not exists idx_listings_status on listings(status);
 create index if not exists idx_listings_department on listings(department);
 create index if not exists idx_listing_photos_listing on listing_photos(listing_id);
 create index if not exists idx_restoration_events_car on restoration_events(car_id);
+create index if not exists idx_restoration_event_photos_event on restoration_event_photos(restoration_event_id);
 create index if not exists idx_inquiries_listing on inquiries(listing_id);
 
 -- ========== ROW LEVEL SECURITY ==========
@@ -153,6 +162,7 @@ alter table cars enable row level security;
 alter table listings enable row level security;
 alter table listing_photos enable row level security;
 alter table restoration_events enable row level security;
+alter table restoration_event_photos enable row level security;
 alter table inquiries enable row level security;
 alter table deposits enable row level security;
 alter table transactions enable row level security;
@@ -171,6 +181,9 @@ create policy "public read listing photos" on listing_photos
   for select using (true);
 
 create policy "public read restoration events" on restoration_events
+  for select using (true);
+
+create policy "public read restoration event photos" on restoration_event_photos
   for select using (true);
 
 create policy "public read bumpr products" on bumpr_products

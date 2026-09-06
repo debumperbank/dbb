@@ -48,6 +48,13 @@ export interface RestorationEvent {
   performed_by: string | null;
 }
 
+export interface RestorationEventPhoto {
+  id: string;
+  restoration_event_id: string;
+  url: string;
+  sort_order: number;
+}
+
 export interface BumprProduct {
   id: string;
   slug: string;
@@ -85,6 +92,21 @@ export interface WorkshopBooking {
   service_type: string | null;
   requested_date: string | null;
   notes: string | null;
+}
+
+export interface ListingPhoto {
+  id: string;
+  listing_id: string;
+  url: string;
+  sort_order: number;
+}
+
+export interface BumprGalleryPhoto {
+  id: string;
+  url: string;
+  caption: string | null;
+  sort_order: number;
+  created_at: string;
 }
 
 // Minimal Database shape so @supabase/ssr's generics are satisfied.

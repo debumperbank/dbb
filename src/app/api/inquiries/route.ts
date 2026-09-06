@@ -7,7 +7,14 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { name, email, phone, message, listing_id } = body ?? {};
+    const { name, email, phone, message, listing_id, company } = body ?? {};
+
+    // Honeypot: a real visitor never fills this field in (it's hidden via
+    // CSS). A bot that blindly fills every field will. Pretend success so
+    // it doesn't learn to skip the field next time.
+    if (company) {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!name || !email) {
       return NextResponse.json(
@@ -39,6 +46,9 @@ export async function POST(request: Request) {
     }
 
     // 2. E-mail versturen — alleen als er een API-key geconfigureerd is.
+    // De client wordt hier, ter plekke, aangemaakt (niet bovenaan het
+    // bestand) zodat een ontbrekende RESEND_API_KEY nooit de build breekt,
+    // enkel deze e-mailstap overslaat.
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -63,6 +73,7 @@ ${message || '-'}
       if (emailError) {
         console.error('Failed to send inquiry email:', emailError);
 
+        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

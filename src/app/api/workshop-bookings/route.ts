@@ -7,7 +7,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { name, email, phone, service_type, requested_date, notes } = body ?? {};
+    const { name, email, phone, service_type, requested_date, notes, company } = body ?? {};
+
+    if (company) {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!name || !email) {
       return NextResponse.json(
@@ -65,6 +69,7 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send workshop booking email:', emailError);
 
+        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

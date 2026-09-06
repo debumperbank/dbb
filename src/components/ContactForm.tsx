@@ -38,6 +38,17 @@ export function ContactForm({ listingId }: { listingId?: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-4 max-w-md">
+      {/* Honeypot — invisible to people, but a bot that fills every field
+          will fill this too. The API route silently drops the submission
+          if it's non-empty. */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] w-px h-px opacity-0"
+      />
       <input
         required
         name="name"

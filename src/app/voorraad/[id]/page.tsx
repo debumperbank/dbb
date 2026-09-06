@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { ContactForm } from '@/components/ContactForm';
+import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { formatPriceCents, formatMileage } from '@/lib/format';
-import type { ListingWithCar, RestorationEvent } from '@/lib/types';
+import type { ListingWithCar, ListingPhoto, RestorationEvent, RestorationEventPhoto } from '@/lib/types';
 
 export const revalidate = 60;
 
@@ -19,31 +20,57 @@ async function getListing(idOrSlug: string): Promise<ListingWithCar | null> {
   return data as unknown as ListingWithCar;
 }
 
-async function getRestorationHistory(carId: string): Promise<RestorationEvent[]> {
+async function getListingPhotos(listingId: string): Promise<ListingPhoto[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
+    .from('listing_photos')
+    .select('*')
+    .eq('listing_id', listingId)
+    .order('sort_order', { ascending: true });
+
+  if (error || !data) return [];
+  return data as ListingPhoto[];
+}
+
+async function getRestorationHistory(carId: string): Promise<{
+  events: RestorationEvent[];
+  photosByEvent: Record<string, RestorationEventPhoto[]>;
+}> {
+  const supabase = await createClient();
+  const { data: events, error } = await supabase
     .from('restoration_events')
     .select('*')
     .eq('car_id', carId)
     .order('event_date', { ascending: true });
 
-  if (error) return [];
-  return (data ?? []) as RestorationEvent[];
+  if (error || !events || events.length === 0) {
+    return { events: [], photosByEvent: {} };
+  }
+
+  const { data: photos } = await supabase
+    .from('restoration_event_photos')
+    .select('*')
+    .in('restoration_event_id', events.map((e) => e.id))
+    .order('sort_order');
+
+  const photosByEvent: Record<string, RestorationEventPhoto[]> = {};
+  for (const photo of (photos ?? []) as RestorationEventPhoto[]) {
+    (photosByEvent[photo.restoration_event_id] ??= []).push(photo);
+  }
+
+  return { events: events as RestorationEvent[], photosByEvent };
 }
 
-export default async function CarDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;   // ← change the type
-}) {
-  const { id } = await params;       // ← await it
-
+export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const listing = await getListing(id);
-
   if (!listing) notFound();
 
   const { cars: car } = listing;
-  const history = car.is_oldtimer ? await getRestorationHistory(car.id) : [];
+  const { events: history, photosByEvent } = car.is_oldtimer
+    ? await getRestorationHistory(car.id)
+    : { events: [], photosByEvent: {} };
+  const photos = await getListingPhotos(listing.id);
 
   return (
     <main className="px-8 py-20 bg-bg min-h-screen">
@@ -80,14 +107,34 @@ export default async function CarDetailPage({
             <div className="mt-12">
               <h2 className="text-xl mb-5">Restauratiedossier</h2>
               <div className="border-l border-[color:var(--line-dark)] pl-6 grid gap-6">
-                {history.map((ev) => (
-                  <div key={ev.id}>
-                    <div className="font-mono text-[11px] text-orange">{ev.event_date}</div>
-                    <h3 className="text-[15px] font-semibold mt-1">{ev.title}</h3>
-                    {ev.description && <p className="text-sm text-muted mt-1">{ev.description}</p>}
-                  </div>
-                ))}
+                {history.map((ev) => {
+                  const evPhotos = photosByEvent[ev.id] ?? [];
+                  return (
+                    <div key={ev.id}>
+                      <div className="font-mono text-[11px] text-orange">{ev.event_date}</div>
+                      <h3 className="text-[15px] font-semibold mt-1">{ev.title}</h3>
+                      {ev.description && <p className="text-sm text-muted mt-1">{ev.description}</p>}
+                      {evPhotos.length > 0 && (
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3 max-w-md">
+                          {evPhotos.map((p) => (
+                            <div key={p.id} className="aspect-square rounded-[3px] overflow-hidden border border-[color:var(--line-dark)]">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={p.url} alt={ev.title} className="w-full h-full object-cover" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
+            </div>
+          )}
+
+          {photos.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-xl mb-5">Foto&apos;s</h2>
+              <PhotoCarousel photos={photos} altPrefix={`${car.make} ${car.model}`} />
             </div>
           )}
         </div>

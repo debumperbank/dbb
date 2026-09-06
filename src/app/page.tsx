@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Hero } from '@/components/Hero';
+import { OurStory } from '@/components/OurStory';
 import { StripBar, ServiceGrid } from '@/components/ServiceSections';
 import { StockGrid } from '@/components/StockGrid';
 import { BumprSection } from '@/components/BumprSection';
@@ -48,6 +49,7 @@ export default async function HomePage() {
   return (
     <main>
       <Hero />
+      <OurStory />
       <StripBar />
       <ServiceGrid />
       <section id="voorraad" className="px-8 py-24 bg-bg-soft">
