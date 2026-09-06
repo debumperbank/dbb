@@ -1,10 +1,12 @@
 import { login } from '@/app/admin/auth-actions';
 
-export default function AdminLoginPage({
+export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
+  const { error } = await searchParams;
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-bg px-8">
       <div className="w-full max-w-sm">
@@ -28,8 +30,8 @@ export default function AdminLoginPage({
             className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-sm placeholder:text-muted focus:outline-none focus:border-orange"
           />
           <button type="submit" className="btn btn-primary w-fit">Inloggen</button>
-          {searchParams.error && (
-            <p className="font-mono text-xs text-orange-bright">{searchParams.error}</p>
+          {error && (
+            <p className="font-mono text-xs text-orange-bright">{error}</p>
           )}
         </form>
         <p className="mt-6 text-xs text-muted font-mono leading-relaxed">
