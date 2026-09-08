@@ -1,10 +1,11 @@
 'use client';
 
+import { BumprProduct } from '@/lib/types';
 import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
-export function BumprBookingForm() {
+export function BumprBookings({ products = [] }: { products: BumprProduct[] }) {
   const [status, setStatus] = useState<Status>('idle');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
