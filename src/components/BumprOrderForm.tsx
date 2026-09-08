@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
-export function WorkshopBookingForm() {
+export function BumprBookingForm() {
   const [status, setStatus] = useState<Status>('idle');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
