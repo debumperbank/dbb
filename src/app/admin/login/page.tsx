@@ -8,36 +8,44 @@ export default async function AdminLoginPage({
   const { error } = await searchParams;
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-bg px-8">
-      <div className="w-full max-w-sm">
-        <div className="eyebrow mb-3"><span className="dot" />Beheer</div>
-        <h1 className="text-2xl mb-6">Inloggen</h1>
-        <form action={login} className="grid gap-4">
-          <input
-            required
-            type="email"
-            name="email"
-            placeholder="E-mailadres"
-            autoComplete="username"
-            className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-sm placeholder:text-muted focus:outline-none focus:border-orange"
-          />
-          <input
-            required
-            type="password"
-            name="password"
-            placeholder="Wachtwoord"
-            autoComplete="current-password"
-            className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-sm placeholder:text-muted focus:outline-none focus:border-orange"
-          />
-          <button type="submit" className="btn btn-primary w-fit">Inloggen</button>
-          {error && (
-            <p className="font-mono text-xs text-orange-bright">{error}</p>
-          )}
+    <main className="min-h-screen bg-bg text-paper flex items-center justify-center p-4">
+      <div className="bg-bg-soft border border-[color:var(--line-dark)] p-8 rounded-[4px] w-full max-w-sm">
+        <h1 className="text-xl font-bold mb-6 text-center">Inloggen Beheer</h1>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded">
+            {error}
+          </div>
+        )}
+
+        <form action={login} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-mono mb-1 text-muted">E-mailadres</label>
+            <input
+              type="email"
+              name="email"
+              required
+              className="w-full bg-bg border border-[color:var(--line-dark)] rounded-[3px] p-2 text-sm focus:outline-none focus:border-orange"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-mono mb-1 text-muted">Wachtwoord</label>
+            <input
+              type="password"
+              name="password"
+              required
+              className="w-full bg-bg border border-[color:var(--line-dark)] rounded-[3px] p-2 text-sm focus:outline-none focus:border-orange"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-orange text-bg font-bold py-2 rounded-[3px] text-sm hover:bg-orange-dark transition-colors mt-2"
+          >
+            Inloggen
+          </button>
         </form>
-        <p className="mt-6 text-xs text-muted font-mono leading-relaxed">
-          Beheeraccounts worden aangemaakt in het Supabase-dashboard onder
-          Authentication → Users. Er is geen zelfregistratie.
-        </p>
       </div>
     </main>
   );
