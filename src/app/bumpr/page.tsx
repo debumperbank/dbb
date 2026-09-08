@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { BumprProduct } from '@/lib/types';
 import { BumprServices } from '@/components/BumprServices';
-import { BumprBookings } from '@/components/BumprOrderForm';
+import { BumprShop } from '@/components/BumprShop';
 
 export const revalidate = 60;
 
@@ -38,9 +38,7 @@ export default async function BumprPage() {
         <div className="mt-16">
           <div className="eyebrow"><span className="dot" />Producten</div>
           <h2 className="mt-2.5 text-2xl md:text-3xl">BUMPR verzorgingsproducten</h2>
-
-          {/* Hier wordt het interactieve bestelformulier gebruikt */}
-          <BumprBookings products={products} />
+          <BumprShop products={products} />
         </div>
       </div>
     </main>

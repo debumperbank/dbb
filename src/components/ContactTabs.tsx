@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { ContactForm } from '@/components/ContactForm';
 import { CarWashBookingForm } from '@/components/CarWashBookingForm';
-import { BumprBookings } from '@/components/BumprOrderForm';
 import { WorkshopBookingForm } from '@/components/WorkshopBookingForm';
 
 const TABS = [
