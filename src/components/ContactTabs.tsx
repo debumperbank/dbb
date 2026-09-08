@@ -22,13 +22,16 @@ export function ContactTabs() {
             key={t.key}
             onClick={() => setActive(t.key)}
             className={`font-mono text-xs px-4 py-3 border-b-2 transition-colors ${
-              active === t.key ? 'border-orange text-orange' : 'border-transparent text-muted hover:text-paper'
+              active === t.key
+                ? 'border-orange text-orange'
+                : 'border-transparent text-muted hover:text-paper'
             }`}
           >
             {t.label}
           </button>
         ))}
       </div>
+
       {active === 'general' && <ContactForm />}
       {active === 'carwash' && <CarWashBookingForm />}
       {active === 'workshop' && <WorkshopBookingForm />}

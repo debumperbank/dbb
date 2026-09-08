@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { BumprProduct } from '@/lib/types';
-import { formatPriceCents } from '@/lib/format';
 import { BumprServices } from '@/components/BumprServices';
+import { BumprOrderForm } from '@/components/BumprOrderForm';
 
 export const revalidate = 60;
 
@@ -39,27 +39,8 @@ export default async function BumprPage() {
           <div className="eyebrow"><span className="dot" />Producten</div>
           <h2 className="mt-2.5 text-2xl md:text-3xl">BUMPR verzorgingsproducten</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--line-dark)] border border-[color:var(--line-dark)] mt-8">
-            {products.map((p) => (
-              <div key={p.id} className={`relative px-5.5 py-6.5 ${p.is_bundle ? 'bg-bg-soft-2' : 'bg-bg-soft'}`}>
-                {p.is_bundle && (
-                  <div className="absolute top-4 right-4 font-mono text-[9.5px] tracking-wide uppercase text-orange border border-orange px-2 py-0.5 rounded-[2px]">
-                    Bundel
-                  </div>
-                )}
-                <h3 className="text-[17px] font-semibold font-display mb-2">{p.name.replace('BUMPR ', '')}</h3>
-                <p className="text-[12.8px] text-muted leading-relaxed">{p.description}</p>
-                <div className="mt-4.5 flex items-baseline justify-between border-t border-[color:var(--line-dark)] pt-3.5">
-                  <span className={`font-display text-[19px] ${p.is_bundle ? 'text-orange-bright' : 'text-orange'}`}>
-                    {formatPriceCents(p.price_cents)}
-                  </span>
-                  <span className="text-[11px] text-muted">
-                    {p.size_ml ? `${p.size_ml} ml` : '3 × 500 ml'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Hier wordt het interactieve bestelformulier gebruikt */}
+          <BumprOrderForm products={products} />
         </div>
       </div>
     </main>
