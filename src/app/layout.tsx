@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'De Bumperbank — Verkoop, Herstelling & BUMPR Detailing',
   description:
-    'Onafhankelijke garage in Terneuzen: eerlijke tweedehandswagens, eigen werkplaats, mobiele car wash, oldtimer afdeling en de BUMPR verzorgingslijn.',
+    'Onafhankelijke mobiele garage in Hulst: mobiele car wash, oldtimer afdeling en de BUMPR verzorgingslijn.',
 };
 
 export default function RootLayout({

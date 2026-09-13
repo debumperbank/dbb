@@ -17,12 +17,12 @@ export function Hero() {
       />
       <div className="relative z-10 max-w-site mx-auto grid md:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
         <div>
-          <div className="eyebrow"><span className="dot" />Mobiele autoverzorging &amp; verkoop — regio Terneuzen</div>
+          <div className="eyebrow"><span className="dot" />Mobiele autoverzorging &amp; verkoop — regio Hulst</div>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-[54px] max-w-[15ch]">
             Uw auto in <span className="text-orange">vertrouwde</span> handen.
           </h1>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-muted">
-            De Bumperbank verkoopt eerlijke tweedehandswagens — ook met schade — en komt met een
+            De Bumperbank komt met een
             volledig uitgeruste bus naar uw locatie voor herstellingen en verzorging — van
             detailing tot onze eigen BUMPR-verzorgingslijn.
           </p>
