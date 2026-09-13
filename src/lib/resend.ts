@@ -17,7 +17,7 @@ export function getResendClient(): Resend | null {
 export async function notifyAdmin(subject: string, text: string) {
   const resend = getResendClient();
   const to = process.env.NOTIFY_EMAIL;
-  const from = process.env.NOTIFY_FROM_EMAIL ?? 'De Bumperbank <onboarding@resend.dev>';
+  const from = process.env.NOTIFY_FROM_EMAIL ?? 'De Bumperbank <info@debumperbank.nl>';
 
   if (!resend || !to) return;
 
