@@ -3,11 +3,30 @@ import { Resend } from 'resend';
 
 import { createClient } from '@/lib/supabase/server';
 
+// Serverzijdige bron van waarheid — zelfde patroon als workshop-bookings,
+// zodat de browser de capaciteitsberekening niet kan omzeilen.
+const SERVICE_HOURS: Record<string, number> = {
+  'Basis wasbeurt': 1,
+  'Volledige detail': 3,
+  'BUMPR Ceramic Coating': 2,
+};
+const DEFAULT_HOURS = 2; // veilig fallback-maximum, niet het minimum
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { name, email, phone, address, requested_date, notes, company } = body ?? {};
+    const {
+      name,
+      email,
+      phone,
+      address,
+      requested_date,
+      notes,
+      service_type,
+      large_vehicle,
+      company,
+    } = body ?? {};
 
     if (company) {
       return NextResponse.json({ ok: true });
@@ -19,6 +38,12 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const estimatedHours = service_type && SERVICE_HOURS[service_type] != null
+      ? SERVICE_HOURS[service_type]
+      : DEFAULT_HOURS;
+
+    const isLargeVehicle = large_vehicle === true || large_vehicle === 'true';
 
     // 1. Opslaan in Supabase
     const supabase = await createClient();
@@ -32,6 +57,9 @@ export async function POST(request: Request) {
         address,
         requested_date: requested_date || null,
         notes: notes || null,
+        service_type: service_type || null,
+        estimated_hours: estimatedHours,
+        large_vehicle: isLargeVehicle,
       });
 
     if (error) {
@@ -51,15 +79,18 @@ export async function POST(request: Request) {
         from: 'Website <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
         replyTo: email,
-        subject: `Nieuwe car wash-aanvraag van ${name}`,
+        subject: `Nieuwe car wash-aanvraag van ${name}${isLargeVehicle ? ' (groot voertuig)' : ''}`,
         text: `
 Nieuwe car wash-aanvraag via de website
 
 Naam: ${name}
 E-mail: ${email}
 Telefoon: ${phone || '-'}
+Dienst: ${service_type || '-'}
 Adres: ${address}
 Gewenste datum: ${requested_date || '-'}
+Geschatte werkuren: ${estimatedHours}
+Groot voertuig (toeslag €59): ${isLargeVehicle ? 'Ja' : 'Nee'}
 
 Opmerkingen:
 ${notes || '-'}
@@ -69,7 +100,6 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send car wash email:', emailError);
 
-        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

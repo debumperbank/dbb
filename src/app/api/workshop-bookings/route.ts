@@ -3,16 +3,15 @@ import { Resend } from 'resend';
 
 import { createClient } from '@/lib/supabase/server';
 
-// Serverzijdige bron van waarheid voor werkuren per vaste BUMPR-dienst,
-// zodat een aanpassing in de browser (devtools) de capaciteitsberekening
-// niet kan omzeilen. Generieke werkplaatsaanvragen (vrije tekst) vallen
-// terug op 1 uur als startpunt.
+// Serverzijdige bron van waarheid voor werkuren per vaste BUMPR-dienst.
+// Generieke werkplaatsaanvragen (vrije tekst) vallen terug op het VEILIGE
+// MAXIMUM (2u), niet het minimum — zie toelichting bij DEFAULT_HOURS.
 const SERVICE_HOURS: Record<string, number> = {
-  'BUMPR Full Detail': 1,
+  'BUMPR Full Detail': 2,
   'BUMPR Hydro Coat (6 mnd)': 1,
   'Ultimate BUMPR Combi': 3,
 };
-const DEFAULT_HOURS = 1;
+const DEFAULT_HOURS = 2;
 
 export async function POST(request: Request) {
   try {

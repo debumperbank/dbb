@@ -5,9 +5,10 @@ import { DateAvailabilityPicker } from '@/components/DateAvailabilityPicker';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
-// Generieke herstellingen krijgen voorlopig 1 werkuur als standaard —
-// zelfde uitgangspunt als bij de BUMPR-diensten.
-const DEFAULT_HOURS = 1;
+// Generieke/onbekende herstellingen krijgen nu het VEILIGE MAXIMUM (2u) als
+// schatting, niet het minimum — zo lopen we niet het risico dat een klus
+// uitloopt en het volgende slot in de knel komt.
+const DEFAULT_HOURS = 2;
 
 export function WorkshopBookingForm() {
   const [status, setStatus] = useState<Status>('idle');
