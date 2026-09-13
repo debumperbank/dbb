@@ -49,8 +49,9 @@ const SERVICES: Service[] = [
   },
 ];
 
-// Openingsuren — Date.getDay(): 0 = zondag, 5 = vrijdag, 6 = zaterdag.
-// Update deze uren gerust naarmate er meer openingstijden bijkomen.
+// Beschikbaarheid van de mobiele service — Date.getDay(): 0 = zondag,
+// 5 = vrijdag, 6 = zaterdag. Update deze uren gerust naarmate er meer
+// beschikbaarheid bijkomt.
 const OPENING_DAYS: { dayOfWeek: number; label: string; open: string; close: string }[] = [
   { dayOfWeek: 5, label: 'Vrijdag', open: '18:00', close: '22:00' },
   { dayOfWeek: 6, label: 'Zaterdag', open: '09:00', close: '20:00' },
@@ -110,7 +111,7 @@ function DayTimePicker() {
           ))}
         </select>
         <p className="text-[11px] text-muted mt-1">
-          We zijn enkel open op vrijdag, zaterdag en zondag.
+          We rijden op vrijdag, zaterdag en zondag naar uw locatie.
         </p>
       </div>
 
@@ -154,6 +155,7 @@ function BookingForm({ service, onClose }: { service: Service; onClose: () => vo
       email: form.get('email'),
       phone: form.get('phone'),
       service_type: service.name,
+      address: form.get('address'),
       requested_date: form.get('requested_date') || null,
       requested_time: form.get('requested_time') || null,
       notes: form.get('notes'),
@@ -206,7 +208,7 @@ function BookingForm({ service, onClose }: { service: Service; onClose: () => vo
         {success ? (
           <div className="grid gap-4">
             <p className="text-sm text-muted">
-              Je aanvraag voor <strong>{service.name}</strong> is ontvangen. We nemen zo snel mogelijk contact op om de afspraak te bevestigen.
+              Je aanvraag voor <strong>{service.name}</strong> is ontvangen. We nemen zo snel mogelijk contact op om de afspraak op locatie te bevestigen.
             </p>
             <button
               type="button"
@@ -237,6 +239,7 @@ function BookingForm({ service, onClose }: { service: Service; onClose: () => vo
             <input name="name" required placeholder="Naam" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
             <input name="email" type="email" required placeholder="E-mail" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
             <input name="phone" placeholder="Telefoon (optioneel)" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
+            <input name="address" required placeholder="Adres waar we naartoe moeten komen" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
 
             <DayTimePicker />
 
@@ -263,8 +266,11 @@ export function BumprServices() {
 
   return (
     <div>
-      <div className="eyebrow"><span className="dot" />Diensten</div>
+      <div className="eyebrow"><span className="dot" />Mobiele diensten</div>
       <h2 className="mt-2.5 text-2xl md:text-3xl">Blikvangers</h2>
+      <p className="mt-2 max-w-[50ch] text-muted text-sm leading-relaxed">
+        Wij komen met onze volledig uitgeruste bus naar uw locatie — geen werkplaats nodig.
+      </p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--line-dark)] border border-[color:var(--line-dark)] mt-8">
         {SERVICES.map((s) => (

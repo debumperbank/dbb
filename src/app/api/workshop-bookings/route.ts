@@ -7,15 +7,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { name, email, phone, service_type, requested_date, notes, company } = body ?? {};
+    const { name, email, phone, service_type, address, requested_date, requested_time, notes, company } = body ?? {};
 
     if (company) {
       return NextResponse.json({ ok: true });
     }
 
-    if (!name || !email) {
+    if (!name || !email || !address) {
       return NextResponse.json(
-        { error: 'Naam en e-mail zijn verplicht.' },
+        { error: 'Naam, e-mail en adres zijn verplicht.' },
         { status: 400 }
       );
     }
@@ -30,7 +30,9 @@ export async function POST(request: Request) {
         email,
         phone: phone || null,
         service_type: service_type || null,
+        address,
         requested_date: requested_date || null,
+        requested_time: requested_time || null,
         notes: notes || null,
       });
 
@@ -51,15 +53,17 @@ export async function POST(request: Request) {
         from: 'Website <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
         replyTo: email,
-        subject: `Nieuwe werkplaatsaanvraag van ${name}`,
+        subject: `Nieuwe afspraakaanvraag van ${name}`,
         text: `
-Nieuwe werkplaatsaanvraag via de website
+Nieuwe afspraakaanvraag via de website (mobiele service)
 
 Naam: ${name}
 E-mail: ${email}
 Telefoon: ${phone || '-'}
-Type herstelling: ${service_type || '-'}
+Type behandeling: ${service_type || '-'}
+Adres (locatie voor de afspraak): ${address}
 Gewenste datum: ${requested_date || '-'}
+Gewenste tijd: ${requested_time || '-'}
 
 Omschrijving:
 ${notes || '-'}
@@ -69,7 +73,6 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send workshop booking email:', emailError);
 
-        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

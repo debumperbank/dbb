@@ -1,9 +1,9 @@
 const services = [
   { num: '01', title: 'Verkoop', desc: 'Tweedehands wagens met transparante historie, nagekeken voor ze op het plein staan.' },
-  { num: '02', title: 'Herstelling', desc: 'Onderhoud en herstellingen door eigen mecaniciens, zonder tussenpersonen.' },
+  { num: '02', title: 'Herstelling', desc: 'Onderhoud en herstellingen mobiel uitgevoerd, rechtstreeks bij u op locatie.' },
   { num: '03', title: 'Mobiele car wash', desc: 'Wij komen naar uw oprit — grondige reiniging met de BUMPR-productlijn.' },
   { num: '04', title: 'Oldtimer afdeling', desc: 'Aankoop, verkoop en restauratie van klassiekers met volledig dossier.' },
-  { num: '05', title: 'BUMPR', desc: 'Onze eigen detailingreeks, ontwikkeld en getest in de werkplaats.' },
+  { num: '05', title: 'BUMPR', desc: 'Onze eigen detailingreeks, ontwikkeld en getest in de praktijk.' },
 ];
 
 export function StripBar() {
@@ -33,7 +33,7 @@ export function ServiceGrid() {
             <h2 className="mt-2.5 text-3xl md:text-4xl">Vijf disciplines, één zaak</h2>
           </div>
           <p className="max-w-[36ch] text-muted-dark text-sm leading-relaxed">
-            Elke dienst los te boeken, of gecombineerd — alles onder één dak in de werkplaats.
+            Elke dienst los te boeken, of gecombineerd — wij komen volledig uitgerust naar uw locatie.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-px bg-[color:var(--line-light)] border border-[color:var(--line-light)]">

@@ -33,7 +33,7 @@ export function WorkshopBookingForm() {
   if (status === 'done') {
     return (
       <p className="font-mono text-sm text-orange">
-        Bedankt — we nemen contact op om de afspraak te bevestigen.
+        Bedankt — we nemen contact op om de afspraak op locatie te bevestigen.
       </p>
     );
   }
@@ -52,6 +52,7 @@ export function WorkshopBookingForm() {
       <input required type="email" name="email" placeholder="E-mailadres" className={inputClass} />
       <input name="phone" placeholder="Telefoon (optioneel)" className={inputClass} />
       <input name="service_type" placeholder="Type herstelling" className={inputClass} />
+      <input required name="address" placeholder="Adres waar we naartoe moeten komen" className={inputClass} />
       <input type="date" name="requested_date" className={inputClass} />
       <textarea name="notes" placeholder="Omschrijving van het probleem" rows={3} className={inputClass} />
       <button
