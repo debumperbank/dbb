@@ -113,7 +113,7 @@ export async function POST(request: Request) {
         .join('\n');
 
       const { error: emailError } = await resend.emails.send({
-        from: 'De Bumperbank <info@debumperbank.nl>',
+        from: 'De Bumperbank <noreply@debumperbank.nl>',
         to: [process.env.NOTIFY_EMAIL || 'info@debumperbank.nl'],
         replyTo: email,
         subject: `Nieuwe BUMPR bestelling van ${name}`,
