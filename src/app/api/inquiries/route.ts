@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const { error: emailError } = await resend.emails.send({
-        from: 'De Bumperbank <noreply@debumperbank.nl>',
+        from: 'De Bumperbank <info@debumperbank.nl>',
         to: [process.env.NOTIFY_EMAIL || 'info@debumperbank.nl'],
         replyTo: email,
         subject: `Nieuwe aanvraag van ${name}`,
