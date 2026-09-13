@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { Analytics } from "@vercel/analytics/next"
 
 async function getStats() {
   const supabase = createAdminClient();
