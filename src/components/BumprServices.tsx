@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatPriceCents } from '@/lib/format';
+import { createClient } from '@/lib/supabase/client';
 
 interface Service {
   id: string;
@@ -52,23 +53,39 @@ const SERVICES: Service[] = [
 // Beschikbaarheid van de mobiele service — Date.getDay(): 0 = zondag,
 // 5 = vrijdag, 6 = zaterdag. Update deze uren gerust naarmate er meer
 // beschikbaarheid bijkomt.
-const OPENING_DAYS: { dayOfWeek: number; label: string; open: string; close: string }[] = [
-  { dayOfWeek: 5, label: 'Vrijdag', open: '18:00', close: '22:00' },
-  { dayOfWeek: 6, label: 'Zaterdag', open: '09:00', close: '20:00' },
-  { dayOfWeek: 0, label: 'Zondag', open: '12:00', close: '18:00' },
-];
+const OPENING_DAYS: Record<number, { open: string; close: string }> = {
+  5: { open: '18:00', close: '22:00' },
+  6: { open: '09:00', close: '20:00' },
+  0: { open: '12:00', close: '18:00' },
+};
 
-// Volgende kalenderdatum (YYYY-MM-DD) voor een gegeven weekdag, zodat de
-// aanvraag een concrete datum krijgt in plaats van enkel "vrijdag".
-function nextDateForWeekday(dayOfWeek: number): string {
+interface DateOption {
+  value: string; // YYYY-MM-DD
+  label: string; // "Vrijdag 19 sep"
+  dayOfWeek: number;
+}
+
+// De eerstvolgende vrijdagen, zaterdagen en zondagen binnen 2 weken (6 dagen).
+function getUpcomingDates(): DateOption[] {
+  const dayNames = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+  const options: DateOption[] = [];
   const now = new Date();
-  const diff = (dayOfWeek - now.getDay() + 7) % 7;
-  const target = new Date(now);
-  target.setDate(now.getDate() + diff);
-  const y = target.getFullYear();
-  const m = (target.getMonth() + 1).toString().padStart(2, '0');
-  const d = target.getDate().toString().padStart(2, '0');
-  return `${y}-${m}-${d}`;
+
+  for (let i = 0; i < 14 && options.length < 6; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() + i);
+    const dow = d.getDay();
+    if (dow in OPENING_DAYS) {
+      const y = d.getFullYear();
+      const m = (d.getMonth() + 1).toString().padStart(2, '0');
+      const day = d.getDate().toString().padStart(2, '0');
+      const value = `${y}-${m}-${day}`;
+      const dateLabel = d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+      options.push({ value, label: `${dayNames[dow]} ${dateLabel}`, dayOfWeek: dow });
+    }
+  }
+
+  return options;
 }
 
 function generateHourlySlots(open: string, close: string): string[] {
@@ -81,33 +98,59 @@ function generateHourlySlots(open: string, close: string): string[] {
   return slots;
 }
 
-function DayTimePicker() {
-  const [dayOfWeek, setDayOfWeek] = useState('');
+function DateTimePicker() {
+  const [dateOptions] = useState<DateOption[]>(() => getUpcomingDates());
+  const [selectedDate, setSelectedDate] = useState('');
   const [time, setTime] = useState('');
+  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
-  const selectedDay = OPENING_DAYS.find((d) => d.dayOfWeek.toString() === dayOfWeek);
-  const timeSlots = selectedDay ? generateHourlySlots(selectedDay.open, selectedDay.close) : [];
-  const requestedDate = selectedDay ? nextDateForWeekday(selectedDay.dayOfWeek) : '';
+  const selectedOption = dateOptions.find((d) => d.value === selectedDate);
+  const hours = selectedOption ? OPENING_DAYS[selectedOption.dayOfWeek] : null;
+  const allSlots = hours ? generateHourlySlots(hours.open, hours.close) : [];
+  const availableSlots = allSlots.filter((t) => !bookedTimes.includes(t));
 
-  const handleDayChange = (value: string) => {
-    setDayOfWeek(value);
+  useEffect(() => {
+    if (!selectedDate) {
+      setBookedTimes([]);
+      return;
+    }
+
+    let cancelled = false;
+    setLoadingSlots(true);
     setTime('');
-  };
+
+    const supabase = createClient();
+    supabase
+      .rpc('get_booked_slots', { check_date: selectedDate })
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) {
+          console.error('Failed to load booked slots:', error.message);
+          setBookedTimes([]);
+        } else {
+          setBookedTimes((data ?? []).map((r: { requested_time: string }) => r.requested_time));
+        }
+        setLoadingSlots(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedDate]);
 
   return (
     <>
       <div>
         <label className="text-[11px] text-muted font-mono uppercase mb-1 block">Gewenste dag</label>
         <select
-          value={dayOfWeek}
-          onChange={(e) => handleDayChange(e.target.value)}
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
           className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm w-full"
         >
           <option value="" disabled>Kies een dag</option>
-          {OPENING_DAYS.map((d) => (
-            <option key={d.dayOfWeek} value={d.dayOfWeek}>
-              {d.label} ({d.open}–{d.close})
-            </option>
+          {dateOptions.map((d) => (
+            <option key={d.value} value={d.value}>{d.label}</option>
           ))}
         </select>
         <p className="text-[11px] text-muted mt-1">
@@ -115,26 +158,31 @@ function DayTimePicker() {
         </p>
       </div>
 
-      {selectedDay && (
+      {selectedDate && (
         <div>
           <label className="text-[11px] text-muted font-mono uppercase mb-1 block">Gewenste tijd</label>
-          <select
-            name="requested_time"
-            required
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm w-full"
-          >
-            <option value="" disabled>Kies een tijdstip</option>
-            {timeSlots.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+          {loadingSlots ? (
+            <p className="text-[13px] text-muted">Beschikbaarheid ophalen...</p>
+          ) : availableSlots.length === 0 ? (
+            <p className="text-[13px] text-orange">Alle tijdstippen op deze dag zijn volzet — kies een andere dag.</p>
+          ) : (
+            <select
+              name="requested_time"
+              required
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm w-full"
+            >
+              <option value="" disabled>Kies een tijdstip</option>
+              {availableSlots.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          )}
         </div>
       )}
 
-      {/* Verborgen veld met de concrete eerstvolgende datum voor de gekozen dag. */}
-      <input type="hidden" name="requested_date" value={requestedDate} />
+      <input type="hidden" name="requested_date" value={selectedDate} />
     </>
   );
 }
@@ -208,7 +256,7 @@ function BookingForm({ service, onClose }: { service: Service; onClose: () => vo
         {success ? (
           <div className="grid gap-4">
             <p className="text-sm text-muted">
-              Je aanvraag voor <strong>{service.name}</strong> is ontvangen. We nemen zo snel mogelijk contact op om de afspraak op locatie te bevestigen.
+              Je aanvraag voor <strong>{service.name}</strong> is ontvangen. We nemen zo snel mogelijk contact op om de definitieve datum en tijd te bevestigen.
             </p>
             <button
               type="button"
@@ -241,7 +289,7 @@ function BookingForm({ service, onClose }: { service: Service; onClose: () => vo
             <input name="phone" placeholder="Telefoon (optioneel)" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
             <input name="address" required placeholder="Adres waar we naartoe moeten komen" className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm" />
 
-            <DayTimePicker />
+            <DateTimePicker />
 
             <textarea name="notes" placeholder="Opmerkingen (optioneel)" rows={3} className="border border-[color:var(--line-dark)] rounded-[3px] px-3 py-2.5 bg-bg-soft text-sm resize-none" />
 
