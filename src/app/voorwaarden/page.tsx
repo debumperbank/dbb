@@ -12,7 +12,7 @@ export default function VoorwaardenPage() {
         <div className="bg-bg-soft border border-orange/40 rounded-[4px] px-5 py-4 mb-10 text-[13px] text-muted leading-relaxed">
           <strong className="text-orange">Concepttekst.</strong> Dit is een startpunt, geen
           juridisch geverifieerde tekst. Laat dit nakijken door een jurist of gebruik een erkende
-          voorwaardengenerator (bv. via een ondernemersorganisatie) voordat je 'm als definitief
+          voorwaardengenerator (bv. via een ondernemersorganisatie) voordat je &apos;m als definitief
           beschouwt — zeker de onderdelen over garantie, herroepingsrecht bij tweedehandswagens
           en aansprakelijkheid verschillen per situatie.
         </div>

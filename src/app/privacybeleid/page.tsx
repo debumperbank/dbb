@@ -12,7 +12,7 @@ export default function PrivacybeleidPage() {
         <div className="bg-bg-soft border border-orange/40 rounded-[4px] px-5 py-4 mb-10 text-[13px] text-muted leading-relaxed">
           <strong className="text-orange">Concepttekst.</strong> Dit is een startpunt op basis van
           de gegevens die de site daadwerkelijk verzamelt, geen juridisch geverifieerde tekst.
-          Laat dit nakijken door een jurist voordat je 'm als definitief beschouwt.
+          Laat dit nakijken door een jurist voordat je &apos;m als definitief beschouwt.
         </div>
 
         <div className="grid gap-7 text-[14.5px] leading-relaxed text-muted">
