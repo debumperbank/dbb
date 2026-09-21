@@ -2,10 +2,10 @@
 // schema, either update this file or generate it with:
 //   npx supabase gen types typescript --project-id <id> > src/lib/types.ts
 
-export type FuelType = 'benzine' | 'diesel' | 'elektrisch' | 'hybride' | 'lpg';
-export type Transmission = 'handgeschakeld' | 'automaat';
-export type ListingStatus = 'draft' | 'active' | 'reserved' | 'sold';
-export type Department = 'verkoop' | 'oldtimer';
+export type FuelType = "benzine" | "diesel" | "elektrisch" | "hybride" | "lpg";
+export type Transmission = "handgeschakeld" | "automaat";
+export type ListingStatus = "draft" | "active" | "reserved" | "sold";
+export type Department = "verkoop" | "oldtimer";
 
 export interface Car {
   id: string;
@@ -104,6 +104,14 @@ export type Database = {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
+      };
+    };
+    Views: {};
+    Functions: {
+      submit_mobile_request: {
+        Args: { payload: Record<string, unknown>; photo_paths: string[] };
+        Returns: string;
       };
     };
   };

@@ -1,5 +1,26 @@
 # De Bumperbank — Next.js + Supabase
 
+## Update: mobiele autoservice en CRM (21 september 2026)
+
+De site volgt nu de richting **“De garage die naar je toe komt”**, met regio Hulst als werkgebied.
+Nieuwe routes: `/mobiele-autoservice`, `/werkplaats`, `/detailing`, `/afspraak`, `/occasions`,
+`/auto-verkopen` en `/over-ons`. BUMPR, oldtimers en de bestaande voorraad blijven bestaan.
+
+**Voor ingebruikname:** voer `supabase/migrations/003_mobile_crm.sql` eenmaal uit in de SQL Editor
+van het bestaande Supabase-project, na migraties 001 en 002. Voor een volledig nieuw project:
+`schema.sql`, `storage.sql`, daarna migratie 003 (001 en 002 zitten al in het basisschema).
+Deze update voert zelf geen SQL uit tegen de gekoppelde database.
+
+Het beheer blijft op `/admin`; `/dashboard` verwijst daarheen. Je vindt er nu agenda/aanvragen,
+klanten, voertuigen, werkorders en inkoop. Bestaande boekingen staan onder **Boekingen**.
+Nieuwe serviceaanvragen gaan via het nieuwe afspraakformulier. Ze moeten persoonlijk worden bevestigd.
+
+Zie [UPDATE_MOBIELE_AUTOSERVICE.md](UPDATE_MOBIELE_AUTOSERVICE.md) voor installatie,
+controlepunten en de grenzen van deze eerste CRM-versie.
+
+---
+
+
 Verkoopsite voor De Bumperbank: voorraadbeheer, herstelling/car-wash
 leads, de oldtimer-afdeling met restauratiedossiers (nu inclusief foto's
 per dossierpost), en de BUMPR productlijn — gebouwd op Next.js 15

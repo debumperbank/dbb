@@ -1,10 +1,16 @@
-import Link from 'next/link';
-import type { ListingWithCar } from '@/lib/types';
-import { formatPriceCents, formatMileage } from '@/lib/format';
+import Link from "next/link";
+import type { ListingWithCar } from "@/lib/types";
+import { formatPriceCents, formatMileage } from "@/lib/format";
 
 function CarGlyph() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="#ff5a1f" strokeWidth={1.6} className="w-7">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#ff5a1f"
+      strokeWidth={1.6}
+      className="w-7"
+    >
       <path d="M2 16h20M4 16l1-5h14l1 5M8 11V8h8v3" />
       <circle cx="7" cy="17.5" r="1.5" />
       <circle cx="17" cy="17.5" r="1.5" />
@@ -16,7 +22,7 @@ export function CarCard({ listing }: { listing: ListingWithCar }) {
   const { cars: car } = listing;
   return (
     <Link
-      href={`/voorraad/${listing.slug ?? listing.id}`}
+      href={`/occasions/${listing.slug ?? listing.id}`}
       className="block bg-bg-soft-2 border border-[color:var(--line-dark)] hover:border-orange transition-colors rounded-[4px] p-5.5 relative"
     >
       <div className="absolute top-4 right-4 font-mono text-[10px] text-orange border border-orange px-2 py-0.5 rounded-[2px]">
@@ -25,9 +31,11 @@ export function CarCard({ listing }: { listing: ListingWithCar }) {
       <div className="w-14 h-14 rounded-full bg-orange/10 flex items-center justify-center mb-5">
         <CarGlyph />
       </div>
-      <h3 className="text-lg font-semibold font-display">{car.make} {car.model}</h3>
+      <h3 className="text-lg font-semibold font-display">
+        {car.make} {car.model}
+      </h3>
       <p className="text-[12.5px] text-muted mt-1.5 font-mono uppercase">
-        {formatMileage(car.mileage_km)} &middot; {car.fuel_type ?? '—'}
+        {formatMileage(car.mileage_km)} &middot; {car.fuel_type ?? "—"}
       </p>
       <div className="mt-3.5 font-display text-lg text-orange">
         {formatPriceCents(listing.price_cents)}

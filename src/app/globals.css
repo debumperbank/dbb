@@ -59,3 +59,9 @@ h1, h2, h3 {
     scroll-behavior: auto !important;
   }
 }
+
+@layer components {
+.field { @apply block w-full bg-bg border border-white/20 rounded px-3 py-3 mt-2 text-paper; }
+.panel { @apply bg-bg-soft border border-white/10 rounded-lg p-6; }
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #ff5a1f; outline-offset: 3px; }

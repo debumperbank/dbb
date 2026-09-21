@@ -1,49 +1,49 @@
-import Image from 'next/image';
-import Link from 'next/link';
-
-const values = [
-  { title: 'Praktijkervaring', sub: 'jarenlang in de schadehoek' },
-  { title: 'Ook mét schade', sub: 'inkoop tegen eerlijke prijs' },
-  { title: 'Tot in detail', sub: 'binnen, buiten & motorruimte' },
-  { title: 'Oldtimer liefhebber', sub: 'zelf rijdend met een E46 (2003)' },
-];
-
+import Image from "next/image";
+import Link from "next/link";
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-8 pt-20 pb-16">
+    <section className="relative overflow-hidden px-6 py-20 md:py-28">
       <div
-        className="absolute -top-1/5 -right-[10%] w-3/5 h-[140%] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, rgba(255,90,31,0.14), transparent 65%)' }}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 90% 20%, #ff5a1f25, transparent 65%)",
+        }}
       />
-      <div className="relative z-10 max-w-site mx-auto grid md:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
+      <div className="relative max-w-site mx-auto grid md:grid-cols-[1.3fr_0.7fr] items-center gap-12">
         <div>
-          <div className="eyebrow"><span className="dot" />Onafhankelijke garage &amp; atelier — Terneuzen</div>
-          <h1 className="mt-5 text-4xl md:text-5xl lg:text-[54px] max-w-[15ch]">
-            Uw auto in <span className="text-orange">vertrouwde</span> handen.
+          <div className="eyebrow">Mobiele autoservice · Regio Hulst</div>
+          <h1 className="mt-6 text-5xl md:text-7xl max-w-[15ch]">
+            De garage die <span className="text-orange">naar je toe komt.</span>
           </h1>
-          <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-muted">
-            De Bumperbank verkoopt eerlijke tweedehandswagens — ook met schade — herstelt ze in
-            eigen werkplaats en houdt ze piekfijn — van mobiele car wash tot onze eigen
-            BUMPR-verzorgingslijn.
+          <p className="text-muted text-lg leading-relaxed mt-7 max-w-xl">
+            Onderhoud, reparatie en detailing op locatie in regio Hulst. Ook
+            voor geselecteerde occasions en de verkoop van je auto ben je bij De
+            Bumperbank aan het juiste adres.
           </p>
-          <div className="mt-8 flex gap-3.5 flex-wrap">
-            <Link href="/voorraad" className="btn btn-primary">Bekijk de voorraad →</Link>
-            <Link href="/contact" className="btn btn-ghost">Plan de werkplaats</Link>
+          <div className="flex flex-wrap gap-3 mt-8">
+            <Link href="/afspraak" className="btn btn-primary">
+              Afspraak aanvragen →
+            </Link>
+            <Link href="#diensten" className="btn btn-ghost">
+              Onze diensten
+            </Link>
           </div>
-          <div className="mt-13 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-[color:var(--line-dark)] pt-6">
-            {values.map((v) => (
-              <div key={v.title}>
-                <div className="font-display text-[15px] text-orange leading-snug">{v.title}</div>
-                <div className="text-[11.5px] text-muted mt-1">{v.sub}</div>
-              </div>
-            ))}
-          </div>
+          <p className="mt-7 text-sm text-muted">
+            Jij vertelt wat er nodig is. Wij bespreken de mogelijkheden en
+            bevestigen je afspraak persoonlijk.
+          </p>
         </div>
-        <div className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[10px] p-10 flex flex-col items-center gap-4.5 text-center">
-          <Image src="/logo.png" alt="De Bumperbank" width={180} height={180} className="object-contain" />
-          <div className="font-mono text-[11.5px] tracking-widest text-muted uppercase">
-            Jouw auto, <span className="text-orange">onze zorg</span>
-          </div>
+        <div className="border border-white/10 bg-bg-soft rounded-xl p-8 text-center">
+          <Image
+            src="/logo.png"
+            alt="De Bumperbank"
+            width={320}
+            height={320}
+            priority
+            className="mx-auto object-contain"
+          />
+          <p className="eyebrow justify-center mt-6">Jouw auto. Onze zorg.</p>
         </div>
       </div>
     </section>

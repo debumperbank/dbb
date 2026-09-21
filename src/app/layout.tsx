@@ -1,31 +1,34 @@
-import type { Metadata } from 'next';
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
-import './globals.css';
-import { Nav } from '@/components/Nav';
-import { Footer } from '@/components/Footer';
+import type { Metadata } from "next";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
+import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  variable: '--font-space-grotesk',
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-space-grotesk",
 });
 
 const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-inter',
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-jetbrains-mono',
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
-  title: 'De Bumperbank — Verkoop, Herstelling & BUMPR Detailing',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://debumperbank.nl",
+  ),
+  title: "De Bumperbank — Mobiele autoservice in regio Hulst",
   description:
-    'Onafhankelijke garage in Terneuzen: eerlijke tweedehandswagens, eigen werkplaats, mobiele car wash, oldtimer afdeling en de BUMPR verzorgingslijn.',
+    "Onderhoud, reparatie en detailing op locatie in regio Hulst. Vraag een afspraak aan, bekijk onze occasions of bied je auto aan.",
 };
 
 export default function RootLayout({
@@ -34,7 +37,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="nl" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="nl"
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <body>
         <Nav />
         {children}

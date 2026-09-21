@@ -1,48 +1,116 @@
-import Link from 'next/link';
-import { createAdminClient } from '@/lib/supabase/admin';
-
-async function getStats() {
-  const supabase = createAdminClient();
-
-  const [{ count: activeListings }, { count: newInquiries }, { count: newCarWash }, { count: newWorkshop }] =
-    await Promise.all([
-      supabase.from('listings').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-      supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'new'),
-      supabase.from('car_wash_bookings').select('*', { count: 'exact', head: true }).eq('status', 'new'),
-      supabase.from('workshop_bookings').select('*', { count: 'exact', head: true }).eq('status', 'new'),
-    ]);
-
-  return {
-    activeListings: activeListings ?? 0,
-    newInquiries: newInquiries ?? 0,
-    newBookings: (newCarWash ?? 0) + (newWorkshop ?? 0),
-  };
-}
-
-export default async function AdminDashboard() {
-  const stats = await getStats();
-
+import Link from "next/link";
+import { crmClient, type Appointment, euro } from "@/lib/crm";
+import { CrmError } from "@/components/CrmError";
+export default async function Page() {
+  const db = await crmClient();
+  const [
+    { data, error },
+    { count: tradeIns },
+    { count: listings },
+    { count: legacyWash },
+    { count: legacyWorkshop },
+    { count: inquiries },
+  ] = await Promise.all([
+    db.from("appointments").select("*"),
+    db
+      .from("trade_ins")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new"),
+    db
+      .from("listings")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "active"),
+    db
+      .from("car_wash_bookings")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new"),
+    db
+      .from("workshop_bookings")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new"),
+    db
+      .from("inquiries")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new"),
+  ]);
+  if (error) return <CrmError />;
+  const rows = data as unknown as Appointment[];
+  const dateKey = (date: string) =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Amsterdam",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date(date));
+  const today = dateKey(new Date().toISOString()),
+    month = today.slice(0, 7);
+  const completed = rows.filter(
+    (a) =>
+      a.status === "completed" &&
+      a.scheduled_at &&
+      dateKey(a.scheduled_at).startsWith(month),
+  );
   const cards = [
-    { label: 'Actieve voorraad', value: stats.activeListings, href: '/admin/listings' },
-    { label: 'Nieuwe interesses', value: stats.newInquiries, href: '/admin/inquiries' },
-    { label: 'Nieuwe boekingen', value: stats.newBookings, href: '/admin/bookings' },
+    [
+      "Vandaag gepland",
+      rows.filter(
+        (a) =>
+          a.scheduled_at &&
+          dateKey(a.scheduled_at) === today &&
+          ["confirmed", "in_progress"].includes(a.status),
+      ).length,
+      "/admin/appointments",
+    ],
+    [
+      "Nieuwe aanvragen",
+      rows.filter((a) => a.status === "new").length,
+      "/admin/appointments",
+    ],
+    [
+      "In behandeling",
+      rows.filter((a) => a.status === "in_progress").length,
+      "/admin/work-orders",
+    ],
+    ["Nieuwe inkoop", tradeIns ?? "—", "/admin/trade-ins"],
+    ["Actieve occasions", listings ?? "—", "/admin/listings"],
+    [
+      "Oude boekingen · nieuw",
+      (legacyWash ?? 0) + (legacyWorkshop ?? 0),
+      "/admin/bookings",
+    ],
+    ["Nieuwe interesses", inquiries ?? "—", "/admin/inquiries"],
   ];
-
   return (
     <div>
-      <div className="eyebrow mb-2"><span className="dot" />Beheer</div>
-      <h1 className="text-2xl mb-8">Overzicht</h1>
-      <div className="grid sm:grid-cols-3 gap-5">
-        {cards.map((c) => (
+      <div className="eyebrow">Bumperbank beheer</div>
+      <h1 className="text-3xl mt-3 mb-8">Vandaag & deze maand</h1>
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+        {cards.map(([label, value, href]) => (
           <Link
-            key={c.label}
-            href={c.href}
-            className="bg-bg border border-[color:var(--line-dark)] hover:border-orange transition-colors rounded-[4px] p-6"
+            key={label}
+            href={String(href)}
+            className="panel hover:border-orange"
           >
-            <div className="font-display text-4xl text-orange">{c.value}</div>
-            <div className="text-sm text-muted mt-2">{c.label}</div>
+            <span className="text-4xl text-orange">{value}</span>
+            <h2 className="text-base mt-4">{label}</h2>
           </Link>
         ))}
+      </div>
+      <div className="panel mt-8">
+        <h2 className="text-xl">Afgeronde opdrachten deze maand</h2>
+        <p className="mt-4">
+          {completed.length} opdrachten ·{" "}
+          {euro(
+            completed.reduce((sum, a) => sum + (a.final_price_cents ?? 0), 0),
+          )}{" "}
+          aan vastgelegde eindprijzen
+        </p>
+        <p className="text-muted mt-3">
+          Op basis van de geplande afspraakdatum. Dit is geen factuur- of
+          betaaladministratie.{" "}
+          {completed.filter((a) => a.final_price_cents === null).length}{" "}
+          opdrachten zonder eindprijs.
+        </p>
       </div>
     </div>
   );

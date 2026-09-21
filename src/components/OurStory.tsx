@@ -1,32 +1,29 @@
 export function OurStory() {
   return (
-    <section id="verhaal" className="px-8 py-24 bg-bg">
-      <div className="max-w-site mx-auto grid md:grid-cols-[0.9fr_1.1fr] gap-14 items-start">
+    <section className="px-6 py-20">
+      <div className="max-w-site mx-auto grid md:grid-cols-2 gap-10">
         <div>
-          <div className="eyebrow"><span className="dot" />Ons verhaal</div>
-          <h2 className="mt-3.5 text-3xl md:text-4xl">Waarom De Bumperbank er is</h2>
+          <div className="eyebrow">Over De Bumperbank</div>
+          <h2 className="text-4xl mt-4">
+            Eerlijk werk.
+            <br />
+            Aandacht voor je auto.
+          </h2>
         </div>
-        <div className="text-[15.5px] leading-relaxed text-muted max-w-[62ch] grid gap-5">
+        <div className="text-muted leading-relaxed space-y-5">
           <p>
-            Sinds vorig jaar werk ik bij schadebedrijf Rida in Hulst. Daar heb ik veel gezien —
-            en ook dingen die ik anders zou aanpakken als het aan mij lag. Alleen: als werknemer
-            heb je die vrijheid niet altijd.
+            De Bumperbank brengt onderhoud, reparatie en detailing naar je toe
+            in regio Hulst. We beginnen met jouw verhaal en bespreken welke
+            werkzaamheden op locatie mogelijk zijn.
           </p>
           <p>
-            Daarom begin ik voor mezelf. De Bumperbank is mijn eigen zaak, opgebouwd rond wat ik
-            zelf belangrijk vind: eerlijk werk, aandacht voor detail, en auto&apos;s een tweede
-            kans geven in plaats van ze naar de sloop te sturen.
+            Je krijgt één aanspreekpunt en duidelijke afspraken over het werk.
+            Naast mobiele autoservice kun je bij ons terecht voor occasions, de
+            verkoop van je auto en onze BUMPR-verzorgingslijn.
           </p>
           <p>
-            Oldtimers hebben daarbij mijn hart — ik rij zelf met plezier in een BMW E46 uit 2003.
-            Klassiekers redden, restaureren en weer op straat krijgen is een groot deel van
-            waarom ik dit doe.
-          </p>
-          <p>
-            Concreet betekent dat: tweedehands wagens in- en verkopen, ook mét schade en tegen een
-            eerlijke prijs, auto&apos;s tot in het kleinste detail wassen — binnen, buiten en de
-            motorruimte — met coatings die echt bescherming bieden, en klassiekers behandelen met
-            het geduld die ze verdienen.
+            Ook onze liefde voor klassiekers blijft: ontdek de oldtimer-afdeling
+            en de restauratiedossiers bij de auto’s.
           </p>
         </div>
       </div>
