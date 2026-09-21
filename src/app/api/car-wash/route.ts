@@ -3,30 +3,11 @@ import { Resend } from 'resend';
 
 import { createClient } from '@/lib/supabase/server';
 
-// Serverzijdige bron van waarheid — zelfde patroon als workshop-bookings,
-// zodat de browser de capaciteitsberekening niet kan omzeilen.
-const SERVICE_HOURS: Record<string, number> = {
-  'Basis wasbeurt': 1,
-  'Volledige detail': 3,
-  'BUMPR Ceramic Coating': 2,
-};
-const DEFAULT_HOURS = 2; // veilig fallback-maximum, niet het minimum
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const {
-      name,
-      email,
-      phone,
-      address,
-      requested_date,
-      notes,
-      service_type,
-      large_vehicle,
-      company,
-    } = body ?? {};
+    const { name, email, phone, address, requested_date, notes, company, consent } = body ?? {};
 
     if (company) {
       return NextResponse.json({ ok: true });
@@ -39,11 +20,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const estimatedHours = service_type && SERVICE_HOURS[service_type] != null
-      ? SERVICE_HOURS[service_type]
-      : DEFAULT_HOURS;
-
-    const isLargeVehicle = large_vehicle === true || large_vehicle === 'true';
+    if (!consent) {
+      return NextResponse.json(
+        { error: 'Je moet akkoord gaan met de Algemene Voorwaarden en het Privacybeleid.' },
+        { status: 400 }
+      );
+    }
 
     // 1. Opslaan in Supabase
     const supabase = await createClient();
@@ -57,9 +39,8 @@ export async function POST(request: Request) {
         address,
         requested_date: requested_date || null,
         notes: notes || null,
-        service_type: service_type || null,
-        estimated_hours: estimatedHours,
-        large_vehicle: isLargeVehicle,
+        consent_given: true,
+        consent_at: new Date().toISOString(),
       });
 
     if (error) {
@@ -76,21 +57,18 @@ export async function POST(request: Request) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const { error: emailError } = await resend.emails.send({
-        from: 'De Bumperbank <info@debumperbank.nl>',
+        from: 'Website <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
         replyTo: email,
-        subject: `Nieuwe car wash-aanvraag van ${name}${isLargeVehicle ? ' (groot voertuig)' : ''}`,
+        subject: `Nieuwe car wash-aanvraag van ${name}`,
         text: `
 Nieuwe car wash-aanvraag via de website
 
 Naam: ${name}
 E-mail: ${email}
 Telefoon: ${phone || '-'}
-Dienst: ${service_type || '-'}
 Adres: ${address}
 Gewenste datum: ${requested_date || '-'}
-Geschatte werkuren: ${estimatedHours}
-Groot voertuig (toeslag €59): ${isLargeVehicle ? 'Ja' : 'Nee'}
 
 Opmerkingen:
 ${notes || '-'}
@@ -100,6 +78,7 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send car wash email:', emailError);
 
+        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

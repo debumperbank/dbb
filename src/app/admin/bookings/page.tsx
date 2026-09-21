@@ -19,10 +19,7 @@ interface WorkshopRow {
   email: string;
   phone: string | null;
   service_type: string | null;
-  address: string | null;
   requested_date: string | null;
-  estimated_hours: number | null;
-  large_vehicle: boolean | null;
   notes: string | null;
   status: string;
 }
@@ -70,7 +67,7 @@ export default async function AdminBookingsPage() {
       </section>
 
       <section>
-        <h2 className="text-lg mb-4">Afspraken op locatie</h2>
+        <h2 className="text-lg mb-4">Werkplaats</h2>
         <div className="grid gap-3">
           {workshop.map((b) => (
             <div key={b.id} className="border border-[color:var(--line-dark)] rounded-[4px] p-5 bg-bg">
@@ -80,15 +77,6 @@ export default async function AdminBookingsPage() {
                   <div className="text-muted text-xs font-mono mt-0.5">{b.email}{b.phone ? ` · ${b.phone}` : ''}</div>
                   <div className="text-xs text-muted mt-1">
                     {b.service_type ?? 'Algemeen'}{b.requested_date ? ` · gewenst: ${b.requested_date}` : ''}
-                    {b.estimated_hours ? ` · ${b.estimated_hours}u ingepland` : ''}
-                  </div>
-                  {b.address && <div className="text-xs text-muted mt-1">📍 {b.address}</div>}
-                  <div className="flex gap-2 mt-1.5">
-                    {b.large_vehicle && (
-                      <span className="font-mono text-[10px] uppercase text-orange border border-orange px-1.5 py-0.5 rounded-[2px]">
-                        Groot voertuig +€59
-                      </span>
-                    )}
                   </div>
                 </div>
                 <LeadStatusSelect id={b.id} currentStatus={b.status} options={STATUS_OPTIONS} onChange={updateWorkshopBookingStatus} />

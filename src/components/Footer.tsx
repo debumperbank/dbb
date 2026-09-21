@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -10,9 +11,11 @@ export function Footer() {
             DE <span className="text-orange">BUMPER</span>BANK
           </span>
         </div>
-        <span className="font-mono text-[11px] text-muted">
-          © {new Date().getFullYear()} DE BUMPERBANK — HULST
-        </span>
+        <div className="flex items-center gap-5 font-mono text-[11px] text-muted">
+          <Link href="/voorwaarden" className="hover:text-paper transition-colors">Algemene Voorwaarden</Link>
+          <Link href="/privacybeleid" className="hover:text-paper transition-colors">Privacybeleid</Link>
+          <span>© {new Date().getFullYear()} DE BUMPERBANK — TERNEUZEN</span>
+        </div>
       </div>
     </footer>
   );

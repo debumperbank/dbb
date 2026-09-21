@@ -3,7 +3,6 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
-import { Analytics } from "@vercel/analytics/next"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -26,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'De Bumperbank — Verkoop, Herstelling & BUMPR Detailing',
   description:
-    'Onafhankelijke mobiele garage in Hulst: mobiele car wash, oldtimer afdeling en de BUMPR verzorgingslijn.',
+    'Onafhankelijke garage in Terneuzen: eerlijke tweedehandswagens, eigen werkplaats, mobiele car wash, oldtimer afdeling en de BUMPR verzorgingslijn.',
 };
 
 export default function RootLayout({

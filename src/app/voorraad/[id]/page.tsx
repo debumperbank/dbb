@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { ContactForm } from '@/components/ContactForm';
-import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { formatPriceCents, formatMileage } from '@/lib/format';
-import type { ListingWithCar, ListingPhoto, RestorationEvent, RestorationEventPhoto } from '@/lib/types';
+import type { ListingWithCar, RestorationEvent, RestorationEventPhoto } from '@/lib/types';
 
 export const revalidate = 60;
 
@@ -18,18 +17,6 @@ async function getListing(idOrSlug: string): Promise<ListingWithCar | null> {
 
   if (error || !data) return null;
   return data as unknown as ListingWithCar;
-}
-
-async function getListingPhotos(listingId: string): Promise<ListingPhoto[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('listing_photos')
-    .select('*')
-    .eq('listing_id', listingId)
-    .order('sort_order', { ascending: true });
-
-  if (error || !data) return [];
-  return data as ListingPhoto[];
 }
 
 async function getRestorationHistory(carId: string): Promise<{
@@ -70,7 +57,6 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
   const { events: history, photosByEvent } = car.is_oldtimer
     ? await getRestorationHistory(car.id)
     : { events: [], photosByEvent: {} };
-  const photos = await getListingPhotos(listing.id);
 
   return (
     <main className="px-8 py-20 bg-bg min-h-screen">
@@ -128,13 +114,6 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
                   );
                 })}
               </div>
-            </div>
-          )}
-
-          {photos.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-xl mb-5">Foto&apos;s</h2>
-              <PhotoCarousel photos={photos} altPrefix={`${car.make} ${car.model}`} />
             </div>
           )}
         </div>

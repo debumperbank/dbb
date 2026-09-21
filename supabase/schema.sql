@@ -83,6 +83,8 @@ create table if not exists inquiries (
   phone text,
   message text,
   status text not null check (status in ('new', 'contacted', 'closed')) default 'new',
+  consent_given boolean not null default false,
+  consent_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -133,6 +135,8 @@ create table if not exists car_wash_bookings (
   requested_date date,
   notes text,
   status text not null check (status in ('new', 'scheduled', 'done', 'cancelled')) default 'new',
+  consent_given boolean not null default false,
+  consent_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -146,6 +150,8 @@ create table if not exists workshop_bookings (
   requested_date date,
   notes text,
   status text not null check (status in ('new', 'scheduled', 'done', 'cancelled')) default 'new',
+  consent_given boolean not null default false,
+  consent_at timestamptz,
   created_at timestamptz not null default now()
 );
 

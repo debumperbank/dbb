@@ -92,6 +92,8 @@ src/
     oldtimers/page.tsx        → oldtimer-afdeling
     bumpr/page.tsx            → BUMPR productpagina
     contact/page.tsx          → contactformulieren (algemeen / car wash / werkplaats)
+    voorwaarden/page.tsx      → Algemene Voorwaarden (conceptversie)
+    privacybeleid/page.tsx    → Privacybeleid (conceptversie)
     admin/
       login/page.tsx              → inlogscherm (Supabase Auth)
       page.tsx                    → dashboard met kerncijfers
@@ -158,6 +160,25 @@ op, en zet in `.env.local`:
 RESEND_API_KEY=re_jouw_key
 NOTIFY_EMAIL=jouw-email@voorbeeld.nl
 ```
+
+## Juridisch & toestemming (AVG)
+
+- `/voorwaarden` en `/privacybeleid` staan er nu op — **conceptteksten**,
+  duidelijk als zodanig gemarkeerd op de pagina's zelf. Laat ze nakijken
+  door een jurist voordat je ze als definitief beschouwt: met name de
+  passages over garantie op tweedehandswagens en aansprakelijkheid
+  hangen af van je exacte situatie.
+- Alle drie de publieke formulieren (contact, car wash, werkplaats)
+  hebben nu een verplicht akkoord-vinkje (`ConsentCheckbox`-component):
+  standaard leeg, met aanklikbare links naar beide pagina's die in een
+  nieuw tabblad openen.
+- De verplichting wordt **twee keer** afgedwongen: in de browser (HTML
+  `required`, zodat het formulier niet verstuurd kan worden zonder vinkje)
+  én server-side in elke API-route (voor het geval iemand rechtstreeks
+  naar de endpoint post, buiten het formulier om).
+- Elke aanvraag/interesse/boeking slaat nu `consent_given` en
+  `consent_at` op — bewijs dat er toestemming was, en wanneer. Voor een
+  bestaande database: draai `supabase/migrations/002_consent_tracking.sql`.
 
 ## Veiligheid
 

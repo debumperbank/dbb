@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ConsentCheckbox } from '@/components/ConsentCheckbox';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
@@ -73,6 +74,7 @@ export function ContactForm({ listingId }: { listingId?: string }) {
         rows={4}
         className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-sm placeholder:text-muted focus:outline-none focus:border-orange"
       />
+      <ConsentCheckbox />
       <button type="submit" disabled={status === 'submitting'} className="btn btn-primary w-fit disabled:opacity-60">
         {status === 'submitting' ? 'Bezig met versturen…' : 'Versturen'}
       </button>

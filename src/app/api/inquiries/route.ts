@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { name, email, phone, message, listing_id, company } = body ?? {};
+    const { name, email, phone, message, listing_id, company, consent } = body ?? {};
 
     // Honeypot: a real visitor never fills this field in (it's hidden via
     // CSS). A bot that blindly fills every field will. Pretend success so
@@ -23,6 +23,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // The checkbox is `required` in the browser, but that only stops a
+    // person using the form — not a direct POST to this endpoint. Enforce
+    // it server-side too.
+    if (!consent) {
+      return NextResponse.json(
+        { error: 'Je moet akkoord gaan met de Algemene Voorwaarden en het Privacybeleid.' },
+        { status: 400 }
+      );
+    }
+
     // 1. Opslaan in Supabase
     const supabase = await createClient();
 
@@ -34,6 +44,8 @@ export async function POST(request: Request) {
         phone: phone || null,
         message: message || null,
         listing_id: listing_id || null,
+        consent_given: true,
+        consent_at: new Date().toISOString(),
       });
 
     if (error) {
@@ -53,7 +65,7 @@ export async function POST(request: Request) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const { error: emailError } = await resend.emails.send({
-        from: 'De Bumperbank <info@debumperbank.nl>',
+        from: 'Website <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
         replyTo: email,
         subject: `Nieuwe aanvraag van ${name}`,

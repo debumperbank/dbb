@@ -3,49 +3,29 @@ import { Resend } from 'resend';
 
 import { createClient } from '@/lib/supabase/server';
 
-// Serverzijdige bron van waarheid voor werkuren per vaste BUMPR-dienst.
-// Generieke werkplaatsaanvragen (vrije tekst) vallen terug op het VEILIGE
-// MAXIMUM (2u), niet het minimum — zie toelichting bij DEFAULT_HOURS.
-const SERVICE_HOURS: Record<string, number> = {
-  'BUMPR Full Detail': 2,
-  'BUMPR Hydro Coat (6 mnd)': 1,
-  'Ultimate BUMPR Combi': 3,
-};
-const DEFAULT_HOURS = 2;
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const {
-      name,
-      email,
-      phone,
-      service_type,
-      address,
-      requested_date,
-      requested_time,
-      notes,
-      large_vehicle,
-      company,
-    } = body ?? {};
+    const { name, email, phone, service_type, requested_date, notes, company, consent } = body ?? {};
 
     if (company) {
       return NextResponse.json({ ok: true });
     }
 
-    if (!name || !email || !address) {
+    if (!name || !email) {
       return NextResponse.json(
-        { error: 'Naam, e-mail en adres zijn verplicht.' },
+        { error: 'Naam en e-mail zijn verplicht.' },
         { status: 400 }
       );
     }
 
-    const estimatedHours = service_type && SERVICE_HOURS[service_type] != null
-      ? SERVICE_HOURS[service_type]
-      : DEFAULT_HOURS;
-
-    const isLargeVehicle = large_vehicle === true || large_vehicle === 'true';
+    if (!consent) {
+      return NextResponse.json(
+        { error: 'Je moet akkoord gaan met de Algemene Voorwaarden en het Privacybeleid.' },
+        { status: 400 }
+      );
+    }
 
     // 1. Opslaan in Supabase
     const supabase = await createClient();
@@ -57,12 +37,10 @@ export async function POST(request: Request) {
         email,
         phone: phone || null,
         service_type: service_type || null,
-        address,
         requested_date: requested_date || null,
-        requested_time: requested_time || null,
         notes: notes || null,
-        estimated_hours: estimatedHours,
-        large_vehicle: isLargeVehicle,
+        consent_given: true,
+        consent_at: new Date().toISOString(),
       });
 
     if (error) {
@@ -79,21 +57,18 @@ export async function POST(request: Request) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const { error: emailError } = await resend.emails.send({
-        from: 'De Bumperbank <info@debumperbank.nl>',
+        from: 'Website <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
         replyTo: email,
-        subject: `Nieuwe afspraakaanvraag van ${name}${isLargeVehicle ? ' (groot voertuig)' : ''}`,
+        subject: `Nieuwe werkplaatsaanvraag van ${name}`,
         text: `
-Nieuwe afspraakaanvraag via de website (mobiele service)
+Nieuwe werkplaatsaanvraag via de website
 
 Naam: ${name}
 E-mail: ${email}
 Telefoon: ${phone || '-'}
-Type behandeling: ${service_type || '-'}
-Adres (locatie voor de afspraak): ${address}
+Type herstelling: ${service_type || '-'}
 Gewenste datum: ${requested_date || '-'}
-Geschatte werkuren: ${estimatedHours}
-Groot voertuig (toeslag €59): ${isLargeVehicle ? 'Ja' : 'Nee'}
 
 Omschrijving:
 ${notes || '-'}
@@ -103,6 +78,7 @@ ${notes || '-'}
       if (emailError) {
         console.error('Failed to send workshop booking email:', emailError);
 
+        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
         return NextResponse.json(
           {
             ok: true,

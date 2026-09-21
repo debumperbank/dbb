@@ -1,14 +1,16 @@
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { formatPriceCents } from '@/lib/format';
+import type { ListingWithCar } from '@/lib/types';
+import { StatusForm, DeleteForm } from './row-actions';
 
-async function getAllListings() {
+async function getAllListings(): Promise<ListingWithCar[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from('listings')
-    .select('*')
+    .select('*, cars(*)')
     .order('created_at', { ascending: false });
-
-  return data ?? [];
+  return (data ?? []) as unknown as ListingWithCar[];
 }
 
 export default async function AdminListingsPage() {
@@ -16,48 +18,49 @@ export default async function AdminListingsPage() {
 
   return (
     <div>
-      <div className="eyebrow mb-2"><span className="dot" />Beheer</div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl">Voorraad</h1>
-        <Link
-          href="/admin/listings/new"
-          className="bg-orange hover:bg-orange-dark text-bg font-bold px-4 py-2 rounded-[3px] text-xs transition-colors"
-        >
-          + Nieuwe auto
-        </Link>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <div className="eyebrow mb-2"><span className="dot" />Beheer</div>
+          <h1 className="text-2xl">Voorraad</h1>
+        </div>
+        <Link href="/admin/listings/new" className="btn btn-primary">+ Nieuwe wagen</Link>
       </div>
 
-      <div className="bg-bg border border-[color:var(--line-dark)] rounded-[4px] overflow-hidden">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-bg-soft-2 text-xs font-mono border-b border-[color:var(--line-dark)]">
+      <div className="border border-[color:var(--line-dark)] rounded-[4px] overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-bg text-muted text-left font-mono text-[11px] uppercase">
             <tr>
-              <th className="p-3">Titel</th>
-              <th className="p-3">Prijs</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Acties</th>
+              <th className="px-4 py-3">Wagen</th>
+              <th className="px-4 py-3">Afdeling</th>
+              <th className="px-4 py-3">Prijs</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[color:var(--line-dark)]">
-            {listings.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="p-4 text-muted text-xs font-mono">Geen voertuigen in voorraad.</td>
+          <tbody>
+            {listings.map((listing) => (
+              <tr key={listing.id} className="border-t border-[color:var(--line-dark)]">
+                <td className="px-4 py-3">
+                  <Link href={`/admin/listings/${listing.id}`} className="hover:text-orange">
+                    {listing.cars.make} {listing.cars.model} <span className="text-muted">({listing.cars.build_year})</span>
+                  </Link>
+                </td>
+                <td className="px-4 py-3 text-muted">{listing.department}</td>
+                <td className="px-4 py-3 font-mono">{formatPriceCents(listing.price_cents)}</td>
+                <td className="px-4 py-3">
+                  <StatusForm listingId={listing.id} currentStatus={listing.status} />
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <DeleteForm listingId={listing.id} carId={listing.car_id} />
+                </td>
               </tr>
-            ) : (
-              listings.map((item: any) => (
-                <tr key={item.id}>
-                  <td className="p-3 font-medium">{item.title}</td>
-                  <td className="p-3 font-mono text-xs">€ {item.price?.toLocaleString('nl-NL')}</td>
-                  <td className="p-3 text-xs font-mono">{item.status}</td>
-                  <td className="p-3">
-                    <Link
-                      href={`/admin/listings/${item.id}`}
-                      className="text-xs text-orange hover:underline font-mono"
-                    >
-                      Bewerken
-                    </Link>
-                  </td>
-                </tr>
-              ))
+            ))}
+            {listings.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted font-mono text-sm">
+                  Nog geen wagens toegevoegd.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

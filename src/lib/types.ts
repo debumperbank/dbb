@@ -94,28 +94,6 @@ export interface WorkshopBooking {
   notes: string | null;
 }
 
-export interface ListingPhoto {
-  id: string;
-  listing_id: string;
-  url: string;
-  sort_order: number;
-}
-
-export interface BumprGalleryPhoto {
-  id: string;
-  url: string;
-  caption: string | null;
-  sort_order: number;
-  created_at: string;
-}
-
-export interface CartItem {
-  productId: string;
-  name: string;
-  unitPriceCents: number;
-  quantity: number;
-}
-
 // Minimal Database shape so @supabase/ssr's generics are satisfied.
 // Expand per-table `Row`/`Insert`/`Update` shapes if you adopt the
 // generated-types workflow above.
