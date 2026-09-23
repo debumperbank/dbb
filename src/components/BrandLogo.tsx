@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 export function BrandLogo({
   className = "w-40",
   priority = false,
@@ -10,10 +11,10 @@ export function BrandLogo({
     <Image
       src="/logo.png"
       alt="De Bumperbank"
-      width={360}
-      height={360}
+      width={1316}
+      height={792}
       priority={priority}
-      sizes="(max-width: 768px) 160px, 400px"
+      sizes="(max-width: 768px) 215px, 300px"
       className={`block h-auto object-contain ${className}`}
     />
   );

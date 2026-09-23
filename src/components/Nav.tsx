@@ -1,10 +1,13 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { CartLink } from "./CartLink";
 import { BrandLogo } from "./BrandLogo";
+
 const links = [
+  ["Home", "/"],
   ["Mobiele autoservice", "/mobiele-autoservice"],
   ["Werkplaats", "/werkplaats"],
   ["Detailing", "/detailing"],
@@ -14,32 +17,47 @@ const links = [
   ["Over ons", "/over-ons"],
   ["Contact", "/contact"],
 ];
+
 export function Nav() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
+
   return (
-    <header className="sticky top-0 z-50 bg-bg/95 backdrop-blur-xl border-b border-white/10">
-      <nav
-        aria-label="Hoofdnavigatie"
-        className="max-w-site mx-auto px-5 md:px-8"
-      >
-        <div className="flex items-center justify-between gap-1 sm:gap-3 py-2 md:py-3">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#090a0b]/95 backdrop-blur-xl">
+      <nav aria-label="Hoofdnavigatie" className="max-w-[1480px] mx-auto px-4 md:px-7">
+        <div className="flex min-h-[92px] items-center justify-between gap-5">
           <Link
             href="/"
             onClick={() => setOpen(false)}
             aria-label="De Bumperbank — home"
+            className="shrink-0"
           >
-            <BrandLogo className="w-20 sm:w-24" priority />
+            <BrandLogo className="w-[188px] sm:w-[215px] lg:w-[245px]" priority />
           </Link>
-          <p className="hidden md:block text-xs font-mono uppercase tracking-widest text-muted">
-            Mobiele autoservice <span className="text-orange">/</span> Regio
-            Hulst
-          </p>
-          <div className="flex items-center gap-1 sm:gap-2">
+
+          <div className="hidden 2xl:flex flex-1 items-center justify-center gap-5 2xl:gap-7">
+            {links.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={path === href ? "page" : undefined}
+                className={`relative whitespace-nowrap text-[13px] font-medium transition-colors hover:text-orange ${
+                  path === href ? "text-orange" : "text-paper/80"
+                }`}
+              >
+                {label}
+                {path === href && (
+                  <span className="absolute -bottom-3 left-0 h-[2px] w-full bg-orange" />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
             <Link
               href="/afspraak"
               onClick={() => setOpen(false)}
-              className="btn btn-primary !px-2 sm:!px-4 !text-xs sm:!text-sm"
+              className="btn btn-primary !px-3 sm:!px-5 !text-xs sm:!text-sm whitespace-nowrap"
             >
               <span className="sm:hidden">Afspraak →</span>
               <span className="hidden sm:inline">Afspraak aanvragen →</span>
@@ -50,7 +68,7 @@ export function Nav() {
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen(!open)}
-              className="lg:hidden flex items-center justify-center w-11 h-11 border border-white/20 rounded-md"
+              className="2xl:hidden flex h-11 w-11 items-center justify-center rounded-md border border-white/20 hover:border-orange transition-colors"
             >
               <svg
                 aria-hidden="true"
@@ -69,22 +87,11 @@ export function Nav() {
             </button>
           </div>
         </div>
-        <div className="hidden lg:flex justify-between gap-4 border-t border-white/10 py-4">
-          {links.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={path === href ? "page" : undefined}
-              className={`text-sm transition-colors hover:text-orange ${path === href ? "text-orange" : "text-muted"}`}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
+
         <div
           id="mobile-nav"
           hidden={!open}
-          className="lg:hidden border-t border-white/10 pb-5 max-h-[65vh] overflow-y-auto"
+          className="2xl:hidden border-t border-white/10 pb-5 max-h-[70vh] overflow-y-auto"
         >
           {links.map(([label, href]) => (
             <Link
@@ -92,12 +99,12 @@ export function Nav() {
               href={href}
               onClick={() => setOpen(false)}
               aria-current={path === href ? "page" : undefined}
-              className={`flex items-center justify-between min-h-12 py-3 border-b border-white/5 ${path === href ? "text-orange" : "text-paper"}`}
+              className={`flex min-h-12 items-center justify-between border-b border-white/5 py-3 ${
+                path === href ? "text-orange" : "text-paper"
+              }`}
             >
               {label}
-              <span aria-hidden="true" className="text-orange">
-                ↗
-              </span>
+              <span aria-hidden="true" className="text-orange">↗</span>
             </Link>
           ))}
         </div>

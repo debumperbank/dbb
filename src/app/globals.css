@@ -72,3 +72,49 @@ body { overflow-wrap: break-word; }
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .field { min-height: 48px; }
 @media (max-width: 639px) { .field { font-size: 16px; } }
+
+/* De Bumperbank 2026 visual refresh */
+.hero-shell {
+  background:
+    linear-gradient(90deg, rgba(7,8,9,.98) 0%, rgba(9,10,11,.96) 44%, rgba(9,10,11,.42) 72%, rgba(9,10,11,.2) 100%),
+    #0a0b0c;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(30deg, rgba(245,208,40,.045) 12%, transparent 12.5%, transparent 87%, rgba(245,208,40,.045) 87.5%, rgba(245,208,40,.045)),
+    linear-gradient(150deg, rgba(245,208,40,.045) 12%, transparent 12.5%, transparent 87%, rgba(245,208,40,.045) 87.5%, rgba(245,208,40,.045)),
+    linear-gradient(30deg, rgba(245,208,40,.045) 12%, transparent 12.5%, transparent 87%, rgba(245,208,40,.045) 87.5%, rgba(245,208,40,.045)),
+    linear-gradient(150deg, rgba(245,208,40,.045) 12%, transparent 12.5%, transparent 87%, rgba(245,208,40,.045) 87.5%, rgba(245,208,40,.045)),
+    linear-gradient(60deg, rgba(255,255,255,.018) 25%, transparent 25.5%, transparent 75%, rgba(255,255,255,.018) 75%);
+  background-size: 46px 80px;
+  background-position: 0 0, 0 0, 23px 40px, 23px 40px, 0 0;
+}
+
+.hero-title {
+  text-shadow: 0 10px 35px rgba(0,0,0,.35);
+}
+
+.service-tile::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(245,208,40,.75), transparent);
+  transform: scaleX(.25);
+  opacity: .55;
+  transition: transform .3s ease, opacity .3s ease;
+}
+
+.service-tile:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+@media (max-width: 1023px) {
+  .hero-shell {
+    background:
+      radial-gradient(circle at 85% 15%, rgba(245,208,40,.08), transparent 34%),
+      #0a0b0c;
+  }
+}
