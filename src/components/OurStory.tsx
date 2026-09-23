@@ -4,20 +4,7 @@ export function OurStory() {
       <div className="max-w-site mx-auto grid md:grid-cols-2 gap-10">
         <div>
           <div className="eyebrow">Over De Bumperbank</div>
-          <h2 className="text-4xl mt-4">
-            Eerlijk werk.
-            <br />
-            Aandacht voor je auto.
-          </h2>
-        </div>
-        <div className="text-muted leading-relaxed space-y-5">
-```tsx
-export function OurStory() {
-  return (
-    <section className="px-6 py-20">
-      <div className="max-w-site mx-auto grid md:grid-cols-2 gap-10">
-        <div>
-          <div className="eyebrow">Over De Bumperbank</div>
+
           <h2 className="text-4xl mt-4">
             Ervaring uit de automotive.
             <br />
@@ -66,12 +53,6 @@ export function OurStory() {
           <p>
             <strong>Jouw auto. Jouw locatie. Onze service.</strong>
           </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-```
         </div>
       </div>
     </section>
