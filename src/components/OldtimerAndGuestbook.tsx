@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function OldtimerTeaser() {
   return (
-    <section id="oldtimers" className="px-8 py-24 bg-bg-soft text-paper">
-      <div className="max-w-site mx-auto grid md:grid-cols-2 gap-14 items-center">
+    <section id="oldtimers" className="px-5 md:px-8 py-20 md:py-24 bg-bg-soft text-paper">
+      <div className="max-w-[1480px] mx-auto grid md:grid-cols-2 gap-14 items-center">
         <div>
           <div className="eyebrow text-orange">
             <span className="dot" />
@@ -76,8 +76,8 @@ export function OldtimerTeaser() {
 
 export function Guestbook() {
   return (
-    <section className="px-8 py-24">
-      <div className="max-w-site mx-auto text-center">
+    <section className="px-5 md:px-8 py-20 md:py-24">
+      <div className="max-w-[1480px] mx-auto text-center">
         <div className="eyebrow justify-center">
           <span className="dot" />
           Net gestart

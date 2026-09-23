@@ -1,58 +1,51 @@
+import Link from "next/link";
+
 export function OurStory() {
   return (
-    <section className="px-6 py-20">
-      <div className="max-w-site mx-auto grid md:grid-cols-2 gap-10">
+    <section className="relative overflow-hidden bg-[#0d0f11] px-5 py-20 md:px-8 md:py-24">
+      <div className="absolute right-0 top-0 h-full w-[35%] bg-[linear-gradient(135deg,transparent_0%,rgba(245,208,40,.035)_48%,transparent_49%)]" />
+      <div className="relative mx-auto grid max-w-[1480px] gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div>
-          <div className="eyebrow">Over De Bumperbank</div>
-
-          <h2 className="text-4xl mt-4">
-            Ervaring uit de automotive.
-            <br />
-            Service bij jou op locatie.
+          <div className="eyebrow"><span className="dot" /> Over De Bumperbank</div>
+          <h2 className="mt-4 max-w-[13ch] text-4xl md:text-5xl">
+            Automotive ervaring. Service bij jou op locatie.
           </h2>
+          <p className="mt-5 max-w-[45ch] text-sm leading-7 text-muted">
+            Eén aanspreekpunt, duidelijke afspraken en aandacht voor de auto alsof het onze eigen wagen is.
+          </p>
+          <Link href="/over-ons" className="btn btn-ghost mt-7">Meer over ons →</Link>
         </div>
 
-        <div className="text-muted leading-relaxed space-y-5">
-          <p>
-            De Bumperbank is ontstaan vanuit een passie voor auto&apos;s en
-            praktijkervaring binnen de automotive en het schadeherstel. Die
-            ervaring nemen we mee naar een mobiele service waarbij onderhoud,
-            diagnose, kleine mechanische herstellingen en detailing bij jou op
-            locatie worden uitgevoerd.
-          </p>
-
-          <p>
-            Geen onnodig bezoek aan de garage, maar één aanspreekpunt dat naar
-            jou toekomt. We bespreken vooraf wat er nodig is, werken zorgvuldig
-            en leggen duidelijk uit wat we aantreffen. Zo weet je wat we doen,
-            waarom we het doen en wat het kost.
-          </p>
-
-          <p>
-            We werken bewust kleinschalig en behandelen steeds één auto
-            tegelijk. Daardoor is er aandacht voor het voertuig en voor de
-            klant. Wanneer een reparatie te groot of complex is om veilig op
-            locatie uit te voeren, zijn we daar ook eerlijk over.
-          </p>
-
-          <p>
-            Ook verantwoord werken vinden we belangrijk. Bij onderhoud vangen
-            we olie, koelvloeistof en andere vloeistoffen zorgvuldig op, zodat
-            deze niet in de omgeving terechtkomen. Afgewerkte vloeistoffen
-            worden verzameld en via daarvoor bestemde kanalen afgevoerd en
-            gerecycled.
-          </p>
-
-          <p>
-            Onze visie is eenvoudig: werkzaamheden die veilig en professioneel
-            op locatie kunnen worden uitgevoerd, brengen we naar de klant.
-            Persoonlijke service, technisch inzicht en netjes werken staan
-            daarbij centraal.
-          </p>
-
-          <p>
-            <strong>Jouw auto. Jouw locatie. Onze service.</strong>
-          </p>
+        <div className="grid gap-5 text-sm leading-7 text-muted md:grid-cols-2">
+          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">01 / Persoonlijk</span>
+            <p className="mt-4">
+              De Bumperbank werkt bewust kleinschalig. Daardoor blijft er aandacht voor het voertuig,
+              de klant en het werk dat echt nodig is.
+            </p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">02 / Duidelijk</span>
+            <p className="mt-4">
+              We bespreken vooraf de werkzaamheden, leggen uit wat we aantreffen en communiceren helder
+              over aanpak en kosten.
+            </p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">03 / Verantwoord</span>
+            <p className="mt-4">
+              Vloeistoffen en materialen worden zorgvuldig opgevangen en via daarvoor bestemde kanalen
+              afgevoerd of gerecycled.
+            </p>
+          </div>
+          <div className="rounded-xl border border-orange/25 bg-orange/[0.04] p-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">04 / Onze visie</span>
+            <p className="mt-4 text-paper/80">
+              Werk dat veilig en professioneel op locatie kan, brengen we naar de klant. Voor grotere
+              werkzaamheden zoeken we de passende werkplaatsoplossing.
+            </p>
+            <p className="mt-5 font-display text-lg font-semibold text-paper">Jouw auto. Onze zorg.</p>
+          </div>
         </div>
       </div>
     </section>

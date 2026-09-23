@@ -9,12 +9,12 @@ export function BrandLogo({
 }) {
   return (
     <Image
-      src="/logo.png"
+      src="/logo-header.png"
       alt="De Bumperbank"
       width={1316}
-      height={792}
+      height={650}
       priority={priority}
-      sizes="(max-width: 768px) 215px, 300px"
+      sizes="(max-width: 768px) 210px, 250px"
       className={`block h-auto object-contain ${className}`}
     />
   );

@@ -23,15 +23,15 @@ export function CarCard({ listing }: { listing: ListingWithCar }) {
   return (
     <Link
       href={`/occasions/${listing.slug ?? listing.id}`}
-      className="block bg-bg-soft-2 border border-[color:var(--line-dark)] hover:border-orange transition-colors rounded-[4px] p-5.5 relative"
+      className="group block bg-[#0c0e10] border border-white/10 hover:border-orange/60 transition-all duration-300 rounded-xl p-6 relative overflow-hidden hover:-translate-y-1 shadow-[0_18px_55px_rgba(0,0,0,.18)]"
     >
-      <div className="absolute top-4 right-4 font-mono text-[10px] text-orange border border-orange px-2 py-0.5 rounded-[2px]">
+      <div className="absolute top-4 right-4 font-mono text-[9px] uppercase tracking-[0.12em] text-orange border border-orange/40 bg-orange/[0.04] px-2.5 py-1 rounded-full">
         {car.build_year}
       </div>
-      <div className="w-14 h-14 rounded-full bg-orange/10 flex items-center justify-center mb-5">
+      <div className="w-14 h-14 rounded-lg border border-orange/20 bg-orange/[0.06] flex items-center justify-center mb-6">
         <CarGlyph />
       </div>
-      <h3 className="text-lg font-semibold font-display">
+      <h3 className="text-xl font-semibold font-display group-hover:text-orange transition-colors">
         {car.make} {car.model}
       </h3>
       <p className="text-[12.5px] text-muted mt-1.5 font-mono uppercase">

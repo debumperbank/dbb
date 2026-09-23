@@ -47,7 +47,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main>
+    <main className="overflow-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -62,29 +62,27 @@ export default async function HomePage() {
           }).replace(/</g, "\\u003c"),
         }}
       />
+
       <Hero />
-      <StripBar />
       <ServiceGrid />
-      <section id="voorraad" className="px-8 py-24 bg-bg-soft">
-        <div className="max-w-site mx-auto">
-          <div className="flex justify-between items-end gap-6 flex-wrap">
+      <StripBar />
+
+      <section id="voorraad" className="relative bg-[#111317] px-5 py-20 md:px-8 md:py-24">
+        <div className="hero-grid absolute inset-0 opacity-[0.18]" />
+        <div className="relative mx-auto max-w-[1480px]">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-b border-white/10 pb-7">
             <div>
-              <div className="eyebrow">
-                <span className="dot" />
-                Uitgelicht
-              </div>
-              <h2 className="mt-2.5 text-3xl md:text-4xl">
-                Ontdek onze occasions
-              </h2>
+              <div className="eyebrow"><span className="dot" /> Uitgelicht</div>
+              <h2 className="mt-3 text-3xl md:text-5xl">Ontdek onze occasions</h2>
             </div>
-            <p className="max-w-[36ch] text-muted text-sm leading-relaxed">
-              Bekijk een selectie uit onze actuele voorraad en vraag naar de
-              mogelijkheden.
+            <p className="max-w-[43ch] text-sm leading-relaxed text-muted">
+              Bekijk een selectie uit onze actuele voorraad. Persoonlijk geselecteerd en helder aangeboden.
             </p>
           </div>
           <StockGrid listings={listings} />
         </div>
       </section>
+
       <BumprSection products={bumprProducts} />
       <OldtimerTeaser />
       <OurStory />
