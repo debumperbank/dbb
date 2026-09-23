@@ -9,13 +9,6 @@ export default function VoorwaardenPage() {
         <div className="eyebrow"><span className="dot" />Juridisch</div>
         <h1 className="mt-2.5 text-3xl md:text-4xl mb-6">Algemene Voorwaarden</h1>
 
-        <div className="bg-bg-soft border border-orange/40 rounded-[4px] px-5 py-4 mb-10 text-[13px] text-muted leading-relaxed">
-          <strong className="text-orange">Concepttekst.</strong> Dit is een startpunt, geen
-          juridisch geverifieerde tekst. Laat dit nakijken door een jurist of gebruik een erkende
-          voorwaardengenerator (bv. via een ondernemersorganisatie) voordat je &apos;m als definitief
-          beschouwt — zeker de onderdelen over garantie, herroepingsrecht bij tweedehandswagens
-          en aansprakelijkheid verschillen per situatie.
-        </div>
 
         <div className="grid gap-7 text-[14.5px] leading-relaxed text-muted">
           <section>
