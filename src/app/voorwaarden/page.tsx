@@ -14,7 +14,7 @@ export default function VoorwaardenPage() {
           <section>
             <h2 className="text-lg text-paper mb-2">1. Wie we zijn</h2>
             <p>
-              De Bumperbank is een eenmanszaak gevestigd in Terneuzen, actief in de verkoop van
+              De Bumperbank is een eenmanszaak gevestigd in Hulst, actief in de verkoop van
               tweedehands voertuigen (inclusief voertuigen met schade), voertuigherstelling,
               mobiele car wash en de verkoop van BUMPR-verzorgingsproducten.
             </p>
