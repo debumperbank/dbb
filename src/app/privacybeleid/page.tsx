@@ -19,7 +19,7 @@ export default function PrivacybeleidPage() {
               1. Verwerkingsverantwoordelijke
             </h2>
             <p>
-              De Bumperbank, gevestigd in Terneuzen, is verantwoordelijk voor de
+              De Bumperbank, gevestigd in Hulst, is verantwoordelijk voor de
               verwerking van persoonsgegevens zoals beschreven in dit
               privacybeleid.
             </p>
