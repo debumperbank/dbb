@@ -45,7 +45,14 @@ controleren die nu expliciet. Het hele beheer wordt per verzoek geladen, nooit s
 Een aanvraag is geen bevestigde afspraak. Kies in beheer een starttijd voordat je bevestigt.
 Controleer zelf beschikbaarheid en reistijd. Het bewerken gebruikt de tijdzone van je apparaat;
 het agendaoverzicht toont tijden in Europe/Amsterdam. Opslaan verstuurt geen klantbericht.
-De nieuwe aanvraagroutes versturen ook geen e-mailnotificatie: volg nieuwe aanvragen in het dashboard.
+Nieuwe afspraak- en inkoopaanvragen sturen na succesvolle opslag een Resend-melding naar `NOTIFY_EMAIL`.
+Stel `RESEND_API_KEY` en `NOTIFY_EMAIL` in op je hosting. Optioneel: `NOTIFY_FROM_EMAIL`
+voor een afzender op je geverifieerde Resend-domein; standaard wordt de Resend-testafzender gebruikt.
+De Resend-testafzender kan alleen naar toegestane testontvangers mailen. De melding bevat klant- en
+voertuiggegevens, aanvraagdetails en een link naar het beheer. Antwoorden gaat naar de klant.
+Foto’s blijven privé in het beheer. Er wordt geen bevestigingsmail aan de klant gestuurd.
+Een mailfout wordt gelogd en maakt de opgeslagen aanvraag niet ongedaan; er is geen automatische
+herhaalwachtrij. Controleer het dashboard ook als er geen melding binnenkomt.
 Bestaande meldingen voor de oude formulieren zijn ongewijzigd.
 
 Foto’s: maximaal drie per publieke aanvraag, maximaal 1 MB per JPG/PNG/WebP. Werkfoto’s worden
@@ -63,7 +70,7 @@ APK-workflow en automatische route-/conflictplanning vallen buiten deze versie.
 
 - `npm run build`: productiebuild inclusief typecontrole.
 - `npm run lint`: codecontrole.
-- `npm test`: 28 controles voor invoer, datums, bedragen, uploadvalidatie, privétoegang en foutafhandeling.
+- `npm test`: Controles voor e-mailmeldingen, invoer, datums, bedragen, uploadvalidatie, privétoegang en foutafhandeling.
 - Homepage, afspraakformulier, locatiekeuze, inkoopformulier en loginbeveiliging visueel gecontroleerd.
 
 Database-integratie kan pas na migratie worden gecontroleerd. Er zijn geen testaanvragen in de live

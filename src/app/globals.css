@@ -28,7 +28,7 @@ h1, h2, h3 {
 }
 
 .btn {
-  @apply font-mono text-[12.5px] tracking-wide rounded-[3px] px-6 py-3.5 inline-flex items-center gap-2 transition-all border border-transparent;
+  @apply font-mono text-[12.5px] tracking-wide rounded-md px-6 py-3.5 min-h-12 inline-flex items-center gap-2 transition-all border border-transparent;
 }
 
 .btn-primary {
@@ -62,6 +62,13 @@ h1, h2, h3 {
 
 @layer components {
 .field { @apply block w-full bg-bg border border-white/20 rounded px-3 py-3 mt-2 text-paper; }
-.panel { @apply bg-bg-soft border border-white/10 rounded-lg p-6; }
+.panel { @apply bg-bg-soft border border-white/10 rounded-xl p-6; }
 }
-input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #ff5a1f; outline-offset: 3px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #f5d028; outline-offset: 3px; }
+
+html { scroll-padding-top: 9rem; }
+body { overflow-wrap: break-word; }
+::selection { background: #f5d028; color: #0e0f11; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+.field { min-height: 48px; }
+@media (max-width: 639px) { .field { font-size: 16px; } }

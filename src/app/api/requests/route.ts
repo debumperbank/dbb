@@ -1,3 +1,4 @@
+import { notifyNewRequest } from "@/lib/request-notification";
 import { validPhoto, photoExtension } from "@/lib/photos";
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
   }
   const db = createAdminClient(),
     paths: string[] = [];
+  let requestId: string;
   try {
     for (const photo of photos) {
       const path = `${crypto.randomUUID()}/${crypto.randomUUID()}.${photoExtension(photo)}`;
@@ -54,12 +56,12 @@ export async function POST(request: Request) {
       paths.push(path);
     }
     // The migration exposes this RPC only to the server's service role.
-    const { error } = await db.rpc("submit_mobile_request", {
+    const { data, error } = await db.rpc("submit_mobile_request", {
       payload,
       photo_paths: paths,
     });
     if (error) throw error;
-    return NextResponse.json({ ok: true });
+    requestId = data;
   } catch {
     if (paths.length) await db.storage.from("request-photos").remove(paths);
     return NextResponse.json(
@@ -70,4 +72,11 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
+  // Persistence has committed: email errors cannot trigger photo cleanup or a retry by the customer.
+  try {
+    await notifyNewRequest(payload, requestId, paths.length);
+  } catch {
+    console.error("Request notification failed after saving.");
+  }
+  return NextResponse.json({ ok: true });
 }

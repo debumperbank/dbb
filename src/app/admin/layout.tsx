@@ -45,6 +45,9 @@ export default function AdminLayout({
           <Link href="/admin/trade-ins" className="px-3 py-2 hover:text-orange">
             Inkoop
           </Link>
+          <Link href="/admin/orders" className="px-3 py-2 hover:text-orange">
+            BUMPR bestellingen
+          </Link>
           <Link
             href="/admin/listings"
             className="px-3 py-2 rounded-[3px] hover:bg-bg-soft-2 transition-colors"

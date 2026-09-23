@@ -60,7 +60,8 @@ export default function PrivacybeleidPage() {
                 onderhoud, schade/gebreken en gewenste prijs
               </li>
               <li>
-                Foto’s die je zelf aan een aanvraag toevoegt; deze zijn alleen
+                Bij een BUMPR-bestelling: contactgegevens, verzendadres, gekozen producten, betaalreferentie en betaalstatus. Kaartgegevens worden bij de betaalprovider verwerkt.</li>
+              <li>Foto’s die je zelf aan een aanvraag toevoegt; deze zijn alleen
                 toegankelijk voor het beheerteam
               </li>
               <li>

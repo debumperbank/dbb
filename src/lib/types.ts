@@ -56,6 +56,7 @@ export interface RestorationEventPhoto {
 }
 
 export interface BumprProduct {
+  is_available?: boolean;
   id: string;
   slug: string;
   name: string;

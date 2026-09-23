@@ -1,5 +1,11 @@
 # De Bumperbank — Next.js + Supabase
 
+## BUMPR webshop
+
+Winkelmandje en betalen via Mollie zijn toegevoegd. Zie [WEBSHOP.md](WEBSHOP.md) voor migratie 004,
+betaalinstellingen en de testprocedure. Alleen verzending: NL €4,99, BE €6,99; vanaf €50 gratis.
+
+
 ## Update: mobiele autoservice en CRM (21 september 2026)
 
 De site volgt nu de richting **“De garage die naar je toe komt”**, met regio Hulst als werkgebied.

@@ -7,7 +7,7 @@ function CarGlyph() {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#ff5a1f"
+      stroke="#f5d028"
       strokeWidth={1.6}
       className="w-7"
     >
