@@ -11,6 +11,10 @@ export default function ContactPage() {
           nemen zo snel mogelijk contact op.
         </p>
         <ContactTabs />
+        <section aria-label="Bedrijfsgegevens" className="mt-10 border-t border-white/10 pt-6">
+          <h2 className="text-lg">De Bumperbank</h2>
+          <p className="mt-2 text-muted">KvK-nummer: <span className="text-paper">42171617</span></p>
+        </section>
       </div>
     </main>
   );
