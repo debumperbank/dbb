@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { crmClient } from '@/lib/crm';
 import { formatPriceCents } from '@/lib/format';
 import type { ListingWithCar } from '@/lib/types';
 import { StatusForm, DeleteForm } from './row-actions';
 
 async function getAllListings(): Promise<ListingWithCar[]> {
-  const supabase = createAdminClient();
+  const supabase = await crmClient();
   const { data } = await supabase
     .from('listings')
     .select('*, cars(*)')

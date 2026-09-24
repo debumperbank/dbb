@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { crmClient } from "@/lib/crm";
 import { formatPriceCents } from "@/lib/format";
 import type {
   ListingWithCar,
@@ -20,7 +20,7 @@ interface Photo {
 }
 
 async function getListing(id: string) {
-  const supabase = createAdminClient();
+  const supabase = await crmClient();
   const { data: listing } = await supabase
     .from("listings")
     .select("*, cars(*)")

@@ -2,20 +2,20 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
-export function AddToCart({ id, name }: { id: string; name: string }) {
+export function AddToCart({ id, name, available = true }: { id: string; name: string; available?: boolean }) {
   const { add, ready } = useCart();
   const [added, setAdded] = useState(false);
   return (
     <div className="mt-7">
       <button
-        disabled={!ready}
+        disabled={!ready || !available}
         className="btn btn-primary"
         onClick={() => {
           add(id);
           setAdded(true);
         }}
       >
-        In winkelmandje +
+        {available ? "In winkelmandje +" : "Tijdelijk niet beschikbaar"}
       </button>
       {added && (
         <p role="status" className="text-sm mt-4 text-muted">

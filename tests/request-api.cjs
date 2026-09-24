@@ -72,7 +72,7 @@ function api({
           createClient: async () => ({
             auth: {
               getUser: async () => ({
-                data: { user: authorized ? { id: "admin" } : null },
+                data: { user: authorized ? { id: "admin", email: "debumperbank@gmail.com", email_confirmed_at: "2026-01-01" } : null },
                 error: null,
               }),
             },

@@ -1,3 +1,4 @@
+import { isAdminUser } from "@/lib/admin-access";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
     data: { user },
     error: authError,
   } = await auth.auth.getUser();
-  if (authError || !user)
+  if (authError || !isAdminUser(user))
     return NextResponse.json({ error: "Log opnieuw in." }, { status: 401 });
   if (Number(request.headers.get("content-length") || 0) > 1100000)
     return NextResponse.json(

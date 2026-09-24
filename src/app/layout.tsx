@@ -25,8 +25,14 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://debumperbank.nl",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.debumperbank.nl",
   ),
+  openGraph: {
+    type: "website",
+    locale: "nl_NL",
+    siteName: "De Bumperbank",
+    images: [{ url: "/hero-garage.jpg", alt: "De Bumperbank — autoservice in regio Hulst" }],
+  },
   title: "De Bumperbank — Mobiele autoservice in regio Hulst",
   description:
     "Onderhoud, reparatie en detailing op locatie in regio Hulst. Vraag een afspraak aan, bekijk onze occasions of bied je auto aan.",
@@ -44,8 +50,9 @@ export default function RootLayout({
     >
       <body>
         <CartProvider>
+          <a href="#page-content" className="skip-link">Direct naar de inhoud</a>
           <Nav />
-          {children}
+          <div id="page-content" tabIndex={-1}>{children}</div>
           <Footer />
         </CartProvider>
       </body>

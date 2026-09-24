@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-5">
             <Link href="/" aria-label="De Bumperbank home">
-              <BrandLogo className="w-[190px]" />
+              <BrandLogo className="w-28 sm:w-[190px]" sizes="(max-width: 639px) 112px, 190px" />
             </Link>
             <div className="hidden h-10 w-px bg-white/10 sm:block" />
             <div className="hidden sm:block">
@@ -18,11 +18,11 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-            <Link href="/bumpr" className="hover:text-orange">BUMPR</Link>
-            <Link href="/oldtimers" className="hover:text-orange">Oldtimers</Link>
-            <Link href="/voorwaarden" className="hover:text-orange">Algemene voorwaarden</Link>
-            <Link href="/privacybeleid" className="hover:text-orange">Privacybeleid</Link>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+            <Link href="/bumpr" className="inline-flex min-h-11 items-center hover:text-orange">BUMPR</Link>
+            <Link href="/oldtimers" className="inline-flex min-h-11 items-center hover:text-orange">Oldtimers</Link>
+            <Link href="/voorwaarden" className="inline-flex min-h-11 items-center hover:text-orange">Algemene voorwaarden</Link>
+            <Link href="/privacybeleid" className="inline-flex min-h-11 items-center hover:text-orange">Privacybeleid</Link>
           </div>
         </div>
 

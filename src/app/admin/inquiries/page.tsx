@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { crmClient } from "@/lib/crm";
 import { LeadStatusSelect } from "../lead-status-select";
 import { updateInquiryStatus } from "../leads-actions";
 
@@ -13,7 +13,7 @@ interface InquiryRow {
 }
 
 async function getInquiries(): Promise<InquiryRow[]> {
-  const supabase = createAdminClient();
+  const supabase = await crmClient();
   const { data } = await supabase
     .from("inquiries")
     .select("*")

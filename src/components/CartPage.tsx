@@ -51,6 +51,7 @@ export function CartPage({ products }: { products: BumprProduct[] }) {
                   src={photo}
                   unoptimized={!photo.startsWith("/")}
                   alt={p.name}
+                  sizes="80px"
                   width={96}
                   height={96}
                   className="w-20 h-20 object-cover rounded"
@@ -101,8 +102,7 @@ export function CartPage({ products }: { products: BumprProduct[] }) {
           <strong>{formatPriceCents(total)}</strong>
         </div>
         <p className="text-muted text-sm">
-          Verzendkosten worden bij het afrekenen getoond. Je betaalt veilig via
-          Mollie.
+          Nederland €4,99 · België €6,99. Gratis verzending vanaf €50 aan producten. Je betaalt veilig via Mollie.
         </p>
         {unavailable ? (
           <p role="alert" className="mt-5 text-orange">

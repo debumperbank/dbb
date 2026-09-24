@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { notifyAdmin } from '@/lib/resend';
 
 import { createClient } from '@/lib/supabase/server';
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     // The checkbox is `required` in the browser, but that only stops a
     // person using the form — not a direct POST to this endpoint. Enforce
     // it server-side too.
-    if (!consent) {
+    if (consent !== true && consent !== "on") {
       return NextResponse.json(
         { error: 'Je moet akkoord gaan met de Algemene Voorwaarden en het Privacybeleid.' },
         { status: 400 }
@@ -57,19 +57,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. E-mail versturen — alleen als er een API-key geconfigureerd is.
-    // De client wordt hier, ter plekke, aangemaakt (niet bovenaan het
-    // bestand) zodat een ontbrekende RESEND_API_KEY nooit de build breekt,
-    // enkel deze e-mailstap overslaat.
-    if (process.env.RESEND_API_KEY) {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-
-      const { error: emailError } = await resend.emails.send({
-        from: 'Website <onboarding@resend.dev>',
-        to: [process.env.NOTIFY_EMAIL || 'debumperbank@gmail.com'],
-        replyTo: email,
-        subject: `Nieuwe aanvraag van ${name}`,
-        text: `
+    // A notification failure must not turn a saved request into a failed submission.
+    const notified = await notifyAdmin(`Nieuwe aanvraag van ${name}`, `
 Nieuwe aanvraag via de website
 
 Naam: ${name}
@@ -79,21 +68,12 @@ Listing ID: ${listing_id || '-'}
 
 Bericht:
 ${message || '-'}
-        `.trim(),
+        `.trim(), { replyTo: email });
+    if (!notified) {
+      return NextResponse.json({
+        ok: true,
+        warning: 'Aanvraag opgeslagen, maar e-mail kon niet worden verzonden.',
       });
-
-      if (emailError) {
-        console.error('Failed to send inquiry email:', emailError);
-
-        // De aanvraag staat wel in Supabase, ook als de mail mislukt.
-        return NextResponse.json(
-          {
-            ok: true,
-            warning: 'Aanvraag opgeslagen, maar e-mail kon niet worden verzonden.',
-          },
-          { status: 200 }
-        );
-      }
     }
 
     return NextResponse.json({ ok: true });

@@ -130,7 +130,7 @@ export default async function BumprPage() {
                       <p className="text-3xl font-display mt-8">
                         {formatPriceCents(product.price_cents)}
                       </p>
-                      <AddToCart id={product.id} name={product.name} />
+                      <AddToCart id={product.id} name={product.name} available={product.is_available !== false} />
                     </div>
                   </article>
                 );

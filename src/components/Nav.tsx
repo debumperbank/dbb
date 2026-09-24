@@ -23,19 +23,19 @@ export function Nav() {
   const path = usePathname();
 
   return (
-    <header className="site-header sticky top-0 z-50 border-b border-white/10 bg-[#08090a]/95 backdrop-blur-xl">
+    <header onKeyDown={(event) => { if (event.key === "Escape") { setOpen(false); event.currentTarget.querySelector<HTMLButtonElement>('[aria-controls="mobile-nav"]')?.focus(); } }} className="site-header sticky top-0 z-50 border-b border-white/10 bg-[#08090a]/95 backdrop-blur-xl">
       <nav aria-label="Hoofdnavigatie" className="mx-auto max-w-[1480px] px-4 md:px-8">
-        <div className="flex min-h-[92px] items-center justify-between gap-5 lg:min-h-[104px]">
+        <div className="flex min-h-[92px] items-center justify-between gap-2 sm:gap-5 lg:min-h-[104px]">
           <Link
             href="/"
             onClick={() => setOpen(false)}
             aria-label="De Bumperbank — home"
             className="group shrink-0"
           >
-            <BrandLogo className="w-[178px] sm:w-[208px] lg:w-[238px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
+            <BrandLogo className="w-20 min-[360px]:w-28 sm:w-[208px] lg:w-[238px] 2xl:w-[180px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
           </Link>
 
-          <div className="hidden 2xl:flex flex-1 items-center justify-center gap-6">
+          <div className="hidden 2xl:flex flex-1 items-center justify-center gap-3">
             {links.map(([label, href]) => (
               <Link
                 key={href}
@@ -51,11 +51,11 @@ export function Nav() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2.5">
             <Link
               href="/afspraak"
               onClick={() => setOpen(false)}
-              className="btn btn-primary !min-h-[46px] !px-3 sm:!px-5 !text-xs sm:!text-[12.5px] whitespace-nowrap"
+              className="btn btn-primary !hidden md:!inline-flex !min-h-[46px] !px-2 sm:!px-5 !text-xs sm:!text-[12.5px] whitespace-nowrap"
             >
               <span className="sm:hidden">Afspraak →</span>
               <span className="hidden sm:inline">Afspraak aanvragen&nbsp; →</span>
@@ -80,6 +80,13 @@ export function Nav() {
           hidden={!open}
           className="2xl:hidden border-t border-white/10 pb-5 max-h-[72vh] overflow-y-auto"
         >
+          <Link
+            href="/afspraak"
+            onClick={() => setOpen(false)}
+            className="btn btn-primary md:!hidden w-full justify-center my-4"
+          >
+            Afspraak aanvragen →
+          </Link>
           {links.map(([label, href]) => (
             <Link
               key={href}

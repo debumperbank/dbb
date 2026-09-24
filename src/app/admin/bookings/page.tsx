@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { crmClient } from "@/lib/crm";
 import { LeadStatusSelect } from "../lead-status-select";
 import {
   updateCarWashStatus,
@@ -28,7 +28,7 @@ interface WorkshopRow {
 }
 
 async function getBookings() {
-  const supabase = createAdminClient();
+  const supabase = await crmClient();
   const [{ data: carWash }, { data: workshop }] = await Promise.all([
     supabase
       .from("car_wash_bookings")

@@ -1,5 +1,6 @@
 'use server';
 
+import { isAdminUser } from '@/lib/admin-access';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
@@ -8,12 +9,16 @@ export async function login(formData: FormData) {
   const password = String(formData.get('password') ?? '');
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     redirect(`/admin/login?error=${encodeURIComponent(error.message)}`);
   }
 
+  if (!isAdminUser(data.user)) {
+    await supabase.auth.signOut();
+    redirect('/admin/login?error=Geen%20toegang%20tot%20beheer.');
+  }
   redirect('/admin');
 }
 

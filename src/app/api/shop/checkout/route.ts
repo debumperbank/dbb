@@ -24,13 +24,17 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  let stage = "mollie_configuration";
   try {
-    const mode = mollieMode(),
-      base = shopOrigin(),
-      db = createAdminClient();
+    const mode = mollieMode();
+    stage = "website_url";
+    const base = shopOrigin();
+    stage = "database_connection";
+    const db = createAdminClient();
     const hash = createHash("sha256")
       .update(JSON.stringify(input))
       .digest("hex");
+    stage = "order_lookup";
     let { data, error } = await db
       .from("shop_orders")
       .select("*")
@@ -38,6 +42,7 @@ export async function POST(request: Request) {
       .maybeSingle();
     if (error) throw error;
     if (!data) {
+      stage = "product_lookup";
       const { data: products, error: productError } = await db
         .from("bumpr_products")
         .select("id,name,price_cents,is_available")
@@ -78,6 +83,7 @@ export async function POST(request: Request) {
         ...quote,
         payment_mode: mode,
       };
+      stage = "order_save";
       const { error: insertError } = await db.from("shop_orders").insert(row);
       if (insertError && insertError.code !== "23505") throw insertError;
       const loaded = await db
@@ -112,6 +118,7 @@ export async function POST(request: Request) {
       );
     if (order.payment_mode !== mode)
       throw new Error("Betaalomgeving is gewijzigd.");
+    stage = "mollie_payment";
     if (order.payment_id) {
       const payment = await mollieRequest(`/${order.payment_id}`);
       if (["paid", "authorized", "pending"].includes(payment.status))
@@ -151,13 +158,17 @@ export async function POST(request: Request) {
       order.id,
     );
     const url = checkoutUrl(payment);
+    stage = "payment_save";
     const { error: saveError } = await db
       .from("shop_orders")
       .update({ payment_id: payment.id, checkout_url: url })
       .eq("id", order.id);
     if (saveError) throw saveError;
     return NextResponse.json({ url });
-  } catch {
+  } catch (error) {
+    const rawCode = error && typeof error === "object" && "code" in error ? String(error.code) : "";
+    const code = /^[A-Z0-9_]{1,24}$/.test(rawCode) ? rawCode : "unavailable";
+    console.error("BUMPR checkout failed", { stage, code });
     return NextResponse.json(
       {
         error:
