@@ -1,6 +1,7 @@
 import { CartProvider } from "@/components/CartProvider";
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+// @ts-expect-error Next.js handles CSS side-effect imports at build time.
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
