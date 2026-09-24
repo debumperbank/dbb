@@ -1,4 +1,5 @@
 "use server";
+import { syncMoneybirdOrder } from "@/lib/moneybird-sync";
 import { crmClient } from "@/lib/crm";
 import { revalidatePath } from "next/cache";
 export async function markShipped(form: FormData) {
@@ -21,5 +22,16 @@ export async function markShipped(form: FormData) {
     throw new Error(
       "Alleen een betaalde livebestelling kan als verzonden worden gemarkeerd.",
     );
+  revalidatePath("/admin/orders");
+}
+
+export async function retryMoneybird(form: FormData) {
+  await crmClient();
+  const id = String(form.get("id") || "");
+  if (!/^[a-f0-9-]{36}$/i.test(id)) throw new Error("Ongeldige bestelling.");
+  try { await syncMoneybirdOrder(id); } catch {
+    // The persistent export status explains the failure in the order list.
+    console.warn("Moneybird export needs attention; consult order status.");
+  }
   revalidatePath("/admin/orders");
 }
