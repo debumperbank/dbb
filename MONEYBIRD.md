@@ -23,6 +23,7 @@ of klantmails verstuurd tijdens de implementatie.
    - `MONEYBIRD_LEDGER_ACCOUNT_ID`: omzetcategorie voor BUMPR-producten en verzending.
    - `MONEYBIRD_TAX_RATE_NL`: toepasselijke verkoop-btw-code voor leveringen naar Nederland.
    - `MONEYBIRD_TAX_RATE_BE`: toepasselijke verkoop-btw-code voor leveringen naar België.
+   - `MONEYBIRD_DOCUMENT_STYLE_ID`: de in Moneybird ingerichte en gecontroleerde zwart-gele huisstijl. Het HTML-voorbeeld is geen geïnstalleerde Moneybird-huisstijl.
    - `MONEYBIRD_WORKFLOW_ID`: aparte webshopworkflow **zonder automatische betaalherinneringen**,
      met passende tekst voor reeds betaalde bestellingen.
    De code kiest geen btw-percentage of OSS-behandeling voor je. Controleer beide landcodes

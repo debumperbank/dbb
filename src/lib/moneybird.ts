@@ -10,11 +10,12 @@ export function moneybirdConfig(country: string) {
   const tax = env[`MONEYBIRD_TAX_RATE_${country}`];
   const ledger = env.MONEYBIRD_LEDGER_ACCOUNT_ID;
   const workflow = env.MONEYBIRD_WORKFLOW_ID;
-  if (!env.MONEYBIRD_API_TOKEN || !tax || !ledger || !workflow ||
-      ![tax, ledger, workflow].every(id => /^\d+$/.test(id)) ||
+  const documentStyle = env.MONEYBIRD_DOCUMENT_STYLE_ID;
+  if (!env.MONEYBIRD_API_TOKEN || !tax || !ledger || !workflow || !documentStyle ||
+      ![tax, ledger, workflow, documentStyle].every(id => /^\d+$/.test(id)) ||
       env.MONEYBIRD_RECONCILIATION !== "external_reviewed")
     throw new MoneybirdError("configuration_required");
-  return { tax, ledger, workflow };
+  return { tax, ledger, workflow, documentStyle };
 }
 export async function moneybirdRequest<T>(path: string, method = "GET", body?: unknown): Promise<T | null> {
   let response: Response;
@@ -51,6 +52,7 @@ export function invoicePayload(order: ShopOrder, contactId: string, config: Retu
     currency: "EUR",
     prices_are_incl_tax: true,
     workflow_id: config.workflow,
+    document_style_id: config.documentStyle,
     payment_conditions: `Reeds betaald via Mollie. Betaalreferentie: ${order.payment_id}. Niet opnieuw betalen.`,
     details_attributes: [
       ...order.items.map(i => ({ description: i.name, amount: String(i.quantity), price: (i.unit_price_cents / 100).toFixed(2), tax_rate_id: config.tax, ledger_account_id: config.ledger })),
@@ -63,4 +65,18 @@ export function verifyInvoice(invoice: MoneybirdInvoice, order: ShopOrder) {
       invoice.reference !== invoiceReference(order) || invoice.currency !== "EUR" ||
       Math.round(Number(invoice.total_price_incl_tax) * 100) !== order.total_cents)
     throw new MoneybirdError("invoice_mismatch");
+}
+
+export function invoiceEmailMessage(order: ShopOrder) {
+  return `Hoi ${order.customer.name},
+
+Bij deze ontvang je de factuur voor je BUMPR-bestelling ${order.id}.
+
+Al betaald via Mollie: € ${(order.total_cents / 100).toFixed(2).replace(".", ",")}. Je hoeft niets meer te betalen.
+
+Bewaar de factuur voor je administratie. Heb je een vraag? Je kunt gewoon op deze mail antwoorden.
+
+Met vriendelijke groet,
+De Bumperbank
+info@debumperbank.nl`;
 }

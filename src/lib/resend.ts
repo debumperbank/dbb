@@ -16,7 +16,7 @@ export async function notifyAdmin(
     const resend = getResendClient();
     const to = process.env.NOTIFY_EMAIL;
     const from =
-      process.env.NOTIFY_FROM_EMAIL || "De Bumperbank <onboarding@resend.dev>";
+      process.env.NOTIFY_FROM_EMAIL || "De Bumperbank <info@debumperbank.nl>";
     if (!resend || !to) {
       console.warn(
         "Admin notification skipped: configure RESEND_API_KEY and NOTIFY_EMAIL.",

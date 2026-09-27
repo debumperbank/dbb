@@ -37,3 +37,6 @@ test('timeout during creation is never blindly retried',async()=>{const f=fixtur
 test('timeout sending is never blindly resent',async()=>{const f=fixture({sendFails:true});await assert.rejects(f.run());await assert.rejects(f.run());assert.equal(f.calls.filter(x=>x[1]==='PATCH').length,1)});
 test('sent invoice after lost acknowledgement is recovered without sending again',async()=>{const f=fixture({existing:{...invoice,state:'open',sent_at:'2026-09-24'},job:{state:'error',invoice_id:'123',send_attempted:true}});await f.run();assert.equal(f.job.state,'done');assert.equal(f.calls.filter(x=>x[1]!=='GET').length,0)});
 test('foreign invoice total blocks email',async()=>{const f=fixture({existing:{...invoice,total_price_incl_tax:'1.00'}});await assert.rejects(f.run());assert.equal(f.calls.filter(x=>x[1]==='PATCH').length,0)});
+
+test('selected document style is passed to Moneybird',()=>{const p=api.invoicePayload(order,'42',{tax:'1',ledger:'2',workflow:'3',documentStyle:'4'});assert.equal(p.sales_invoice.document_style_id,'4');});
+test('invoice email uses order total and explicitly says already paid',()=>{const m=api.invoiceEmailMessage(order);assert.match(m,/69,90/);assert.match(m,/Je hoeft niets meer te betalen/);assert.match(m,/Jan Jansen/);});

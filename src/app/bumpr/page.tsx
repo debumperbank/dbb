@@ -9,7 +9,7 @@ import { productImage, productSize, productDescription } from "@/lib/bumpr";
 export const metadata = {
   title: "BUMPR — Premium car care | De Bumperbank",
   description:
-    "Ontdek BUMPR Ceramic Coating, Fast Detailer en Polish. Verzorging voor jouw auto, van De Bumperbank.",
+    "Ontdek BUMPR HYDRO-COAT, Fast Detailer, Polish, Iron Remover en microvezeldoeken. Verzorging voor jouw auto, van De Bumperbank.",
 };
 export const revalidate = 60;
 
@@ -37,8 +37,8 @@ export default async function BumprPage() {
             </h2>
             <p className="text-muted leading-relaxed mt-5 max-w-xl">
               Van een snelle opfrisbeurt tot verzorging van je lak. Ontdek onze
-              Ceramic Coating, Fast Detailer en Polish, los of samen in de
-              Performance Set.
+              HYDRO-COAT, Fast Detailer, Polish, Iron Remover en microvezeldoeken.
+              Kies je producten los of ga voor de Performance Set.
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
               <a href="#producten" className="btn btn-primary">
@@ -50,16 +50,16 @@ export default async function BumprPage() {
             </div>
           </div>
           <a
-            href="#ceramic-coating"
+            href="#producten"
             className="block overflow-hidden rounded-xl border border-white/10"
           >
             <Image
-              src="/bumpr/ceramic-coating-original.png"
-              width={1254}
-              height={1254}
+              src="/bumpr/collection-2026/collectie.png"
+              width={1672}
+              height={941}
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
-              alt="BUMPR Ceramic Coating van 200 ml, met applicatorspons en microvezeldoek"
+              alt="De BUMPR-collectie: Iron Remover, Polish, Fast Detailer, HYDRO-COAT, microvezeldoeken, spons en suèdedoekje"
               className="w-full h-auto"
             />
           </a>
@@ -115,7 +115,7 @@ export default async function BumprPage() {
                     <div className="p-7 md:p-12 flex flex-col justify-center items-start">
                       <div className="eyebrow">
                         {product.is_bundle
-                          ? "De complete set"
+                          ? "Performance Set"
                           : `0${index + 1} · Car care`}
                       </div>
                       <h3 className="text-3xl md:text-4xl mt-5">
@@ -138,21 +138,6 @@ export default async function BumprPage() {
             </div>
           )}
         </div>
-      </section>
-      <section id="microvezel-droogdoeken" className="px-6 pb-16 md:pb-24 scroll-mt-40">
-        <article className="max-w-site mx-auto grid md:grid-cols-2 overflow-hidden border border-white/10 rounded-xl bg-bg-soft">
-          <Image src="/bumpr/microvezel-droogdoeken.png" width={1312} height={1200}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            alt="BUMPR microvezel droogdoeken: drie zwarte doeken met BUMPR-logo en verpakking"
-            className="w-full h-auto object-contain self-center" />
-          <div className="p-7 md:p-12 flex flex-col justify-center items-start">
-            <div className="eyebrow">De finishing touch</div>
-            <h2 className="text-3xl md:text-4xl mt-5">Microvezel droogdoeken</h2>
-            <p className="text-sm text-orange mt-4">Set van 3 · 40 × 40 cm · 400 GSM</p>
-            <p className="text-muted leading-relaxed mt-6">Zwarte microvezeldoeken met het BUMPR-logo, voor het drogen en verzorgen van je auto. Een bijpassende aanvulling op je car-carecollectie.</p>
-            <Link href="/contact" className="btn btn-primary mt-8">Vraag prijs en beschikbaarheid →</Link>
-          </div>
-        </article>
       </section>
       <section className="px-6 pb-20">
         <div className="max-w-site mx-auto panel flex flex-wrap justify-between items-center gap-8">

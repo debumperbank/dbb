@@ -1,7 +1,7 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { ShopOrder } from "./shop";
-import { MONEYBIRD_ADMINISTRATION, MoneybirdError, moneybirdConfig, moneybirdRequest, invoicePayload, invoiceReference, verifyInvoice, type MoneybirdInvoice } from "./moneybird";
+import { MONEYBIRD_ADMINISTRATION, MoneybirdError, moneybirdConfig, moneybirdRequest, invoicePayload, invoiceEmailMessage, invoiceReference, verifyInvoice, type MoneybirdInvoice } from "./moneybird";
 
 type Export = { order_id: string; administration_id: string; state: string; contact_attempted: boolean; invoice_attempted: boolean; send_attempted: boolean; invoice_id: string | null };
 export async function syncMoneybirdOrder(orderId: string) {
@@ -62,7 +62,7 @@ export async function syncMoneybirdOrder(orderId: string) {
       await save({ send_attempted: true });
       await moneybirdRequest(`sales_invoices/${invoice.id}/send_invoice.json`, "PATCH", { sales_invoice_sending: {
         delivery_method: "Email", email_address: order.customer.email,
-        email_message: "Bedankt voor je bestelling bij De Bumperbank. In de bijlage vind je de factuur. Je bestelling is al betaald via Mollie; je hoeft niets meer te betalen.",
+        email_message: invoiceEmailMessage(order),
       } });
       const sent = await moneybirdRequest<MoneybirdInvoice>(`sales_invoices/${invoice.id}.json`);
       if (!sent?.sent_at) throw new MoneybirdError("invoice_sending_uncertain");

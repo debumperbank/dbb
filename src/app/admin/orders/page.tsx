@@ -1,7 +1,7 @@
 import { crmClient, euro, displayDate } from "@/lib/crm";
 import type { ShopOrder } from "@/lib/shop";
 import { MONEYBIRD_ADMINISTRATION } from "@/lib/moneybird";
-import { markShipped, retryMoneybird } from "./actions";
+import { markShipped, retryMoneybird, retryCustomerEmail } from "./actions";
 export default async function Page() {
   const db = await crmClient();
   const { data, error } = await db
@@ -11,11 +11,17 @@ export default async function Page() {
     .limit(100);
   const enabled = process.env.MONEYBIRD_ENABLED === "true";
   const exports = enabled ? await db.from("moneybird_exports").select("order_id,state,invoice_id,error_code,updated_at").in("order_id", (data || []).map(o => String(o.id))) : null;
+  const mailEnabled = process.env.CUSTOMER_EMAILS_ENABLED === "true";
+  const mailConfigured = Boolean(process.env.RESEND_API_KEY && process.env.NOTIFY_FROM_EMAIL && process.env.SHOP_CUSTOMER_INFORMATION?.trim());
+  const mailRows = mailEnabled ? await db.from("shop_order_emails").select("order_id,kind,state,sent_at").in("order_id", (data || []).map(o => String(o.id))) : null;
   return (
     <div>
       <div className="eyebrow">BUMPR webshop</div>
       <h1 className="text-3xl mt-3 mb-8">Bestellingen</h1>
       <p className="text-muted mb-6">Moneybird: {enabled ? "ingeschakeld" : "nog niet geactiveerd"}. Alleen betaalde livebestellingen worden gefactureerd.</p>
+      <p className="text-muted mb-6">Klantmails: {mailEnabled ? "ingeschakeld" : "nog niet geactiveerd"}.</p>
+      {mailEnabled && !mailConfigured && <p role="alert" className="text-orange mb-6">Klantmails kunnen nog niet worden verstuurd. De afzender, e-mailkoppeling of aankoopinformatie ontbreekt.</p>}
+      {mailRows?.error && <p role="alert" className="text-orange mb-6">Klantmailstatus niet beschikbaar. De database-inrichting voor klantmails moet worden gecontroleerd.</p>}
       {exports?.error && <p role="alert" className="text-orange mb-6">Moneybird-status niet beschikbaar. Controleer migratie 005_moneybird.sql.</p>}
       {error ? (
         <p role="alert">
@@ -77,12 +83,25 @@ export default async function Page() {
                 const state = String(entry?.state || "pending");
                 const invoiceId = entry?.invoice_id ? String(entry.invoice_id) : "";
                 return <div className="my-5 border-y border-white/10 py-4">
-                  <p>Moneybird: {state === "done" ? "Factuur verstuurd · betaalboeking via bestaande koppeling" : state === "processing" ? "Verwerking gestart; bij langdurige stilstand controleren" : state === "error" ? "Controle nodig" : "Wacht op verwerking"}</p>
+                  <p>Moneybird: {state === "done" ? "Factuur verstuurd · controleer betaalboeking in Moneybird" : state === "processing" ? "Verwerking gestart; bij langdurige stilstand controleren" : state === "error" ? "Controle nodig" : "Wacht op verwerking"}</p>
                   {Boolean(entry?.error_code) && <p className="text-sm text-muted mt-2">Referentie voor controle: {String(entry?.error_code)}</p>}
                   {/^[0-9]+$/.test(invoiceId) && <a className="text-orange underline block mt-2" href={`https://moneybird.com/${MONEYBIRD_ADMINISTRATION}/sales_invoices/${invoiceId}`} target="_blank" rel="noreferrer">Open factuur in Moneybird ↗</a>}
                   {(state === "error" || state === "pending") && <form action={retryMoneybird} className="mt-3"><input type="hidden" name="id" value={o.id} /><button className="btn btn-ghost">Controleer en hervat factuur</button></form>}
                 </div>;
               })()}
+              {mailEnabled && o.payment_mode === "live" && o.status === "paid" && <div className="my-5 border-y border-white/10 py-4 space-y-3">
+                {(["confirmation", ...(o.fulfillment_status === "shipped" ? ["shipped"] : [])]).map(kind => {
+                  const entry = mailRows?.data?.find(m => m.order_id === o.id && m.kind === kind);
+                  const state = String(entry?.state || "pending");
+                  return <div key={kind}>
+                    <p>{kind === "confirmation" ? "Bestelbevestiging" : "Verzendbevestiging"}: {state === "sent" ? "Aangeboden aan e-mailprovider" : state === "pending" ? "Nog niet verstuurd" : "Controleer de verzendstatus bij Resend voordat je opnieuw verstuurt"}</p>
+                    {state === "pending" && !mailRows?.error && mailConfigured && <form action={retryCustomerEmail} className="mt-2">
+                      <input type="hidden" name="id" value={o.id} /><input type="hidden" name="kind" value={kind} />
+                      <button className="btn btn-ghost">Verstuur bevestiging</button>
+                    </form>}
+                  </div>;
+                })}
+              </div>}
               {o.fulfillment_status === "shipped" ? (
                 <p className="text-orange">
                   Verzonden · {o.tracking_reference || "Geen referentie"}

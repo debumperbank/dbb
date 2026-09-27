@@ -22,7 +22,7 @@ export function BumprSection({
             Premium car care / developed for real use
           </p>
           <p className="mt-7 max-w-[53ch] text-[15px] leading-7 text-muted md:text-base">
-            Ceramic Coating, Fast Detailer en Polish. Ontdek onze complete lijn voor bescherming,
+            HYDRO-COAT, Fast Detailer, Polish, Iron Remover en microvezeldoeken. Ontdek onze complete lijn voor bescherming,
             glans en onderhoud — ontwikkeld als verlengstuk van De Bumperbank.
           </p>
 
@@ -47,12 +47,12 @@ export function BumprSection({
             BUMPR performance line
           </div>
           <Image
-            src="/bumpr/ceramic-coating-original.png"
-            alt="BUMPR Ceramic Coating met spons en microvezeldoek"
-            width={1254}
-            height={1254}
+            src="/bumpr/collection-2026/collectie.png"
+            alt="De volledige BUMPR-collectie met verzorgingsproducten en oranje microvezeldoeken"
+            width={1672}
+            height={941}
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="aspect-[16/10] w-full rounded-lg object-cover transition duration-500 group-hover:scale-[1.015]"
+            className="aspect-[16/9] w-full rounded-lg object-cover transition duration-500 group-hover:scale-[1.015]"
           />
           <div className="pointer-events-none absolute inset-x-3 bottom-3 h-1/3 rounded-b-lg bg-gradient-to-t from-black/65 to-transparent" />
         </Link>

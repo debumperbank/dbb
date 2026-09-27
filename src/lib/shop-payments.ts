@@ -1,3 +1,4 @@
+import { sendOrderEmail } from "@/lib/order-emails";
 import { syncMoneybirdOrder } from "@/lib/moneybird-sync";
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -66,6 +67,8 @@ export async function synchronizePayment(paymentId: string) {
   if (status === "paid" && payment.mode === "live") {
     try { await syncMoneybirdOrder(order.id); } catch (error) { invoiceError = error; }
   }
+  let adminEmailError: unknown;
+  try {
   if (status === "paid" && !order.notified_at) {
     const c = order.customer;
     const text = [
@@ -103,5 +106,13 @@ export async function synchronizePayment(paymentId: string) {
       .eq("id", order.id);
     if (notifyError) throw new Error("Meldingsstatus opslaan mislukt.");
   }
+  } catch (error) { adminEmailError = error; }
+  let customerEmailError: unknown;
+  if (status === "paid" && payment.mode === "live") {
+    try { await sendOrderEmail(order.id, "confirmation"); }
+    catch (error) { customerEmailError = error; }
+  }
   if (invoiceError) throw invoiceError;
+  if (customerEmailError) throw customerEmailError;
+  if (adminEmailError) throw adminEmailError;
 }
