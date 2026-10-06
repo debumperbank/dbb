@@ -1,3 +1,4 @@
+import { needsAdminMfa } from "@/lib/admin-mfa";
 import { isAdminUser } from "@/lib/admin-access";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
@@ -41,17 +42,34 @@ export async function updateSession(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
   const isLoginRoute = request.nextUrl.pathname === "/admin/login";
 
+  function finish(response: NextResponse) {
+    for (const cookie of supabaseResponse.cookies.getAll()) response.cookies.set(cookie);
+    response.headers.set("Cache-Control", "private, no-store, max-age=0");
+    response.headers.set("Referrer-Policy", "no-referrer");
+    return response;
+  }
+  if (isAdminUser(user) && !isLoginRoute && request.nextUrl.pathname !== "/admin/security") {
+    try {
+      if (await needsAdminMfa(supabase)) {
+        const url = request.nextUrl.clone(); url.pathname = "/admin/security"; url.search = "";
+        return finish(NextResponse.redirect(url));
+      }
+    } catch {
+      const url = request.nextUrl.clone(); url.pathname = "/admin/security"; url.search = "";
+      return finish(NextResponse.redirect(url));
+    }
+  }
   if (isAdminRoute && !isLoginRoute && !isAdminUser(user)) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
-    return NextResponse.redirect(url);
+    return finish(NextResponse.redirect(url));
   }
 
   if (isLoginRoute && isAdminUser(user)) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
-    return NextResponse.redirect(url);
+    return finish(NextResponse.redirect(url));
   }
 
-  return supabaseResponse;
+  return finish(supabaseResponse);
 }

@@ -1,6 +1,10 @@
+import { secureRequest } from "@/lib/request-security";
 import { synchronizePayment } from "@/lib/shop-payments";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  const secured = await secureRequest(request, 1024, false);
+  if (secured.error) return secured.error;
+  request = secured.request!;
   if (Number(request.headers.get("content-length") || 0) > 1024)
     return new Response(null, { status: 413 });
   let id: string;

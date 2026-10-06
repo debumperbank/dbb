@@ -1,3 +1,4 @@
+import { secureRequest } from "@/lib/request-security";
 import { notifyNewRequest } from "@/lib/request-notification";
 import { validPhoto, photoExtension } from "@/lib/photos";
 import { NextResponse } from "next/server";
@@ -5,6 +6,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { validateRequest } from "@/lib/request-validation";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  const secured = await secureRequest(request, 3400000, true);
+  if (secured.error) return secured.error;
+  request = secured.request!;
   if (Number(request.headers.get("content-length") || 0) > 3400000)
     return NextResponse.json(
       { error: "De aanvraag is te groot." },

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { validPhoto, photoExtension } from "@/lib/photos";
 import { crmClient } from "@/lib/crm";
 
 function slugify(input: string): string {
@@ -135,9 +136,11 @@ export async function uploadListingPhoto(
 ) {
   const supabase = await crmClient();
   const file = formData.get("photo") as File | null;
-  if (!file || file.size === 0) return;
+  if (!(file instanceof File) || !(await validPhoto(file))) {
+    throw new Error("Kies een geldige JPG-, PNG- of WebP-foto van maximaal 1 MB.");
+  }
 
-  const ext = file.name.split(".").pop() ?? "jpg";
+  const ext = photoExtension(file);
   const path = `${listingId}/${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -178,9 +181,11 @@ export async function uploadDossierPhoto(
 ) {
   const supabase = await crmClient();
   const file = formData.get("photo") as File | null;
-  if (!file || file.size === 0) return;
+  if (!(file instanceof File) || !(await validPhoto(file))) {
+    throw new Error("Kies een geldige JPG-, PNG- of WebP-foto van maximaal 1 MB.");
+  }
 
-  const ext = file.name.split(".").pop() ?? "jpg";
+  const ext = photoExtension(file);
   // Same bucket as listing photos, organised under a dossier/ prefix.
   const path = `dossier/${eventId}/${crypto.randomUUID()}.${ext}`;
 

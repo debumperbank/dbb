@@ -71,6 +71,7 @@ function api({
         return {
           createClient: async () => ({
             auth: {
+              mfa: { getAuthenticatorAssuranceLevel: async () => ({ data: { currentLevel: "aal1", nextLevel: "aal1" }, error: null }) },
               getUser: async () => ({
                 data: { user: authorized ? { id: "admin", email: "debumperbank@gmail.com", email_confirmed_at: "2026-01-01" } : null },
                 error: null,
@@ -88,6 +89,7 @@ function api({
       exports: module.exports,
       module,
       require: requireMock,
+      URL,
       FormData,
       File,
       Request,

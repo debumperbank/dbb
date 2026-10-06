@@ -1,3 +1,5 @@
+import { secureRequest } from "@/lib/request-security";
+import { needsAdminMfa } from "@/lib/admin-mfa";
 import { isAdminUser } from "@/lib/admin-access";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
@@ -12,6 +14,12 @@ export async function POST(request: Request) {
   } = await auth.auth.getUser();
   if (authError || !isAdminUser(user))
     return NextResponse.json({ error: "Log opnieuw in." }, { status: 401 });
+  try {
+    if (await needsAdminMfa(auth)) return NextResponse.json({ error: "Bevestig je tweestapsverificatie." }, { status: 403 });
+  } catch { return NextResponse.json({ error: "Log opnieuw in." }, { status: 401 }); }
+  const secured = await secureRequest(request, 1100000);
+  if (secured.error) return secured.error;
+  request = secured.request!;
   if (Number(request.headers.get("content-length") || 0) > 1100000)
     return NextResponse.json(
       { error: "De foto is te groot." },

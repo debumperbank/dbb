@@ -1,3 +1,4 @@
+import { secureRequest } from "@/lib/request-security";
 import { NextResponse } from "next/server";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -10,6 +11,9 @@ import {
 } from "@/lib/mollie";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  const secured = await secureRequest(request, 20000, true);
+  if (secured.error) return secured.error;
+  request = secured.request!;
   if (Number(request.headers.get("content-length") || 0) > 20000)
     return NextResponse.json(
       { error: "De bestelling is te groot." },

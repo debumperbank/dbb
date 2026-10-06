@@ -34,8 +34,7 @@ export default async function AdminLoginPage({
           )}
         </form>
         <p className="mt-6 text-xs text-muted font-mono leading-relaxed">
-          Beheeraccounts worden aangemaakt in het Supabase-dashboard onder
-          Authentication → Users. Er is geen zelfregistratie.
+          Deze omgeving is uitsluitend toegankelijk voor de beheerder van De Bumperbank.
         </p>
       </div>
     </main>

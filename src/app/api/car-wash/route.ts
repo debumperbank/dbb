@@ -1,13 +1,22 @@
+import { validLead } from "@/lib/lead-validation";
+import { secureRequest } from "@/lib/request-security";
 import { NextResponse } from 'next/server';
 import { notifyAdmin } from '@/lib/resend';
 
-import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(request: Request) {
+  const secured = await secureRequest(request, 20000, true);
+  if (secured.error) return secured.error;
+  request = secured.request!;
   try {
-    const body = await request.json();
+    let body: unknown;
+    try { body = await request.json(); } catch {
+      return NextResponse.json({ error: "Ongeldige aanvraag." }, { status: 400 });
+    }
+    if (!validLead(body)) return NextResponse.json({ error: "Controleer de ingevulde gegevens." }, { status: 400 });
 
-    const { name, email, phone, address, requested_date, notes, company, consent } = body ?? {};
+    const { name, email, phone, address, requested_date, notes, company, consent } = body as Record<string, any>;
 
     if (company) {
       return NextResponse.json({ ok: true });
@@ -28,7 +37,7 @@ export async function POST(request: Request) {
     }
 
     // 1. Opslaan in Supabase
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const { error } = await (supabase
       .from('car_wash_bookings') as any)
@@ -44,7 +53,7 @@ export async function POST(request: Request) {
       });
 
     if (error) {
-      console.error('Failed to save car wash booking:', error.message);
+      console.error('Failed to save car wash booking:');
 
       return NextResponse.json(
         { error: 'Kon aanvraag niet opslaan.' },
@@ -74,7 +83,7 @@ ${notes || '-'}
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error('Car wash booking failed:', error);
+    console.error('Car wash booking failed:');
 
     return NextResponse.json(
       { error: 'Er ging iets mis bij het verwerken van de aanvraag.' },

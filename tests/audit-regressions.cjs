@@ -6,7 +6,7 @@ const vm=require('node:vm');
 const path=require('node:path');
 function load(file,mocks={}){
  const module={exports:{}};
- vm.runInNewContext(ts.transpileModule(fs.readFileSync(path.join(__dirname,'../src',file),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,{module,exports:module.exports,require:n=>mocks[n],Response,console:{error(){}},Date});
+ vm.runInNewContext(ts.transpileModule(fs.readFileSync(path.join(__dirname,'../src',file),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,{module,exports:module.exports,require:n=>Object.hasOwn(mocks,n)?mocks[n]:load(n.replace("@/", "")+".ts",mocks),Response,Request,URL,Uint8Array,console:{error(){}},Date});
  return module.exports;
 }
 const {isAdminUser}=load('lib/admin-access.ts');
@@ -20,7 +20,7 @@ for(const route of ['inquiries','car-wash','workshop-bookings']){
  let saves=0,notifications=0;
  const {POST}=load(`app/api/${route}/route.ts`,{
  'next/server':{NextResponse:{json:(body,init)=>Response.json(body,init)}},
- '@/lib/supabase/server':{createClient:async()=>({from:()=>({insert:async()=>{saves++;return {error:null}}})})},
+ '@/lib/supabase/admin':{createAdminClient:()=>({from:()=>({insert:async()=>{saves++;return {error:null}}})})},
  '@/lib/resend':{notifyAdmin:async()=>{notifications++;return false}}
  });
  const response=await POST(new Request('https://example.com',{method:'POST',body:JSON.stringify({name:'Test',email:'test@example.com',address:'Test 1',consent:failure?'on':'false'})}));

@@ -1,5 +1,6 @@
 import { isAdminUser } from "@/lib/admin-access";
 import "server-only";
+import { needsAdminMfa } from "@/lib/admin-mfa";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -10,6 +11,7 @@ export async function crmClient() {
     error,
   } = await auth.auth.getUser();
   if (error || !isAdminUser(user)) redirect("/admin/login");
+  if (await needsAdminMfa(auth)) redirect("/admin/security");
   return createAdminClient();
 }
 export type Customer = {

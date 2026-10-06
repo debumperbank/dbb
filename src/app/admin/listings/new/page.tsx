@@ -1,9 +1,11 @@
+import { crmClient } from '@/lib/crm';
 import { createListing } from '../actions';
 
 const inputClass =
   'bg-bg border border-[color:var(--line-dark)] rounded-[3px] px-4 py-2.5 text-sm placeholder:text-muted focus:outline-none focus:border-orange w-full';
 
-export default function NewListingPage() {
+export default async function NewListingPage() {
+  await crmClient();
   return (
     <div className="max-w-xl">
       <div className="eyebrow mb-2"><span className="dot" />Beheer</div>

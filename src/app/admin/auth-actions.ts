@@ -12,7 +12,7 @@ export async function login(formData: FormData) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect(`/admin/login?error=${encodeURIComponent(error.message)}`);
+    redirect('/admin/login?error=Inloggen%20mislukt.%20Controleer%20je%20gegevens%20of%20probeer%20later%20opnieuw.');
   }
 
   if (!isAdminUser(data.user)) {
