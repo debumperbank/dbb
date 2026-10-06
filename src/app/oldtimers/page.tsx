@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { ListingWithCar } from "@/lib/types";
 import { formatPriceCents } from "@/lib/format";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Oldtimers en klassiekers | De Bumperbank Hulst",
+  description: "Bekijk de oldtimers en klassiekers van De Bumperbank in Hulst, met een herstellingsdossier. Ontdek het actuele aanbod en neem contact op voor meer informatie.",
+  alternates: { canonical: "/oldtimers" },
+};
 
 export const revalidate = 60;
 

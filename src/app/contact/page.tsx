@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { ContactTabs } from '@/components/ContactTabs';
+
+export const metadata: Metadata = {
+  title: "Contact in Hulst | De Bumperbank",
+  description: "Neem contact op met De Bumperbank in Hulst voor vragen over voertuigen, herstellingen of mobiele car wash. Stuur een bericht of vraag een afspraak aan.",
+  alternates: { canonical: "/contact" },
+};
 
 export default function ContactPage() {
   return (
