@@ -14,6 +14,7 @@ export default function ContactPage() {
         <section aria-label="Bedrijfsgegevens" className="mt-10 border-t border-white/10 pt-6">
           <h2 className="text-lg">De Bumperbank</h2>
           <p className="mt-2 text-muted">KvK-nummer: <span className="text-paper">42171617</span></p>
+          <p className="mt-2 text-muted">Btw-identificatienummer: <span className="text-paper">NL005557496B77</span></p>
         </section>
       </div>
     </main>

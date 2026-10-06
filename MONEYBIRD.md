@@ -87,3 +87,11 @@ in deze tests. Een echte Moneybird-koppeling is nog niet getest wegens ontbreken
 - https://developer.moneybird.com/integration/creating-sales-invoices
 - https://developer.moneybird.com/api/sales-invoices
 - https://developer.moneybird.com/api/contacts
+
+## Bedrijfsgegevens
+
+Btw-identificatienummer De Bumperbank: `NL005557496B77`. Normale btw-regeling.
+Vul dit nummer ook in bij de bedrijfsgegevens van Moneybird-administratie
+`498995830364046671`; de website stuurt de eigen btw-id niet als klant-btw-id mee.
+De bedrijfsgegevens in Moneybird bepalen het nummer op de definitieve factuur.
+Het OB-nummer hoort niet op de website of klantfacturen.
