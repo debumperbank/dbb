@@ -13,7 +13,7 @@ export function moneybirdConfig(country: string) {
   const documentStyle = env.MONEYBIRD_DOCUMENT_STYLE_ID;
   if (!env.MONEYBIRD_API_TOKEN || !tax || !ledger || !workflow || !documentStyle ||
       ![tax, ledger, workflow, documentStyle].every(id => /^\d+$/.test(id)) ||
-      env.MONEYBIRD_RECONCILIATION !== "external_reviewed")
+      env.MONEYBIRD_RECONCILIATION !== "mollie_transaction")
     throw new MoneybirdError("configuration_required");
   return { tax, ledger, workflow, documentStyle };
 }
@@ -43,6 +43,8 @@ export type MoneybirdInvoice = {
   total_price_incl_tax: string;
   state: string;
   sent_at: string | null;
+  payments: { transaction_identifier: string | null; price: string }[];
+  total_unpaid: string;
 };
 export function invoiceReference(order: ShopOrder) { return `BUMPR-${order.id}`; }
 export function invoicePayload(order: ShopOrder, contactId: string, config: ReturnType<typeof moneybirdConfig>) {
@@ -79,4 +81,24 @@ Bewaar de factuur voor je administratie. Heb je een vraag? Je kunt gewoon op dez
 Met vriendelijke groet,
 De Bumperbank
 info@debumperbank.nl`;
+}
+
+// A provider transaction is a booking reference, not a second charge to the customer.
+export function hasMolliePayment(invoice: MoneybirdInvoice, order: ShopOrder) {
+  if (!Array.isArray(invoice.payments)) throw new MoneybirdError("payment_status_unavailable");
+  const matching = invoice.payments.filter(p => p.transaction_identifier === order.payment_id);
+  if (matching.length === 1 && Math.round(Number(matching[0].price) * 100) === order.total_cents &&
+      invoice.payments.length === 1 && invoice.state === "paid" && Number(invoice.total_unpaid) === 0) return true;
+  if (invoice.payments.length || invoice.state === "paid" ||
+      Math.round(Number(invoice.total_unpaid) * 100) !== order.total_cents)
+    throw new MoneybirdError("payment_requires_review");
+  return false;
+}
+export function molliePaymentPayload(order: ShopOrder) {
+  if (order.status !== "paid" || order.payment_mode !== "live" || !/^tr_[a-zA-Z0-9]+$/.test(order.payment_id || "") ||
+      !order.paid_at || !Number.isFinite(Date.parse(order.paid_at))) throw new MoneybirdError("payment_invalid");
+  const parts = new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Amsterdam", year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(new Date(order.paid_at));
+  const part = (type: string) => parts.find(p => p.type === type)!.value;
+  return {payment: {payment_date: `${part("year")}-${part("month")}-${part("day")}`,
+    price: (order.total_cents / 100).toFixed(2), transaction_identifier: order.payment_id}};
 }

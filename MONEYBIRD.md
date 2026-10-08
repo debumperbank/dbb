@@ -28,13 +28,10 @@ of klantmails verstuurd tijdens de implementatie.
      met passende tekst voor reeds betaalde bestellingen.
    De code kiest geen btw-percentage of OSS-behandeling voor je. Controleer beide landcodes
    en de omzetcategorie met de verantwoordelijke voor je boekhouding.
-4. Controleer wat de bestaande Moneybird/Mollie-koppeling werkelijk doet: alleen betaallinks,
-   ook transacties importeren, automatisch facturen maken, of betalingen afletteren?
-   Deze website maakt **geen extra betaalboeking** in Moneybird. Dat voorkomt een tweede
-   registratie, maar bewijst niet dat de bestaande koppeling de geïmporteerde factuur automatisch
-   als betaald markeert. Indien nodig moet de geïmporteerde Mollie-transactie aan de factuur worden
-   gekoppeld. Zorg dat een andere koppeling niet eveneens facturen voor dezelfde bestelling maakt.
-5. Pas na die controle: `MONEYBIRD_RECONCILIATION=external_reviewed`.
+4. Controleer dat Moneybird met het juiste Mollie-account is verbonden en zet 'Uitbetalingen automatisch koppelen' aan. Een andere koppeling mag niet nogmaals webshopfacturen of betaalboekingen maken.
+   Voer ook `supabase/migrations/009_moneybird_payment.sql` uit.
+   De website registreert de reeds ontvangen betaling op de factuur met Mollie's `transaction_identifier`. Moneybird gebruikt deze referentie om de uitbetaling af te letteren. De website maakt geen bankmutatie en incasseert niets opnieuw.
+5. Pas na die controle: `MONEYBIRD_RECONCILIATION=mollie_transaction`.
 6. Zet `MONEYBIRD_ENABLED=true` en deploy. Zonder deze vlag worden geen exports uitgevoerd.
 
 De administratie-ID staat bewust vast als string, zodat een onbedoelde instelling geen
@@ -63,7 +60,7 @@ De opgeslagen betaalstatus blijft betaald; de beheermelding wordt ondanks een ex
 - Referentie `BUMPR-{order-id}` wordt vóór aanmaken opgezocht.
 - Contacten gebruiken `bumpr-order-{order-id}`: een adresmomentopname per bestelling,
   dus bewust geen automatische samenvoeging van verschillende bestellingen op e-mailadres.
-- Vóór contact/factuur aanmaken of mailen wordt een poging duurzaam vastgelegd.
+- Vóór contact/factuur/betaalboeking aanmaken of mailen wordt een poging duurzaam vastgelegd.
 - Na een timeout wordt eerst opgezocht of de factuur al bestaat/verstuurd is. Een onzekere
   aanmaak/verzending wordt niet blind herhaald: dit kan handmatige controle vereisen.
 - Een gecrashte worker kan op `processing` blijven staan. Controleer dat de worker echt gestopt is
@@ -95,3 +92,5 @@ Vul dit nummer ook in bij de bedrijfsgegevens van Moneybird-administratie
 `498995830364046671`; de website stuurt de eigen btw-id niet als klant-btw-id mee.
 De bedrijfsgegevens in Moneybird bepalen het nummer op de definitieve factuur.
 Het OB-nummer hoort niet op de website of klantfacturen.
+
+Bij een onzekere betaalregistratie wordt nooit blind opnieuw geboekt. De factuur wordt eerst opnieuw gelezen; afwijkende of gedeeltelijke betalingen vragen handmatige controle. Foutcodes: payment_creation_uncertain, payment_requires_review, payment_status_unavailable.

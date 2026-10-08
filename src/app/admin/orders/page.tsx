@@ -83,7 +83,7 @@ export default async function Page() {
                 const state = String(entry?.state || "pending");
                 const invoiceId = entry?.invoice_id ? String(entry.invoice_id) : "";
                 return <div className="my-5 border-y border-white/10 py-4">
-                  <p>Moneybird: {state === "done" ? "Factuur verstuurd · controleer betaalboeking in Moneybird" : state === "processing" ? "Verwerking gestart; bij langdurige stilstand controleren" : state === "error" ? "Controle nodig" : "Wacht op verwerking"}</p>
+                  <p>Moneybird: {state === "done" ? "Factuur verstuurd · Mollie-betaling geregistreerd" : state === "processing" ? "Verwerking gestart; bij langdurige stilstand controleren" : state === "error" ? "Controle nodig" : "Wacht op verwerking"}</p>
                   {Boolean(entry?.error_code) && <p className="text-sm text-muted mt-2">Referentie voor controle: {String(entry?.error_code)}</p>}
                   {/^[0-9]+$/.test(invoiceId) && <a className="text-orange underline block mt-2" href={`https://moneybird.com/${MONEYBIRD_ADMINISTRATION}/sales_invoices/${invoiceId}`} target="_blank" rel="noreferrer">Open factuur in Moneybird ↗</a>}
                   {(state === "error" || state === "pending") && <form action={retryMoneybird} className="mt-3"><input type="hidden" name="id" value={o.id} /><button className="btn btn-ghost">Controleer en hervat factuur</button></form>}

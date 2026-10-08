@@ -67,6 +67,7 @@ export default function AdminLayout({
             Boekingen
           </Link>
         </nav>
+        <Link href="/admin/integrations" className="mt-6 text-sm hover:text-orange">Mail- en factuurkoppelingen</Link>
         <Link href="/admin/security" className="mt-6 text-sm hover:text-orange">Accountbeveiliging</Link>
         <div className="mt-auto pt-6">
           <Link

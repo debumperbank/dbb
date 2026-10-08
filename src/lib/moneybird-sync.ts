@@ -1,9 +1,9 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { ShopOrder } from "./shop";
-import { MONEYBIRD_ADMINISTRATION, MoneybirdError, moneybirdConfig, moneybirdRequest, invoicePayload, invoiceEmailMessage, invoiceReference, verifyInvoice, type MoneybirdInvoice } from "./moneybird";
+import { MONEYBIRD_ADMINISTRATION, MoneybirdError, moneybirdConfig, moneybirdRequest, invoicePayload, invoiceEmailMessage, invoiceReference, verifyInvoice, hasMolliePayment, molliePaymentPayload, type MoneybirdInvoice } from "./moneybird";
 
-type Export = { order_id: string; administration_id: string; state: string; contact_attempted: boolean; invoice_attempted: boolean; send_attempted: boolean; invoice_id: string | null };
+type Export = { order_id: string; administration_id: string; state: string; contact_attempted: boolean; invoice_attempted: boolean; send_attempted: boolean; payment_attempted: boolean; invoice_id: string | null };
 export async function syncMoneybirdOrder(orderId: string) {
   if (process.env.MONEYBIRD_ENABLED !== "true") return;
   const db = createAdminClient();
@@ -31,6 +31,7 @@ export async function syncMoneybirdOrder(orderId: string) {
   try {
     if (job.administration_id !== MONEYBIRD_ADMINISTRATION) throw new MoneybirdError("administration_mismatch");
     const config = moneybirdConfig(order.customer.country);
+    const paymentPayload = molliePaymentPayload(order);
     const ref = invoiceReference(order);
     let invoice = await moneybirdRequest<MoneybirdInvoice>(job.invoice_id ? `sales_invoices/${encodeURIComponent(job.invoice_id)}.json` : `sales_invoices/find_by_reference/${encodeURIComponent(ref)}.json`);
     if (!invoice) {
@@ -67,9 +68,17 @@ export async function syncMoneybirdOrder(orderId: string) {
       const sent = await moneybirdRequest<MoneybirdInvoice>(`sales_invoices/${invoice.id}.json`);
       if (!sent?.sent_at) throw new MoneybirdError("invoice_sending_uncertain");
       verifyInvoice(sent, order);
+      invoice = sent;
     }
-    // Payment reconciliation belongs to the existing Moneybird/Mollie setup.
-    // Do not create a second financial transaction or a manual payment here.
+    if (!hasMolliePayment(invoice, order)) {
+      if (job.payment_attempted) throw new MoneybirdError("payment_creation_uncertain");
+      await save({ payment_attempted: true });
+      await moneybirdRequest(`sales_invoices/${invoice.id}/payments.json`, "POST", paymentPayload);
+      const paid = await moneybirdRequest<MoneybirdInvoice>(`sales_invoices/${invoice.id}.json`);
+      if (!paid) throw new MoneybirdError("payment_creation_uncertain");
+      verifyInvoice(paid, order);
+      if (!hasMolliePayment(paid, order)) throw new MoneybirdError("payment_creation_uncertain");
+    }
     await save({ state: "done", error_code: null });
   } catch (error) {
     const code = error instanceof MoneybirdError ? error.code : "unexpected_error";
