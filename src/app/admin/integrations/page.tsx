@@ -12,13 +12,22 @@ export default async function Page() {
   checks.push({name: "Opslag voor facturen en mails", ok: results.every(r => !r.error), detail: results.every(r => !r.error) ? "Beschikbaar" : "Databasemigratie controleren"});
   try {
     const nl = moneybirdConfig("NL"), be = moneybirdConfig("BE");
-    const requirements = [
-      ["tax_rates", nl.tax], ["tax_rates", be.tax], ["ledger_accounts", nl.ledger],
-      ["workflows", nl.workflow], ["document_styles", nl.documentStyle],
+    type RecordInfo = {id: string; active?: boolean; percentage?: string; tax_rate_type?: string};
+    const [taxes, ledger, workflow, styles] = await Promise.all([
+      moneybirdRequest<RecordInfo[]>("tax_rates.json?per_page=100&filter=tax_rate_type:sales_invoice,active:true"),
+      moneybirdRequest<RecordInfo>(`ledger_accounts/${nl.ledger}.json`),
+      moneybirdRequest<RecordInfo>(`workflows/${nl.workflow}.json`),
+      moneybirdRequest<RecordInfo[]>("document_styles.json"),
+    ]);
+    const selectedTaxes = [nl.tax, be.tax].map(id => taxes?.find(t => String(t.id) === id));
+    const checksForMoneybird = [
+      {name: "Moneybird-btw-codes", ok: selectedTaxes.every(t => t && t.active && t.tax_rate_type === "sales_invoice" && Number(t.percentage) === 21)},
+      {name: "Moneybird-omzetrekening", ok: String(ledger?.id) === nl.ledger},
+      {name: "Moneybird-factuurworkflow", ok: String(workflow?.id) === nl.workflow && workflow?.active === true},
+      {name: "Moneybird-factuurhuisstijl", ok: Boolean(styles?.some(s => String(s.id) === nl.documentStyle))},
     ];
-    const records = await Promise.all(requirements.map(([resource,id]) => moneybirdRequest<{id: string}>(`${resource}/${id}.json`)));
-    const ok = records.every((record,index) => record && String(record.id) === requirements[index][1]);
-    checks.push({name: "Moneybird-verbinding en factuurinstellingen", ok, detail: ok ? "API bereikbaar; btw-codes, omzetrekening, workflow en huisstijl gevonden" : "Een ingestelde Moneybird-verwijzing ontbreekt"});
+    checks.push(...checksForMoneybird.map(c => ({...c, detail: c.ok ? "Gevonden en bereikbaar via de productiesleutel" : "Instelling ontbreekt of wijkt af van de gekozen inrichting"})));
+
   } catch (error) {
     checks.push({name: "Moneybird-verbinding en factuurinstellingen", ok: false, detail: error instanceof MoneybirdError ? `Controle nodig (${error.code})` : "Controle niet beschikbaar"});
   }
