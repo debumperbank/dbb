@@ -66,10 +66,21 @@ export function validateCheckout(value: unknown) {
   const name = text("name", 120),
     email = text("email", 254).toLowerCase(),
     phone = text("phone", 40, false),
-    street = text("street", 200),
+    streetName = text("street", 200),
     postal_code = text("postal_code", 12).toUpperCase(),
     city = text("city", 100),
     country = text("country", 2);
+  // Keep one complete address line for all existing mail, invoice and packing-slip consumers.
+  // Older open checkout tabs still submit a combined street/number field.
+  const hasSeparateNumber = Object.hasOwn(c, "house_number");
+  const houseNumber = hasSeparateNumber ? text("house_number", 30) : "";
+  if (hasSeparateNumber && !/^[0-9][0-9A-Za-z /.-]*$/.test(houseNumber))
+    throw new Error("Vul een geldig huisnummer in, eventueel met toevoeging.");
+  if (!hasSeparateNumber && !/\s[0-9]+(?:[A-Za-z /.-]*[0-9A-Za-z])?$/.test(streetName))
+    throw new Error("Vul je straat én huisnummer in.");
+  const street = hasSeparateNumber ? `${streetName} ${houseNumber}` : streetName;
+  if (street.length > 200 || /[\r\n]/.test(street))
+    throw new Error("Controleer je straat en huisnummer.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     throw new Error("Vul een geldig e-mailadres in.");
   if (!["NL", "BE"].includes(country))

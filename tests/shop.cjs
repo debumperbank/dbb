@@ -22,3 +22,7 @@ async function syncFixture(status,alreadyPaid=false){let updates=0,notifications
 test('verified paid callback updates order and notifies admin',async()=>{const r=await syncFixture('paid');assert.equal(r.row.status,'paid');assert.equal(r.notifications,1)});
 test('late open callback cannot downgrade paid order',async()=>{const r=await syncFixture('open',true);assert.equal(r.row.status,'paid');assert.equal(r.updates,0);assert.equal(r.notifications,0)});
 test('duplicate paid callback does not notify twice',async()=>{const r=await syncFixture('paid',true);assert.equal(r.notifications,0);assert.equal(r.updates,0)});
+
+test('separate house number is preserved in the complete stored address',()=>{for(const number of ['157','157 A','12-14','12 bus 3']){const b=input();b.customer.street='Poorterslaan';b.customer.house_number=number;assert.equal(shop.validateCheckout(b).customer.street,`Poorterslaan ${number}`);}});
+test('checkout rejects missing or invalid house numbers',()=>{for(const number of ['', '   ', 'abc', '12\nExtra']){const b=input();b.customer.street='Poorterslaan';b.customer.house_number=number;assert.throws(()=>shop.validateCheckout(b));}const b=input();b.customer.street='Poorterslaan';assert.throws(()=>shop.validateCheckout(b));b.customer.street='Plein 1940';b.customer.house_number='';assert.throws(()=>shop.validateCheckout(b));});
+test('older checkout combined addresses remain accepted',()=>{const b=input();b.customer.street='Poorterslaan 157 A';assert.equal(shop.validateCheckout(b).customer.street,'Poorterslaan 157 A');});

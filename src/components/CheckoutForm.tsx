@@ -50,6 +50,7 @@ export function CheckoutForm({ products }: { products: BumprProduct[] }) {
           "email",
           "phone",
           "street",
+          "house_number",
           "postal_code",
           "city",
           "country",
@@ -119,13 +120,14 @@ export function CheckoutForm({ products }: { products: BumprProduct[] }) {
             ["name", "Volledige naam", "name", "text"],
             ["email", "E-mailadres", "email", "email"],
             ["phone", "Telefoon (optioneel)", "tel", "tel"],
-            ["street", "Straat en huisnummer", "street-address", "text"],
+            ["street", "Straat", "address-line1", "text"],
+            ["house_number", "Huisnummer en toevoeging", "address-line2", "text"],
             ["postal_code", "Postcode", "postal-code", "text"],
             ["city", "Plaats", "address-level2", "text"],
           ].map(([name, label, auto, type]) => (
             <label
               key={name}
-              className={name === "street" ? "sm:col-span-2" : ""}
+              className={name === "name" ? "sm:col-span-2" : ""}
             >
               {label}
               <input
@@ -134,7 +136,10 @@ export function CheckoutForm({ products }: { products: BumprProduct[] }) {
                 autoComplete={auto}
                 className="field"
                 required={name !== "phone"}
-                maxLength={name === "email" ? 254 : 200}
+                maxLength={name === "email" ? 254 : name === "house_number" ? 30 : 200}
+                placeholder={name === "house_number" ? "Bijv. 157 of 157 A" : undefined}
+                pattern={name === "house_number" ? "[0-9].*" : undefined}
+                title={name === "house_number" ? "Vul je huisnummer in, eventueel met toevoeging." : undefined}
               />
             </label>
           ))}
