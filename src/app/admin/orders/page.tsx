@@ -78,6 +78,7 @@ export default async function Page() {
                   </>
                 )}
               </address>
+              <div className="flex flex-wrap gap-3 my-5"><a className="btn btn-ghost" href={`/admin/orders/${o.id}/leverbon`} target="_blank" rel="noreferrer">Leverbon afdrukken ↗</a><a className="btn btn-ghost" href="https://my.dhlparcel.nl/otc" target="_blank" rel="noreferrer">Verzendlabel bij DHL maken ↗</a></div>
               {enabled && o.payment_mode === "live" && o.status === "paid" && (() => {
                 const entry = exports?.data?.find(e => e.order_id === o.id);
                 const state = String(entry?.state || "pending");
