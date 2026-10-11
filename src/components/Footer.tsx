@@ -1,3 +1,4 @@
+import { OpeningHours } from "./OpeningHours";
 import Link from "next/link";
 import { BrandLogo } from "./BrandLogo";
 
@@ -17,6 +18,8 @@ export function Footer() {
               <p className="mt-1 text-xs text-muted">Hulst · Nederland</p>
             </div>
           </div>
+
+          <OpeningHours />
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
             <Link href="/bumpr" className="inline-flex min-h-11 items-center hover:text-orange">BUMPR</Link>

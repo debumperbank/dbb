@@ -1,3 +1,4 @@
+import { OpeningHours } from "@/components/OpeningHours";
 import type { Metadata } from "next";
 import { ContactTabs } from '@/components/ContactTabs';
 
@@ -18,6 +19,9 @@ export default function ContactPage() {
           nemen zo snel mogelijk contact op.
         </p>
         <ContactTabs />
+        <div className="mt-10 border-t border-white/10 pt-6">
+          <OpeningHours />
+        </div>
         <section aria-label="Bedrijfsgegevens" className="mt-10 border-t border-white/10 pt-6">
           <h2 className="text-lg">De Bumperbank</h2>
           <p className="mt-2 text-muted">KvK-nummer: <span className="text-paper">42171617</span></p>

@@ -1,3 +1,4 @@
+import { openingHoursSpecification } from "@/lib/opening-hours";
 import { createClient } from "@/lib/supabase/server";
 import { Hero } from "@/components/Hero";
 import { OurStory } from "@/components/OurStory";
@@ -57,6 +58,7 @@ export default async function HomePage() {
             name: "De Bumperbank",
             url: process.env.NEXT_PUBLIC_SITE_URL || "https://debumperbank.nl",
             areaServed: "Regio Hulst",
+            openingHoursSpecification,
             description:
               "Mobiele autoservice, onderhoud, reparatie en detailing in regio Hulst.",
           }).replace(/</g, "\\u003c"),
