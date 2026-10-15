@@ -221,3 +221,18 @@ summary:focus-visible {
 @media (hover: none) {
   .btn-primary:hover { transform: none; }
 }
+
+/* Touch-friendly admin fields without changing the public website. */
+.admin-workspace .field { font-size:16px; min-height:48px; max-width:100%; }
+.admin-workspace .btn { min-height:48px; }
+.admin-workspace input[type=file] { overflow:hidden; }
+.admin-workspace { overflow-wrap:anywhere; padding-bottom:max(2rem, env(safe-area-inset-bottom)); }
+
+.work-tile { display:flex; flex-direction:column; justify-content:center; gap:.5rem; min-height:112px; border:1px solid #474747; border-radius:1rem; padding:1.25rem; text-align:left; transition:background .15s; }
+.work-tile strong {font-size:1.35rem;line-height:1.4;}
+.work-tile span {font-size:.9rem;}
+.work-tile:focus-visible {outline:3px solid #facc15;outline-offset:4px;}
+.work-tile:disabled {opacity:.5;cursor:not-allowed;}
+.work-tile:hover {box-shadow:inset 0 0 0 1px #facc15;}
+.work-app .field {min-height:54px;font-size:16px;}
+.work-app .btn {min-height:54px;}

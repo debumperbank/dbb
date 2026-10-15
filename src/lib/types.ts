@@ -111,6 +111,11 @@ export type Database = {
     };
     Views: {};
     Functions: {
+      work_time_summary: {Args:{p_job:string};Returns:Record<string,number>};
+      clock_work: {Args:{p_worker:string;p_job:string;p_phase:string;p_action:string;p_entry:string};Returns:string};
+      correct_work_time: {Args:{p_worker:string;p_entry:string;p_revision:number;p_start:string;p_end:string;p_reason:string};Returns:number};
+      save_work_phase: {Args: {job_id:string;phase_key:string;new_answers:Record<string,string>;new_notes:string;expected_revision:number};Returns:number};
+      create_admin_job: {Args:{payload:Record<string,string>};Returns:string};
       merge_customer_records: { Args: { source_id: string; target_id: string }; Returns: string };
       submit_mobile_request: {
         Args: { payload: Record<string, unknown>; photo_paths: string[] };

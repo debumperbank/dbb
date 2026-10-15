@@ -30,6 +30,7 @@ export default async function Page({ searchParams }: {
   return <div className="max-w-5xl">
     <h1 className="text-3xl mb-4">Werkdossiers</h1>
     <p className="text-muted mb-6">Een ingeplande klus krijgt een eigen vast dossiernummer. Nieuwe aanvragen staan in de agenda. Zoek op kenteken (nummerplaat), ook zonder spaties of streepjes. Alle statussen worden meegenomen.</p>
+    <Link href="/admin/customers" className="btn btn-ghost mb-5">Nieuwe klus via klantenfiche</Link>
     <form action="/admin/dossiers" method="get" className="panel grid gap-4 sm:grid-cols-2 mb-6">
       <label className="block">Kenteken / nummerplaat
         <input name="plate" defaultValue={plate} maxLength={40} placeholder="Bijvoorbeeld AB-123-C" className="mt-2 w-full min-h-12 rounded border border-neutral-600 bg-bg px-3 py-3" />

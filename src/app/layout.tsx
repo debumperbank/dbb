@@ -1,3 +1,4 @@
+import {PublicOnly} from "@/components/PublicOnly";
 import { CartProvider } from "@/components/CartProvider";
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
@@ -53,9 +54,9 @@ export default function RootLayout({
         <Analytics />
         <CartProvider>
           <a href="#page-content" className="skip-link">Direct naar de inhoud</a>
-          <Nav />
+          <PublicOnly><Nav /></PublicOnly>
           <div id="page-content" tabIndex={-1}>{children}</div>
-          <Footer />
+          <PublicOnly><Footer /></PublicOnly>
         </CartProvider>
       </body>
     </html>

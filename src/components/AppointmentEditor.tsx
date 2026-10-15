@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Appointment } from "@/lib/crm";
 import { statuses } from "@/lib/services";
@@ -15,6 +16,7 @@ export function AppointmentEditor({
 }: {
   appointment: Appointment;
 }) {
+  const router = useRouter();
   const [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   const [scheduled, setScheduled] = useState(() => localDate(a.scheduled_at));
@@ -29,6 +31,7 @@ export function AppointmentEditor({
         scheduled ? new Date(scheduled).toISOString() : "",
       );
       const result = await saveAppointment(a.id, form);
+      if (!result.error) router.refresh();
       setMessage(
         result.error ||
           "Opgeslagen. Neem zelf contact op met de klant om wijzigingen te bevestigen.",

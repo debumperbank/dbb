@@ -1,0 +1,35 @@
+{
+  "id": "/admin",
+  "name": "De Bumperbank Werkplaats",
+  "short_name": "Bumperbank",
+  "lang": "nl",
+  "start_url": "/admin/werkplaats",
+  "scope": "/admin/",
+  "display": "standalone",
+  "background_color": "#08090a",
+  "theme_color": "#08090a",
+  "icons": [
+    {
+      "src": "/beheer-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/beheer-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Werkplaatsapp",
+      "url": "/admin/werkplaats"
+    },
+    {
+      "name": "Instellingen",
+      "url": "/admin/werkplaats/instellingen"
+    }
+  ]
+}

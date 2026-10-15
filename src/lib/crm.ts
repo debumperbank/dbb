@@ -4,16 +4,17 @@ import { needsAdminMfa } from "@/lib/admin-mfa";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-export async function crmClient() {
+export async function crmContext() {
   const auth = await createClient();
   const {
     data: { user },
     error,
   } = await auth.auth.getUser();
-  if (error || !isAdminUser(user)) redirect("/admin/login");
+  if (!user || error || !isAdminUser(user)) redirect("/admin/login");
   if (await needsAdminMfa(auth)) redirect("/admin/security");
-  return createAdminClient();
+  return {db:createAdminClient(), userId:user.id};
 }
+export async function crmClient(){return (await crmContext()).db;}
 export type Customer = {
   id: string;
   name: string;

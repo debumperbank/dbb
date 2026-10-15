@@ -1,4 +1,6 @@
 import Link from "next/link";
+import {CustomerForm} from "@/components/CustomerForm";
+import {NewJobForm} from "@/components/NewJobForm";
 import { CustomerMerge } from "@/components/CustomerMerge";
 import { redirect } from "next/navigation";
 import { notFound } from "next/navigation";
@@ -27,6 +29,8 @@ export default async function Page({
   if (!customer) notFound();
   if (customer.merged_into) redirect(`/admin/customers/${customer.merged_into}`);
   const c = customer as unknown as Customer;
+  const {data:vehicles,error:vehicleError}=await db.from("vehicles").select("id,registration,make_model").eq("customer_id",id).order("created_at");
+  if(vehicleError)throw Error("Voertuigen laden mislukt.");
   return (
     <div>
       <h1 className="text-3xl mb-5">{c.name}</h1>
@@ -34,6 +38,8 @@ export default async function Page({
         <a href={`mailto:${c.email}`}>{c.email}</a> ·{" "}
         <a href={`tel:${c.phone}`}>{c.phone}</a>
       </p>
+      <details className="my-6"><summary className="cursor-pointer py-3 underline">Klantgegevens aanpassen</summary><CustomerForm customer={c}/></details>
+      <details className="my-6"><summary className="cursor-pointer py-3 underline">Nieuwe klus / nieuw voertuig toevoegen</summary><NewJobForm customerId={id} vehicles={(vehicles||[]) as {id:string;registration:string;make_model:string}[]}/></details>
       <CustomerMerge sourceId={id} sourceName={c.name} />
       <h2 className="text-xl mt-10 mb-5">Voertuigen & werkzaamheden</h2>
       {(appointments as unknown as Appointment[]).map((a) => (

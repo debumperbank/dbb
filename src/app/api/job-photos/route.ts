@@ -1,3 +1,5 @@
+import { isWorkPhase } from "@/lib/work-phases";
+import { validRecordId } from "@/lib/admin-records";
 import { secureRequest } from "@/lib/request-security";
 import { needsAdminMfa } from "@/lib/admin-mfa";
 import { isAdminUser } from "@/lib/admin-access";
@@ -35,8 +37,8 @@ export async function POST(request: Request) {
     stage = String(form.get("stage") || ""),
     photo = form.get("photo");
   if (
-    !/^[0-9a-f-]{36}$/i.test(id) ||
-    !["before", "during", "after"].includes(stage) ||
+    !validRecordId(id) ||
+    !(isWorkPhase(stage) || ["before", "during", "after"].includes(stage)) ||
     !(photo instanceof File) ||
     !(await validPhoto(photo))
   )
@@ -77,6 +79,6 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
-  revalidatePath(`/admin/appointments/${id}`);
+  revalidatePath("/admin","layout");
   return NextResponse.json({ ok: true });
 }

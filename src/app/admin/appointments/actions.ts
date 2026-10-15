@@ -50,7 +50,7 @@ export async function saveAppointment(id: string, form: FormData) {
       .eq("id", id)
       .select("id")
       .single();
-    if (error || !data) return { error: "Opslaan is mislukt." };
+    if (error || !data) return { error: error?.message?.includes("Klok eerst uit") ? "Klok eerst uit in de werkplaatsapp voordat je deze klus afsluit." : "Opslaan is mislukt." };
   } catch {
     return { error: "Vul geldige prijzen in." };
   }
@@ -77,7 +77,7 @@ export async function saveTradeIn(id: string, form: FormData) {
     .eq("id", id)
     .select("id")
     .single();
-  if (error || !data) return { error: "Opslaan is mislukt." };
+  if (error || !data) return { error: error?.message?.includes("Klok eerst uit") ? "Klok eerst uit in de werkplaatsapp voordat je deze klus afsluit." : "Opslaan is mislukt." };
   revalidatePath("/admin/trade-ins");
   revalidatePath("/admin");
   return { ok: true };

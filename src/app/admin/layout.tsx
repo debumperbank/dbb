@@ -1,9 +1,11 @@
 import Link from "next/link";
+import {AdminShell} from "@/components/AdminShell";
+import {AdminMobile} from "@/components/AdminMobile";
 import { logout } from "@/app/admin/auth-actions";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = { title:"De Bumperbank · Werkplaats", manifest:"/beheer.webmanifest", appleWebApp:{capable:true,title:"Bumperbank",statusBarStyle:"black-translucent" as const}, icons:{apple:"/beheer-192.png"}, robots: { index: false, follow: false } };
 
 export default function AdminLayout({
   children,
@@ -11,13 +13,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-bg-soft text-paper flex flex-col md:flex-row">
+    <AdminShell navigation={
       <aside className="w-full md:w-56 shrink-0 border-r border-[color:var(--line-dark)] bg-bg px-5 py-7 flex flex-col">
         <div className="font-display font-bold text-sm mb-8">
           DE <span className="text-orange">BUMPER</span>BANK{" "}
           <span className="text-muted font-mono text-[10px]">/ beheer</span>
         </div>
-        <nav className="flex flex-wrap md:flex-col gap-1 text-sm">
+        <AdminMobile><nav className="flex flex-wrap md:flex-col gap-1 text-sm">
+          <Link href="/admin/werkplaats" className="btn btn-primary mb-3">Werkplaatsapp openen</Link>
           <Link href="/admin/archive" className="px-3 py-2 hover:text-orange">Archief</Link>
           <Link href="/admin/dossiers" className="px-3 py-2 hover:text-orange">Werkdossiers zoeken</Link>
           <Link
@@ -87,8 +90,8 @@ export default function AdminLayout({
             </button>
           </form>
         </div>
+        </AdminMobile>
       </aside>
-      <div className="flex-1 min-w-0 px-5 py-10 md:px-12">{children}</div>
-    </div>
+      }>{children}</AdminShell>
   );
 }

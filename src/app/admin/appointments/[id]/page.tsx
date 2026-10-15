@@ -1,10 +1,10 @@
 import { RecordActions } from "@/components/RecordActions";
 import Link from "next/link";
-import { JobPhotoUpload } from "@/components/JobPhotoUpload";
+import { WorkPhases } from "@/components/WorkPhases";
 import { notFound } from "next/navigation";
 import { crmClient, type Appointment } from "@/lib/crm";
 import { AppointmentEditor } from "@/components/AppointmentEditor";
-import { RequestPhotos } from "@/components/RequestPhotos";
+
 import { services } from "@/lib/services";
 export default async function Page({
   params,
@@ -50,13 +50,11 @@ export default async function Page({
           {a.service_address || "Nog afstemmen"}
         </p>
         <p className="whitespace-pre-wrap mt-5">{a.description}</p>
-        <div className="mt-6">
-          <RequestPhotos id={id} kind="appointment" />
-        </div>
+
       </div>
       <AppointmentEditor appointment={a} />
       <RecordActions kind="appointments" id={id} archived={Boolean(data.archived_at)} />
-      <JobPhotoUpload id={id} />
+      <WorkPhases id={id} />
     </div>
   );
 }

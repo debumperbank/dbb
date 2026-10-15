@@ -10,7 +10,7 @@ export async function RequestPhotos({
   const db = await crmClient();
   const { data, error } = await db
     .from("request_photos")
-    .select("id,storage_path,stage")
+    .select("id,storage_path,stage").is("archived_at",null)
     .eq(kind === "appointment" ? "appointment_id" : "trade_in_id", id)
     .order("created_at");
   if (error) return <p role="alert">Foto’s konden niet worden geladen.</p>;
