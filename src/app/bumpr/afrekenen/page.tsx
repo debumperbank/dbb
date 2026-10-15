@@ -1,3 +1,5 @@
+import { SHOP_OPEN } from "@/lib/shop-status";
+import { ShopClosed } from "@/components/ShopClosed";
 import { createClient } from "@/lib/supabase/server";
 import { CheckoutForm } from "@/components/CheckoutForm";
 import type { BumprProduct } from "@/lib/types";
@@ -6,6 +8,7 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 export default async function Page() {
+  if (!SHOP_OPEN) return <ShopClosed />;
   const db = await createClient();
   const { data, error } = await db.from("bumpr_products").select("*");
   return (

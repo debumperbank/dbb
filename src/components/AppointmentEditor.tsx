@@ -42,6 +42,7 @@ export function AppointmentEditor({
   return (
     <form onSubmit={submit} className="panel space-y-5">
       <h2 className="text-2xl">Planning & werkorder</h2>
+      <p className="text-muted">Een dossiernummer ontstaat zodra je een starttijd invult en de klus bevestigt. Verplaatsen of annuleren behoudt het bestaande nummer. Voor een nieuwe klus maak je een nieuwe aanvraag.</p>
       <div className="grid sm:grid-cols-2 gap-5">
         <label>
           Status

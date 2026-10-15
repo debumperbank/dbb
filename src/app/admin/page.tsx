@@ -15,7 +15,7 @@ export default async function Page() {
     db
       .from("trade_ins")
       .select("*", { count: "exact", head: true })
-      .eq("status", "new"),
+      .eq("status", "new").is("archived_at", null),
     db
       .from("listings")
       .select("*", { count: "exact", head: true })
@@ -23,15 +23,15 @@ export default async function Page() {
     db
       .from("car_wash_bookings")
       .select("*", { count: "exact", head: true })
-      .eq("status", "new"),
+      .eq("status", "new").is("archived_at", null),
     db
       .from("workshop_bookings")
       .select("*", { count: "exact", head: true })
-      .eq("status", "new"),
+      .eq("status", "new").is("archived_at", null),
     db
       .from("inquiries")
       .select("*", { count: "exact", head: true })
-      .eq("status", "new"),
+      .eq("status", "new").is("archived_at", null),
   ]);
   if (error) return <CrmError />;
   const rows = data as unknown as Appointment[];
@@ -55,7 +55,7 @@ export default async function Page() {
       "Vandaag gepland",
       rows.filter(
         (a) =>
-          a.scheduled_at &&
+          !a.archived_at && a.scheduled_at &&
           dateKey(a.scheduled_at) === today &&
           ["confirmed", "in_progress"].includes(a.status),
       ).length,
@@ -63,12 +63,12 @@ export default async function Page() {
     ],
     [
       "Nieuwe aanvragen",
-      rows.filter((a) => a.status === "new").length,
+      rows.filter((a) => !a.archived_at && a.status === "new").length,
       "/admin/appointments",
     ],
     [
       "In behandeling",
-      rows.filter((a) => a.status === "in_progress").length,
+      rows.filter((a) => !a.archived_at && a.status === "in_progress").length,
       "/admin/work-orders",
     ],
     ["Nieuwe inkoop", tradeIns ?? "—", "/admin/trade-ins"],

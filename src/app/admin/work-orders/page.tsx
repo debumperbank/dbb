@@ -8,6 +8,7 @@ export default async function Page() {
     .from("appointments")
     .select("*,customers(*),vehicles(*)")
     .in("status", ["confirmed", "in_progress", "completed"])
+    .is("archived_at", null)
     .order("scheduled_at", { ascending: false });
   if (error) return <CrmError />;
   return (
@@ -24,6 +25,7 @@ export default async function Page() {
           key={a.id}
           className="panel block mb-3"
         >
+          <p className="font-mono text-orange mb-2">{a.dossier_number}</p>
           <h2 className="text-xl">
             {a.vehicles.registration} · {a.customers.name}
           </h2>

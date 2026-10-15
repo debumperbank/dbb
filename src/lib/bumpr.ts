@@ -1,5 +1,9 @@
 import type { BumprProduct } from "./types";
 
+export function productBrand(product: BumprProduct) {
+  return product.brand?.trim() || "BUMPR";
+}
+
 const images: Record<string, string> = {
   "performance-set": "/bumpr/collection-2026/performance-set.png",
   "polish": "/bumpr/collection-2026/polish.png",
@@ -10,9 +14,10 @@ const images: Record<string, string> = {
   "microvezel-droogdoeken": "/bumpr/collection-2026/microvezel-set.png",
 };
 export function productImage(product: BumprProduct) {
-  return images[product.slug] || product.image_url;
+  return productBrand(product) === "BUMPR" ? images[product.slug] || product.image_url : product.image_url;
 }
 export function productSize(product: BumprProduct) {
+  if (productBrand(product) !== "BUMPR") return product.size_ml ? `${product.size_ml} ml` : "";
   if (["ceramic-coating", "hydro-coat"].includes(product.slug))
     return "Glazen flesje met druppelpipet · spons + suèdedoekje";
   if (product.slug === "performance-set")
@@ -23,6 +28,7 @@ export function productSize(product: BumprProduct) {
   return product.size_ml ? `${product.size_ml} ml` : "";
 }
 export function productDescription(product: BumprProduct) {
+  if (productBrand(product) !== "BUMPR") return product.description;
   if (["ceramic-coating", "hydro-coat"].includes(product.slug))
     return "HYDRO-COAT keramische coating in een glazen flesje met druppelpipet, inclusief applicatorspons en suèdedoekje.";
   if (product.slug === "performance-set")

@@ -18,6 +18,8 @@ export default function AdminLayout({
           <span className="text-muted font-mono text-[10px]">/ beheer</span>
         </div>
         <nav className="flex flex-wrap md:flex-col gap-1 text-sm">
+          <Link href="/admin/archive" className="px-3 py-2 hover:text-orange">Archief</Link>
+          <Link href="/admin/dossiers" className="px-3 py-2 hover:text-orange">Werkdossiers zoeken</Link>
           <Link
             href="/admin"
             className="px-3 py-2 rounded-[3px] hover:bg-bg-soft-2 transition-colors"

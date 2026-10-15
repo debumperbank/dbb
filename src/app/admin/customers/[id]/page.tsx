@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { CustomerMerge } from "@/components/CustomerMerge";
+import { redirect } from "next/navigation";
 import { notFound } from "next/navigation";
 import { crmClient, type Customer, type Appointment } from "@/lib/crm";
 import { statuses } from "@/lib/services";
@@ -23,6 +25,7 @@ export default async function Page({
   if (error || appointmentsError)
     throw new Error("Klantdossier laden is mislukt.");
   if (!customer) notFound();
+  if (customer.merged_into) redirect(`/admin/customers/${customer.merged_into}`);
   const c = customer as unknown as Customer;
   return (
     <div>
@@ -31,6 +34,7 @@ export default async function Page({
         <a href={`mailto:${c.email}`}>{c.email}</a> ·{" "}
         <a href={`tel:${c.phone}`}>{c.phone}</a>
       </p>
+      <CustomerMerge sourceId={id} sourceName={c.name} />
       <h2 className="text-xl mt-10 mb-5">Voertuigen & werkzaamheden</h2>
       {(appointments as unknown as Appointment[]).map((a) => (
         <Link
@@ -38,6 +42,7 @@ export default async function Page({
           href={`/admin/appointments/${a.id}`}
           className="panel block mb-4"
         >
+          <p className="font-mono text-orange mb-2">{a.dossier_number || "Aanvraag — nog geen werkdossier"}{a.archived_at ? " · Gearchiveerd" : ""}</p>
           {a.vehicles.registration} · {a.vehicles.make_model}
           <p className="mt-3 text-muted">
             {a.requested_date} · {statuses[a.status as keyof typeof statuses]}

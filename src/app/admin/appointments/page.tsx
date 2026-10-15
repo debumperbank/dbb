@@ -7,6 +7,7 @@ export default async function Page() {
   const { data, error } = await db
     .from("appointments")
     .select("*,customers(*),vehicles(*)")
+    .is("archived_at", null)
     .order("requested_date");
   if (error) return <CrmError />;
   const appointments = data as unknown as Appointment[];
@@ -40,6 +41,7 @@ export default async function Page() {
                 key={a.id}
                 className="panel block hover:border-orange"
               >
+                <p className="font-mono text-orange mb-2">{a.dossier_number}</p>
                 <div className="flex flex-wrap justify-between gap-3">
                   <strong>
                     {a.vehicles.registration} · {a.vehicles.make_model}

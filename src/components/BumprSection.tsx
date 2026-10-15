@@ -19,16 +19,15 @@ export function BumprSection({
             BUMPR<span className="text-orange">.</span>
           </h2>
           <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.27em] text-orange">
-            Premium car care / developed for real use
+            Premium car care / collectie in ontwikkeling
           </p>
           <p className="mt-7 max-w-[53ch] text-[15px] leading-7 text-muted md:text-base">
-            HYDRO-COAT, Fast Detailer, Polish, Iron Remover en microvezeldoeken. Ontdek onze complete lijn voor bescherming,
-            glans en onderhoud — ontwikkeld als verlengstuk van De Bumperbank.
+            We werken aan onze eigen collectie microvezeldoeken en autoverzorgingsmiddelen. Maak kennis met het merk en onze plannen. De producten zijn nog niet verkrijgbaar.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/bumpr" className="btn btn-primary">Ontdek BUMPR →</Link>
-            <Link href="/bumpr" className="btn btn-ghost">Bekijk producten</Link>
+            <Link href="/webshop" className="btn btn-ghost">Webshop in voorbereiding</Link>
           </div>
 
           <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-5 font-mono text-[9.5px] uppercase tracking-[0.16em] text-paper/45">
@@ -44,7 +43,7 @@ export function BumprSection({
           className="group relative overflow-hidden rounded-xl border border-orange/20 bg-[#101216] p-3 shadow-[0_28px_80px_rgba(0,0,0,.35)]"
         >
           <div className="absolute left-5 top-5 z-10 rounded-full border border-orange/40 bg-black/55 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-orange backdrop-blur-sm">
-            BUMPR performance line
+            Conceptcollectie · nog niet verkrijgbaar
           </div>
           <Image
             src="/bumpr/collection-2026/collectie.png"

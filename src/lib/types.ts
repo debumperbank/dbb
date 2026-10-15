@@ -56,6 +56,7 @@ export interface RestorationEventPhoto {
 }
 
 export interface BumprProduct {
+  brand?: string;
   is_available?: boolean;
   id: string;
   slug: string;
@@ -110,6 +111,7 @@ export type Database = {
     };
     Views: {};
     Functions: {
+      merge_customer_records: { Args: { source_id: string; target_id: string }; Returns: string };
       submit_mobile_request: {
         Args: { payload: Record<string, unknown>; photo_paths: string[] };
         Returns: string;

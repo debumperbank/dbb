@@ -1,3 +1,4 @@
+import { RecordActions } from "@/components/RecordActions";
 import { crmClient } from "@/lib/crm";
 import { LeadStatusSelect } from "../lead-status-select";
 import {
@@ -33,11 +34,13 @@ async function getBookings() {
     supabase
       .from("car_wash_bookings")
       .select("*")
-      .order("created_at", { ascending: false }),
+      .is("archived_at", null)
+    .order("created_at", { ascending: false }),
     supabase
       .from("workshop_bookings")
       .select("*")
-      .order("created_at", { ascending: false }),
+      .is("archived_at", null)
+    .order("created_at", { ascending: false }),
   ]);
   return {
     carWash: (carWash ?? []) as unknown as CarWashRow[],
@@ -86,6 +89,7 @@ export default async function AdminBookingsPage() {
                 />
               </div>
               {b.notes && <p className="text-sm text-muted mt-3">{b.notes}</p>}
+              <RecordActions kind="car_wash_bookings" id={b.id} />
             </div>
           ))}
           {carWash.length === 0 && (
@@ -122,6 +126,7 @@ export default async function AdminBookingsPage() {
                 />
               </div>
               {b.notes && <p className="text-sm text-muted mt-3">{b.notes}</p>}
+              <RecordActions kind="workshop_bookings" id={b.id} />
             </div>
           ))}
           {workshop.length === 0 && (

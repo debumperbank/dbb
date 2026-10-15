@@ -1,10 +1,12 @@
 "use client";
+import { SHOP_OPEN } from "@/lib/shop-status";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
 export function AddToCart({ id, name, available = true }: { id: string; name: string; available?: boolean }) {
   const { add, ready } = useCart();
   const [added, setAdded] = useState(false);
+  if (!SHOP_OPEN) return null;
   return (
     <div className="mt-7">
       <button

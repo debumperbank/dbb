@@ -1,9 +1,11 @@
 "use client";
+import { SHOP_OPEN } from "@/lib/shop-status";
 import Link from "next/link";
 import { useCart } from "./CartProvider";
 export function CartLink({ onClick }: { onClick?: () => void }) {
   const { items } = useCart();
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
+  if (!SHOP_OPEN) return null;
   return (
     <Link
       href="/bumpr/mandje"

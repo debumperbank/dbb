@@ -1,3 +1,4 @@
+import { SHOP_OPEN, SHOP_CLOSED_MESSAGE } from "@/lib/shop-status";
 import { secureRequest } from "@/lib/request-security";
 import { NextResponse } from "next/server";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
@@ -11,6 +12,7 @@ import {
 } from "@/lib/mollie";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  if (!SHOP_OPEN) return NextResponse.json({ error: SHOP_CLOSED_MESSAGE }, { status: 503, headers: { "Cache-Control": "no-store" } });
   const secured = await secureRequest(request, 20000, true);
   if (secured.error) return secured.error;
   request = secured.request!;

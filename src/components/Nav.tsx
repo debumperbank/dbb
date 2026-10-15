@@ -12,6 +12,7 @@ const links = [
   ["Werkplaats", "/werkplaats"],
   ["Detailing", "/detailing"],
   ["BUMPR", "/bumpr"],
+  ["Webshop", "/webshop"],
   ["Occasions", "/occasions"],
   ["Auto verkopen", "/auto-verkopen"],
   ["Over ons", "/over-ons"],

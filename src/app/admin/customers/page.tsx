@@ -6,14 +6,15 @@ export default async function Page() {
   const { data, error } = await db
     .from("customers")
     .select("*")
+    .is("merged_into", null)
     .order("created_at", { ascending: false });
   if (error) return <CrmError />;
   return (
     <div>
       <h1 className="text-3xl mb-8">Klanten</h1>
       <p className="text-muted mb-6">
-        Iedere aanvraag heeft een eigen klantdossier. Ingestuurde gegevens
-        worden niet automatisch samengevoegd.
+        Een klantenfiche verzamelt voertuigen, aanvragen en werkdossiers.
+        Koppel een terugkerende klant na controle aan de bestaande fiche.
       </p>
       <div className="space-y-3">
         {!data?.length && <p>Nog geen klanten.</p>}

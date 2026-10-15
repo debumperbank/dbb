@@ -5,7 +5,8 @@ export default async function Page() {
   const db = await crmClient();
   const { data, error } = await db
     .from("vehicles")
-    .select("*,customers(*)")
+    .select("*,customers!inner(*)")
+    .is("customers.merged_into", null)
     .order("created_at", { ascending: false });
   if (error) return <CrmError />;
   return (

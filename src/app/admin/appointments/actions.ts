@@ -58,6 +58,8 @@ export async function saveAppointment(id: string, form: FormData) {
     "/admin",
     "/admin/appointments",
     "/admin/work-orders",
+    "/admin/dossiers",
+    "/admin/customers",
     `/admin/appointments/${id}`,
   ])
     revalidatePath(path);

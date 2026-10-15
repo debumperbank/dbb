@@ -1,3 +1,4 @@
+import { RecordActions } from "@/components/RecordActions";
 import { crmClient, euro, displayDate } from "@/lib/crm";
 import type { ShopOrder } from "@/lib/shop";
 import { MONEYBIRD_ADMINISTRATION } from "@/lib/moneybird";
@@ -7,6 +8,7 @@ export default async function Page() {
   const { data, error } = await db
     .from("shop_orders")
     .select("*")
+    .is("archived_at", null)
     .order("created_at", { ascending: false })
     .limit(100);
   const enabled = process.env.MONEYBIRD_ENABLED === "true";
@@ -34,6 +36,7 @@ export default async function Page() {
         <div className="space-y-5">
           {(data as unknown as ShopOrder[]).map((o) => (
             <article key={o.id} className="panel">
+              <RecordActions kind="shop_orders" id={o.id} />
               <div className="flex justify-between flex-wrap gap-4">
                 <h2 className="text-xl">
                   {o.customer.name} · {euro(o.total_cents)}

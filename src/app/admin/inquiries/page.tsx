@@ -1,3 +1,4 @@
+import { RecordActions } from "@/components/RecordActions";
 import { crmClient } from "@/lib/crm";
 import { LeadStatusSelect } from "../lead-status-select";
 import { updateInquiryStatus } from "../leads-actions";
@@ -17,6 +18,7 @@ async function getInquiries(): Promise<InquiryRow[]> {
   const { data } = await supabase
     .from("inquiries")
     .select("*")
+    .is("archived_at", null)
     .order("created_at", { ascending: false });
   return (data ?? []) as unknown as InquiryRow[];
 }
@@ -53,6 +55,7 @@ export default async function AdminInquiriesPage() {
                 onChange={updateInquiryStatus}
               />
             </div>
+            <RecordActions kind="inquiries" id={i.id} />
             {i.message && (
               <p className="text-sm text-muted mt-3">{i.message}</p>
             )}

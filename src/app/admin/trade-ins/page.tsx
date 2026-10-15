@@ -1,3 +1,4 @@
+import { RecordActions } from "@/components/RecordActions";
 import { crmClient, type TradeIn, euro } from "@/lib/crm";
 import { TradeInEditor } from "@/components/TradeInEditor";
 import { RequestPhotos } from "@/components/RequestPhotos";
@@ -7,6 +8,7 @@ export default async function Page() {
   const { data, error } = await db
     .from("trade_ins")
     .select("*")
+    .is("archived_at", null)
     .order("created_at", { ascending: false });
   if (error) return <CrmError />;
   return (
@@ -39,6 +41,7 @@ export default async function Page() {
               ))}
             </dl>
             <RequestPhotos id={t.id} kind="trade_in" />
+            <RecordActions kind="trade_ins" id={t.id} />
             <TradeInEditor id={t.id} status={t.status} notes={t.notes} />
           </article>
         ))}

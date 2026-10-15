@@ -1,3 +1,5 @@
+import { RecordActions } from "@/components/RecordActions";
+import Link from "next/link";
 import { JobPhotoUpload } from "@/components/JobPhotoUpload";
 import { notFound } from "next/navigation";
 import { crmClient, type Appointment } from "@/lib/crm";
@@ -22,6 +24,8 @@ export default async function Page({
   return (
     <div className="max-w-5xl">
       <div className="eyebrow">Afspraak & werkorder</div>
+      <p className="font-mono text-orange mt-3">{a.dossier_number ? `Dossier ${a.dossier_number}` : "Aanvraag — nog geen werkdossier"}</p>
+      <Link className="inline-block underline mt-3" href={`/admin/customers/${(data as Record<string, unknown>).customer_id}`}>Klantenfiche en andere opdrachten bekijken</Link>
       <h1 className="text-3xl mt-3 mb-8">
         {a.vehicles.registration} · {a.vehicles.make_model}
       </h1>
@@ -51,6 +55,7 @@ export default async function Page({
         </div>
       </div>
       <AppointmentEditor appointment={a} />
+      <RecordActions kind="appointments" id={id} archived={Boolean(data.archived_at)} />
       <JobPhotoUpload id={id} />
     </div>
   );
