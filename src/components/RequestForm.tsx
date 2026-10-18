@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { ConsentCheckbox } from "./ConsentCheckbox";
 import { services } from "@/lib/services";
+import { PUBLIC_OFFERING } from "@/lib/public-offering";
 function Field({
   name,
   label,
@@ -36,7 +37,7 @@ export function RequestForm({ kind }: { kind: "appointment" | "trade_in" }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [done, setDone] = useState(false),
-    [location, setLocation] = useState("mobile");
+    [location, setLocation] = useState("discuss");
   const sending = useRef(false);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -128,11 +129,11 @@ export function RequestForm({ kind }: { kind: "appointment" | "trade_in" }) {
             <legend className="text-xl px-2">3. Werkzaamheden</legend>
             <label className="block">
               Waarmee kunnen we helpen?
-              <select className="field" name="service" required defaultValue="">
+              <select className="field" name="service" required defaultValue="detailing">
                 <option value="" disabled>
                   Kies een dienst
                 </option>
-                {Object.entries(services).map(([key, label]) => (
+                {Object.entries(services).filter(([key]) => PUBLIC_OFFERING.mobileWorkshop || key === "detailing").map(([key, label]) => (
                   <option key={key} value={key}>
                     {label}
                   </option>
@@ -140,7 +141,7 @@ export function RequestForm({ kind }: { kind: "appointment" | "trade_in" }) {
               </select>
             </label>
             <label className="block mt-5">
-              Beschrijf de werkzaamheden of klachten
+              {PUBLIC_OFFERING.mobileWorkshop ? "Beschrijf de werkzaamheden of klachten" : "Welke detailingbehandeling wil je bespreken?"}
               <textarea
                 className="field"
                 name="description"
@@ -160,9 +161,9 @@ export function RequestForm({ kind }: { kind: "appointment" | "trade_in" }) {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                <option value="mobile">Werkzaamheden op mijn locatie</option>
+                {PUBLIC_OFFERING.mobileWorkshop && <option value="mobile">Werkzaamheden op mijn locatie</option>}
                 <option value="discuss">
-                  Eerst overleggen wat mogelijk is
+                  Locatie in overleg
                 </option>
               </select>
             </label>
@@ -190,7 +191,7 @@ export function RequestForm({ kind }: { kind: "appointment" | "trade_in" }) {
               </label>
             </div>
             <p className="text-muted text-sm mt-5">
-              We houden rekening met werkzaamheden, reistijd en locatie. Dit is
+              We bespreken de behandeling, de locatie en de planning samen. Dit is
               een aanvraag, nog geen definitieve afspraak.
             </p>
           </fieldset>

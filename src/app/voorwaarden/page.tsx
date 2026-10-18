@@ -14,9 +14,10 @@ export default function VoorwaardenPage() {
           <section>
             <h2 className="text-lg text-paper mb-2">1. Wie we zijn</h2>
             <p>
-              De Bumperbank is een eenmanszaak gevestigd in Hulst, actief in de verkoop van
-              tweedehands voertuigen (inclusief voertuigen met schade), voertuigherstelling,
-              mobiele car wash en de verkoop van BUMPR-verzorgingsproducten.
+              De Bumperbank is een eenmanszaak gevestigd in Hulst. Het huidige aanbod bestaat uit
+              detailing op afspraak, locatie in overleg, en autoverzorgingsproducten.
+              Voertuighandel en onderhouds- en herstellingsdiensten worden voorlopig niet publiek aangeboden.
+              Bepalingen over deze activiteiten blijven van toepassing op eventuele bestaande overeenkomsten.
               KvK-nummer: 42171617. Btw-identificatienummer: NL005557496B77.
             </p>
           </section>
@@ -51,7 +52,7 @@ export default function VoorwaardenPage() {
           <section>
             <h2 className="text-lg text-paper mb-2">5. Herstellingen &amp; car wash</h2>
             <p>
-              Voor werkplaatsdiensten en de mobiele car wash geldt dat een afspraak pas definitief
+              Voor detailing en eventuele bestaande werkplaats- of car wash-afspraken geldt dat een afspraak pas definitief
               is na bevestiging door De Bumperbank. Kosten voor bijkomend werk dat pas tijdens de
               uitvoering aan het licht komt, worden vooraf met de klant besproken.
             </p>

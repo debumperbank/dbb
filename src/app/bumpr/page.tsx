@@ -14,7 +14,7 @@ export default function BumprPage() {
           <p className="mt-4 font-mono text-sm tracking-widest text-orange">PREMIUM CAR CARE</p>
           <h2 className="mt-8 text-3xl md:text-4xl">Voor de auto waar je zuinig op bent.</h2>
           <p className="mt-5 text-muted leading-relaxed">BUMPR is ons eigen merk voor autoverzorging. Vanuit De Bumperbank werken we aan een collectie voor wassen, verzorgen en beschermen, met aandacht voor praktisch gebruik.</p>
-          <p className="mt-4 text-muted leading-relaxed">De eerste producten zijn in ontwikkeling. We bereiden onze microvezelcollectie voor en selecteren productiepartners voor onze verzorgingsmiddelen. Het definitieve assortiment en de productspecificaties volgen na beoordeling van de producten.</p>
+          <p className="mt-4 text-muted leading-relaxed">Onze microvezeldoeken zijn voorbereid voor productie met eigen logo. Na de definitieve goedkeuring en daadwerkelijke bestelling verwachten we ongeveer een maand tot levering; dit blijft een inschatting die we met de producent bevestigen. Voor onze verzorgingsmiddelen vergelijken we formules en productiepartners. Het definitieve assortiment volgt zodra de producten verkoopklaar zijn.</p>
           <Link href="/contact" className="btn btn-primary mt-7">Vragen over BUMPR? →</Link>
         </div>
         <figure><Image src="/bumpr/collection-2026/collectie.png" width={1672} height={941} priority sizes="(max-width: 1023px) 100vw, 50vw" alt="Conceptbeeld van de BUMPR-autoverzorgingslijn" className="w-full h-auto rounded-xl border border-white/10"/><figcaption className="mt-3 text-xs text-muted">Conceptvisualisatie: verpakking, samenstelling en assortiment kunnen nog wijzigen. Nog niet verkrijgbaar.</figcaption></figure>

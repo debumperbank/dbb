@@ -1,3 +1,4 @@
+import { PUBLIC_OFFERING, PAUSED_OFFERING_MESSAGE } from "@/lib/public-offering";
 import { validLead } from "@/lib/lead-validation";
 import { secureRequest } from "@/lib/request-security";
 import { NextResponse } from 'next/server';
@@ -17,6 +18,8 @@ export async function POST(request: Request) {
     if (!validLead(body)) return NextResponse.json({ error: "Controleer de ingevulde gegevens." }, { status: 400 });
 
     const { name, email, phone, message, listing_id, company, consent } = body as Record<string, any>;
+
+    if (!PUBLIC_OFFERING.vehicleTrading && listing_id) return NextResponse.json({error: PAUSED_OFFERING_MESSAGE}, {status: 503, headers: {"Cache-Control":"no-store"}});
 
     // Honeypot: a real visitor never fills this field in (it's hidden via
     // CSS). A bot that blindly fills every field will. Pretend success so

@@ -1,3 +1,4 @@
+import { PUBLIC_OFFERING, PAUSED_OFFERING_MESSAGE } from "@/lib/public-offering";
 import { validLead } from "@/lib/lead-validation";
 import { secureRequest } from "@/lib/request-security";
 import { NextResponse } from 'next/server';
@@ -6,6 +7,7 @@ import { notifyAdmin } from '@/lib/resend';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(request: Request) {
+  if (!PUBLIC_OFFERING.mobileWorkshop) return NextResponse.json({error: PAUSED_OFFERING_MESSAGE}, {status: 503, headers: {"Cache-Control":"no-store"}});
   const secured = await secureRequest(request, 20000, true);
   if (secured.error) return secured.error;
   request = secured.request!;

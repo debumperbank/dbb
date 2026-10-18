@@ -4,10 +4,10 @@ export function ContactTabs({product = ""}: {product?: string}) {
   return (
     <div className="max-w-3xl">
       <div className="panel mb-8">
-        <h2 className="text-xl">Onderhoud, reparatie of detailing nodig?</h2>
+        <h2 className="text-xl">Detailing voor jouw auto?</h2>
         <p className="text-muted mt-3 mb-5">
-          Gebruik het afspraakformulier om je voertuig, locatie en voorkeur door
-          te geven.
+          Vraag een behandeling aan. We bespreken jouw wensen en de planning;
+          de locatie stemmen we samen af.
         </p>
         <Link href="/afspraak" className="btn btn-primary">
           Afspraak aanvragen →

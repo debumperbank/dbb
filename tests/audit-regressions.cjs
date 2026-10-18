@@ -19,6 +19,7 @@ for(const route of ['inquiries','car-wash','workshop-bookings']){
  for(const failure of [false,true])test(route+': '+(failure?'mail failure preserves saved request':'reject non-boolean consent'),async()=>{
  let saves=0,notifications=0;
  const {POST}=load(`app/api/${route}/route.ts`,{
+ '@/lib/public-offering':{PUBLIC_OFFERING:{mobileWorkshop:true,vehicleTrading:true}},
  'next/server':{NextResponse:{json:(body,init)=>Response.json(body,init)}},
  '@/lib/supabase/admin':{createAdminClient:()=>({from:()=>({insert:async()=>{saves++;return {error:null}}})})},
  '@/lib/resend':{notifyAdmin:async()=>{notifications++;return false}}
@@ -28,3 +29,5 @@ for(const route of ['inquiries','car-wash','workshop-bookings']){
  if(failure)assert.equal((await response.json()).ok,true);
  });
 }
+
+for(const route of ['car-wash','workshop-bookings','inquiries']) test(route+': paused public offering never saves or notifies',async()=>{let saves=0,notifications=0;const {POST}=load(`app/api/${route}/route.ts`,{'next/server':{NextResponse:{json:(body,init)=>Response.json(body,init)}},'@/lib/supabase/admin':{createAdminClient:()=>({from:()=>({insert:async()=>{saves++;return {error:null}}})})},'@/lib/resend':{notifyAdmin:async()=>{notifications++;return true}}});const body={name:'Test',email:'test@example.com',address:'Straat 1',consent:true,...(route==='inquiries'?{listing_id:'11111111-1111-4111-8111-111111111111'}:{})};const response=await POST(new Request('https://example.com',{method:'POST',body:JSON.stringify(body)}));assert.equal(response.status,503);assert.equal(saves,0);assert.equal(notifications,0);});

@@ -23,12 +23,12 @@ export default function Page() {
             Polijsten en lakverzorging in overleg
           </div>
           <div className="panel text-xl">
-            Bescherming en BUMPR-verzorgingsproducten
+            Lakbescherming in overleg
           </div>
         </div>
         <p className="text-muted max-w-2xl mb-7">
-          Voor werk op locatie bespreken we vooraf de ruimte en de benodigde
-          voorzieningen. Voeg foto’s toe voor een beter beeld van je auto.
+          Detailing op afspraak, locatie in overleg. We spreken vooraf af welke
+          behandeling bij je auto past, waar die kan plaatsvinden en wat de kosten zijn. Foto’s helpen ons om je aanvraag te beoordelen.
         </p>
         <Link href="/afspraak" className="btn btn-primary">
           Afspraak aanvragen →

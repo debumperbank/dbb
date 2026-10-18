@@ -1,53 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
-
-export function OurStory() {
-  return (
-    <section className="relative overflow-hidden bg-[#0d0f11] px-5 py-20 md:px-8 md:py-24">
-      <div className="absolute right-0 top-0 h-full w-[35%] bg-[linear-gradient(135deg,transparent_0%,rgba(245,208,40,.035)_48%,transparent_49%)]" />
-      <div className="relative mx-auto grid max-w-[1480px] gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-        <div>
-          <div className="eyebrow"><span className="dot" /> Over De Bumperbank</div>
-          <h2 className="mt-4 max-w-[13ch] text-4xl md:text-5xl">
-            Automotive ervaring. Service bij jou op locatie.
-          </h2>
-          <p className="mt-5 max-w-[45ch] text-sm leading-7 text-muted">
-            Eén aanspreekpunt, duidelijke afspraken en aandacht voor de auto alsof het onze eigen wagen is.
-          </p>
-          <Link href="/over-ons" className="btn btn-ghost mt-7">Meer over ons →</Link>
-        </div>
-
-        <div className="grid gap-5 text-sm leading-7 text-muted md:grid-cols-2">
-          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">01 / Persoonlijk</span>
-            <p className="mt-4">
-              De Bumperbank werkt bewust kleinschalig. Daardoor blijft er aandacht voor het voertuig,
-              de klant en het werk dat echt nodig is.
-            </p>
-          </div>
-          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">02 / Duidelijk</span>
-            <p className="mt-4">
-              We bespreken vooraf de werkzaamheden, leggen uit wat we aantreffen en communiceren helder
-              over aanpak en kosten.
-            </p>
-          </div>
-          <div className="rounded-xl border border-white/10 bg-black/20 p-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">03 / Verantwoord</span>
-            <p className="mt-4">
-              Vloeistoffen en materialen worden zorgvuldig opgevangen en via daarvoor bestemde kanalen
-              afgevoerd of gerecycled.
-            </p>
-          </div>
-          <div className="rounded-xl border border-orange/25 bg-orange/[0.04] p-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange">04 / Onze visie</span>
-            <p className="mt-4 text-paper/80">
-              Werk dat veilig en professioneel op locatie kan, brengen we naar de klant. Voor grotere
-              werkzaamheden zoeken we de passende werkplaatsoplossing.
-            </p>
-            <p className="mt-5 font-display text-lg font-semibold text-paper">Jouw auto. Onze zorg.</p>
-          </div>
-        </div>
+export function OurStory({full = false}: {full?: boolean}) {
+  return <section className="bg-bg-soft px-5 py-20 md:px-8 md:py-24"><div className="mx-auto max-w-site">
+    <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-16">
+      <div><div className="eyebrow">Het verhaal achter De Bumperbank</div>
+        <h2 className="mt-5 max-w-xl text-4xl md:text-5xl">Autopassie.<br /><span className="text-orange">En meer tijd samen.</span></h2>
+        <p className="mt-6 text-muted leading-8">Auto’s zijn mijn passie. Onze kinderen en ons gezin zijn de reden waarom ik die passie op mijn eigen manier wil volgen. Ik wil er voor hen zijn, samen op pad kunnen gaan en de vrijheid hebben om ons leven wat meer zelf in te delen.</p>
+        <p className="mt-5 text-muted leading-8">Daar komt De Bumperbank vandaan: de wens om iets van onszelf op te bouwen. Met plezier in het werk, ruimte om te reizen en tijd voor de kleine momenten met de kinderen. Stap voor stap zoeken we een manier van ondernemen die bij ons gezin past.</p>
+        {full && <><p className="mt-5 text-muted leading-8">Voor mezelf werken betekent voor mij dat ik zelf keuzes kan maken over mijn werk en mijn tijd. Ik wil mijn energie steken in de dingen waar ik achter sta, terwijl er ook ruimte blijft om onze kinderen te zien opgroeien en samen herinneringen te maken.</p><p className="mt-5 text-muted leading-8">Daarom houden we het aanbod nu bewust overzichtelijk: detailing op afspraak en een webshop met autoverzorgingsproducten. We bouwen ook aan ons eigen merk BUMPR. Zo krijgt De Bumperbank de kans om te groeien op een manier die voor ons werkt.</p></>}
+        <p className="mt-5 text-muted leading-8">Mijn autoliefde loopt van oldtimers tot racen en simracen. De techniek, het karakter van een klassieke auto en de concentratie van een goede ronde blijven me boeien. Diezelfde aandacht voor details neem ik mee in De Bumperbank.</p>
+        {!full && <Link href="/over-ons" className="btn btn-ghost mt-7">Lees ons verhaal →</Link>}
       </div>
-    </section>
-  );
+      <figure className="min-w-0"><Image src="/ons-verhaal-black-hornet.png" width={1448} height={1086} alt="Visualisatie van onze eigen auto naast de zwart-gele Black Hornet die we in de toekomst willen bouwen" sizes="(max-width: 1023px) 100vw, 55vw" className="w-full h-auto rounded-xl border border-white/10" /><figcaption className="mt-4 text-xs text-muted leading-6">Onze eigen auto naast het toekomstbeeld van de Black Hornet. De E36-basis hebben we al; de afgebeelde Black Hornet is een visualisatie van wat we willen bouwen.</figcaption>
+        <div className="mt-6 border-l-2 border-orange pl-5"><p className="font-display text-xl">Grote plannen beginnen met iets kleins.</p><p className="mt-2 text-sm text-muted leading-7">Vandaag bouwen we aan detailing, de webshop en BUMPR. De Black Hornet is één van de projecten waar we voor de toekomst van dromen.</p></div>
+      </figure>
+    </div>
+    {full && <section className="mt-12 max-w-3xl border-t border-white/10 pt-9"><div className="eyebrow">De passie achter het werk</div><h3 className="mt-4 text-2xl">Van oldtimers tot de simulator.</h3><p className="mt-5 text-muted leading-8">Bij oldtimers gaat het voor mij ook om het verhaal van een auto: de lijnen, de techniek en het karakter. Racen brengt daar een andere energie bij. Het draait om focus, ritme en steeds een beetje beter begrijpen hoe een auto reageert.</p><p className="mt-5 text-muted leading-8">Ook simracen hoort bij mijn achtergrond. Het is een manier om mijn liefde voor autosport te beleven en met dezelfde concentratie op zoek te gaan naar een mooie ronde. Die interesse in auto’s verbindt de verschillende kanten van De Bumperbank, van detailing tot onze eigen toekomstige projecten.</p></section>}
+    {full && <div className="mt-12 max-w-3xl border-t border-white/10 pt-9"><h3 className="text-2xl">Een verhaal dat met ons mee mag groeien.</h3><p className="mt-5 text-muted leading-8">Onze liefde voor sleutelen blijft. Als de omstandigheden later passen, kunnen herstellingen weer een plek krijgen binnen De Bumperbank. Voor nu richten we onze aandacht op detailing en de webshop, met dezelfde zorg voor jouw auto als voor die van onszelf.</p><p className="mt-5 text-muted leading-8">Met een behandeling, een productaanvraag of gewoon een berichtje maak je kennis met de mensen achter De Bumperbank. We vinden het fijn als je een stukje met ons meegroeit.</p><Link href="/contact" className="btn btn-primary mt-7">Stuur ons een bericht →</Link></div>}
+  </div></section>;
 }

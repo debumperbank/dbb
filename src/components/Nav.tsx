@@ -5,23 +5,14 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { CartLink } from "./CartLink";
 import { BrandLogo } from "./BrandLogo";
+import { PUBLIC_OFFERING, publicNavigationLinks } from "@/lib/public-offering";
 
-const links = [
-  ["Home", "/"],
-  ["Mobiele autoservice", "/mobiele-autoservice"],
-  ["Werkplaats", "/werkplaats"],
-  ["Detailing", "/detailing"],
-  ["BUMPR", "/bumpr"],
-  ["Webshop", "/webshop"],
-  ["Occasions", "/occasions"],
-  ["Auto verkopen", "/auto-verkopen"],
-  ["Over ons", "/over-ons"],
-  ["Contact", "/contact"],
-];
+const links = publicNavigationLinks();
 
 export function Nav() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
+  const compact = PUBLIC_OFFERING.mobileWorkshop || PUBLIC_OFFERING.vehicleTrading;
 
   return (
     <header onKeyDown={(event) => { if (event.key === "Escape") { setOpen(false); event.currentTarget.querySelector<HTMLButtonElement>('[aria-controls="mobile-nav"]')?.focus(); } }} className="site-header sticky top-0 z-50 border-b border-white/10 bg-[#08090a]/95 backdrop-blur-xl">
@@ -33,10 +24,10 @@ export function Nav() {
             aria-label="De Bumperbank — home"
             className="group shrink-0"
           >
-            <BrandLogo className="w-40 min-[360px]:w-44 sm:w-[208px] lg:w-[238px] 2xl:w-[180px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
+            <BrandLogo className="w-40 min-[360px]:w-44 sm:w-[208px] lg:w-[238px] xl:w-[180px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
           </Link>
 
-          <div className="hidden 2xl:flex flex-1 items-center justify-center gap-3">
+          <div className={`${compact ? "hidden 2xl:flex" : "hidden xl:flex"} flex-1 items-center justify-center gap-3`}>
             {links.map(([label, href]) => (
               <Link
                 key={href}
@@ -58,8 +49,8 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="btn btn-primary !hidden md:!inline-flex !min-h-[46px] !px-2 sm:!px-5 !text-xs sm:!text-[12.5px] whitespace-nowrap"
             >
-              <span className="sm:hidden">Afspraak →</span>
-              <span className="hidden sm:inline">Afspraak aanvragen&nbsp; →</span>
+              <span className="sm:hidden">Detailing →</span>
+              <span className="hidden sm:inline">{PUBLIC_OFFERING.mobileWorkshop ? "Afspraak aanvragen" : "Detailing aanvragen"}&nbsp; →</span>
             </Link>
             <CartLink onClick={() => setOpen(false)} />
             <button
@@ -67,7 +58,7 @@ export function Nav() {
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen(!open)}
-              className="2xl:hidden flex h-[46px] w-[46px] items-center justify-center rounded-md border border-white/20 bg-white/[0.02] transition-colors hover:border-orange hover:text-orange"
+              className={`${compact ? "2xl:hidden" : "xl:hidden"} flex h-[46px] w-[46px] items-center justify-center rounded-md border border-white/20 bg-white/[0.02] transition-colors hover:border-orange hover:text-orange`}
             >
               <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
                 {open ? <path d="m4 4 12 12M16 4 4 16" /> : <path d="M2 5h16M2 10h16M2 15h16" />}
@@ -79,14 +70,14 @@ export function Nav() {
         <div
           id="mobile-nav"
           hidden={!open}
-          className="2xl:hidden border-t border-white/10 pb-5 max-h-[72vh] overflow-y-auto"
+          className={`${compact ? "2xl:hidden" : "xl:hidden"} border-t border-white/10 pb-5 max-h-[72vh] overflow-y-auto`}
         >
           <Link
             href="/afspraak"
             onClick={() => setOpen(false)}
             className="btn btn-primary md:!hidden w-full justify-center my-4"
           >
-            Afspraak aanvragen →
+            {PUBLIC_OFFERING.mobileWorkshop ? "Afspraak aanvragen →" : "Detailing aanvragen →"}
           </Link>
           {links.map(([label, href]) => (
             <Link

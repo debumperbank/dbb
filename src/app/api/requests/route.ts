@@ -1,3 +1,4 @@
+import { isPausedPublicRequest, PAUSED_OFFERING_MESSAGE } from "@/lib/public-offering";
 import { secureRequest } from "@/lib/request-security";
 import { notifyNewRequest } from "@/lib/request-notification";
 import { validPhoto, photoExtension } from "@/lib/photos";
@@ -21,6 +22,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Ongeldige aanvraag." }, { status: 400 });
   }
   if (form.get("company")) return NextResponse.json({ ok: true });
+  if (isPausedPublicRequest(form))
+    return NextResponse.json({error: PAUSED_OFFERING_MESSAGE}, {status: 503, headers: {"Cache-Control":"no-store"}});
   let payload: ReturnType<typeof validateRequest>;
   const photos = form
     .getAll("photos")

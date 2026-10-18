@@ -1,12 +1,11 @@
 import Link from "next/link";
+import { PUBLIC_OFFERING } from "@/lib/public-offering";
 
 const services = [
-  { title: "Mobiele autoservice", href: "/mobiele-autoservice", desc: "Onderhoud & reparaties op locatie", icon: "wrench" },
-  { title: "Werkplaats", href: "/werkplaats", desc: "Kleine en grotere herstellingen", icon: "gear" },
-  { title: "Detailing", href: "/detailing", desc: "Interieur & exterieur in topconditie", icon: "sparkle" },
-  { title: "BUMPR", href: "/bumpr", desc: "Professionele verzorgingsproducten", icon: "bottle" },
-  { title: "Occasions", href: "/occasions", desc: "Betrouwbare auto's met zekerheid", icon: "car" },
-  { title: "Auto verkopen", href: "/auto-verkopen", desc: "Snel en gemakkelijk je auto verkopen", icon: "tag" },
+  {title:"Detailing op afspraak",href:"/detailing",desc:"Interieur, lakverzorging en bescherming. Locatie in overleg.",icon:"sparkle"},
+  {title:"Autoverzorging voor thuis",href:"/webshop",desc:"Ontdek DRIFT, GECKO en Cartec in onze productcatalogus.",icon:"bottle"},
+  ...(PUBLIC_OFFERING.mobileWorkshop ? [{title:"Mobiele autoservice",href:"/mobiele-autoservice",desc:"Onderhoud en reparaties in overleg",icon:"wrench"},{title:"Werkplaats",href:"/werkplaats",desc:"Bespreek de herstelling van jouw auto",icon:"gear"}] : []),
+  ...(PUBLIC_OFFERING.vehicleTrading ? [{title:"Occasions",href:"/occasions",desc:"Bekijk ons aanbod",icon:"car"},{title:"Auto verkopen",href:"/auto-verkopen",desc:"Bied je auto aan",icon:"tag"}] : []),
 ];
 
 function ServiceIcon({ icon }: { icon: string }) {
@@ -31,14 +30,14 @@ function ServiceIcon({ icon }: { icon: string }) {
 
 export function ServiceGrid() {
   return (
-    <section id="diensten" className="service-rail relative z-20 scroll-mt-32 px-4 pb-5 md:px-8 lg:-mt-[86px] lg:pb-7">
+    <section id="diensten" className="service-rail relative z-20 scroll-mt-32 px-4 pb-5 md:px-8 lg:-mt-[50px] lg:pb-7">
       <div className="mx-auto max-w-[1480px]">
         <div className="mb-3 flex items-center justify-between gap-5 px-1 lg:px-0">
-          <div className="eyebrow"><span className="dot" /> Alles voor je auto</div>
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-paper/35 md:block">Kies een dienst →</span>
+          <div className="eyebrow"><span className="dot" /> Onze aandacht voor jouw auto</div>
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-paper/35 md:block">Ontdek de mogelijkheden →</span>
         </div>
 
-        <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid gap-2.5 sm:grid-cols-2">
           {services.map((service) => (
             <Link
               href={service.href}

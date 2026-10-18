@@ -125,7 +125,7 @@ function form() {
     registration: "AB-12-CD",
     make_model: "Test auto",
     mileage_km: "10000",
-    service: "onderhoud",
+    service: "detailing",
     location_type: "discuss",
     service_address: "",
     requested_date: "2099-01-01",
@@ -233,3 +233,5 @@ test("mail failure keeps saved request and photos and returns success", async ()
   assert.equal(a.calls.removed.length, 0);
   assert.equal((await r.json()).ok, true);
 });
+
+for (const change of [{service:"onderhoud"},{service:"reparatie"},{service:"diagnose"},{service:"overig"},{location_type:"mobile"},{kind:"trade_in"}]) test("paused public request is rejected before upload or persistence "+JSON.stringify(change),async()=>{const a=api();const f=form();for(const [key,value] of Object.entries(change))f.set(key,value);const response=await a.request(request(f));assert.equal(response.status,503);assert.equal(a.calls.clients,0);assert.equal(a.calls.uploads.length,0);assert.equal(a.calls.notifications.length,0);});

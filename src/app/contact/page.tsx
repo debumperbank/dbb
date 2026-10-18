@@ -4,7 +4,7 @@ import { ContactTabs } from '@/components/ContactTabs';
 
 export const metadata: Metadata = {
   title: "Contact in Hulst | De Bumperbank",
-  description: "Neem contact op met De Bumperbank in Hulst voor vragen over voertuigen, herstellingen of mobiele car wash. Stuur een bericht of vraag een afspraak aan.",
+  description: "Neem contact op voor detailing op afspraak of advies over onze autoverzorgingsproducten. Locatie in overleg.",
   alternates: { canonical: "/contact" },
 };
 
@@ -17,7 +17,7 @@ export default async function ContactPage({searchParams}: {searchParams: Promise
         <div className="eyebrow"><span className="dot" />Contact</div>
         <h1 className="mt-2.5 text-3xl md:text-4xl mb-3">Stuur ons een bericht</h1>
         <p className="text-muted text-[15px] max-w-[60ch] mb-10">
-          Vraag over een wagen, een herstelling, of de mobiele car wash — laat het ons weten en we
+          Een vraag over detailing, onze producten of een mogelijke samenwerking? Laat het ons weten en we
           nemen zo snel mogelijk contact op.
         </p>
         <ContactTabs product={product} />

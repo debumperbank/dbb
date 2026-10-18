@@ -29,16 +29,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.debumperbank.nl",
   ),
-  icons: { icon: "/brand/de-bumperbank-icon.png", apple: "/brand/de-bumperbank-icon.png" },
+  icons: { icon: "/brand/de-bumperbank-service-icon.png", apple: "/brand/de-bumperbank-service-icon.png" },
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: "De Bumperbank",
-    images: [{ url: "/hero-garage-logo.png", alt: "De Bumperbank — autoservice in regio Hulst" }],
+    images: [{ url: "/detailing-hero.png", alt: "De Bumperbank — Detailing & webshop" }],
   },
-  title: "De Bumperbank — Mobiele autoservice in regio Hulst",
+  title: "De Bumperbank — Detailing & webshop",
   description:
-    "Onderhoud, reparatie en detailing op locatie in regio Hulst. Vraag een afspraak aan, bekijk onze occasions of bied je auto aan.",
+    "Persoonlijke auto detailing op afspraak, locatie in overleg. Ontdek autoverzorging van DRIFT, GECKO en Cartec en de ontwikkeling van BUMPR.",
 };
 
 export default function RootLayout({
