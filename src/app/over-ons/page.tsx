@@ -1,10 +1,5 @@
 import { OurStory } from "@/components/OurStory";
-export const metadata = { title: "Ons verhaal | De Bumperbank", description: "De mensen achter De Bumperbank: autopassie, onze kinderen en de wens voor meer vrijheid, reizen en tijd samen. Ontdek ons verhaal en het toekomstplan Black Hornet." };
+export const metadata = { title: "Ons verhaal | De Bumperbank", description: "Maak kennis met het gezin achter De Bumperbank. Over autopassie, een eigen garage als droom en de keuze voor meer vrijheid en tijd samen." };
 export default function Page() {
-  return (
-    <main>
-      <h1 className="sr-only">Over ons</h1>
-      <OurStory full />
-    </main>
-  );
+  return <main><h1 className="sr-only">Het gezin achter De Bumperbank</h1><OurStory full /></main>;
 }
