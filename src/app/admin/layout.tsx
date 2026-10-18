@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/BrandLogo";
 import Link from "next/link";
 import {AdminShell} from "@/components/AdminShell";
 import {AdminMobile} from "@/components/AdminMobile";
@@ -16,7 +17,7 @@ export default function AdminLayout({
     <AdminShell navigation={
       <aside className="w-full md:w-56 shrink-0 border-r border-[color:var(--line-dark)] bg-bg px-5 py-7 flex flex-col">
         <div className="font-display font-bold text-sm mb-8">
-          DE <span className="text-orange">BUMPER</span>BANK{" "}
+          <BrandLogo className="w-44 mb-3" />
           <span className="text-muted font-mono text-[10px]">/ beheer</span>
         </div>
         <AdminMobile><nav className="flex flex-wrap md:flex-col gap-1 text-sm">

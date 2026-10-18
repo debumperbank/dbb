@@ -33,7 +33,7 @@ export function Nav() {
             aria-label="De Bumperbank — home"
             className="group shrink-0"
           >
-            <BrandLogo className="w-20 min-[360px]:w-28 sm:w-[208px] lg:w-[238px] 2xl:w-[180px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
+            <BrandLogo className="w-40 min-[360px]:w-44 sm:w-[208px] lg:w-[238px] 2xl:w-[180px] transition-transform duration-300 group-hover:scale-[1.015]" priority />
           </Link>
 
           <div className="hidden 2xl:flex flex-1 items-center justify-center gap-3">

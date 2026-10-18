@@ -5,7 +5,7 @@ import { ConsentCheckbox } from '@/components/ConsentCheckbox';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
-export function ContactForm({ listingId }: { listingId?: string }) {
+export function ContactForm({ listingId, product = "" }: { listingId?: string; product?: string }) {
   const formId = useId();
   const [status, setStatus] = useState<Status>('idle');
 
@@ -84,6 +84,7 @@ export function ContactForm({ listingId }: { listingId?: string }) {
         id={`${formId}-message`}
         autoComplete="off"
         name="message"
+        defaultValue={product ? `Ik heb interesse in ${product}. Kunt u de leverbaarheid en uitvoering bevestigen?` : undefined}
         placeholder="Uw bericht"
         rows={4}
         className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-base placeholder:text-muted focus:outline-none focus:border-orange"

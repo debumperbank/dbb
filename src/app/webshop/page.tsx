@@ -1,3 +1,5 @@
+import { SupplierCatalogue } from "@/components/SupplierCatalogue";
+import { readShopFilters } from "@/lib/supplier-shop";
 import { SHOP_OPEN } from "@/lib/shop-status";
 import { ShopClosed } from "@/components/ShopClosed";
 import { productBrand } from "@/lib/bumpr";
@@ -11,14 +13,15 @@ import { productImage, productSize, productDescription } from "@/lib/bumpr";
 
 export const metadata = {
   title: "Webshop | De Bumperbank",
-  description: "Autoverzorging van BUMPR en aanvullende merken bij De Bumperbank.",
+  description: "Autoverzorging van BUMPR, DRIFT, GECKO en Cartec bij De Bumperbank.",
   robots: { index: SHOP_OPEN, follow: true },
   alternates: { canonical: "/webshop" },
 };
 export const revalidate = 60;
 
-export default async function BumprPage() {
-  if (!SHOP_OPEN) return <ShopClosed />;
+export default async function BumprPage({searchParams}: {searchParams: Promise<Record<string, string | string[] | undefined>>}) {
+  const initialFilters = readShopFilters(await searchParams);
+  if (!SHOP_OPEN) return <ShopClosed><SupplierCatalogue key={JSON.stringify(initialFilters)} initialFilters={initialFilters} /></ShopClosed>;
   const db = await createClient();
   const { data, error } = await db
     .from("bumpr_products")
@@ -69,7 +72,7 @@ export default async function BumprPage() {
         </div>
       </section>
       <div className="px-6 py-5 text-center text-sm border-b border-white/10 text-muted">Nederland €4,99 · België €6,99 · <strong className="text-orange">Gratis verzending vanaf €50</strong></div>
-      <section id="producten" className="px-6 py-16 md:py-24 scroll-mt-40">
+      <section id="bumpr-producten" className="px-6 py-16 md:py-24 scroll-mt-40">
         <div className="max-w-site mx-auto">
           <div className="eyebrow">De collectie</div>
           <h2 className="text-4xl mt-4 mb-10">Kies jouw verzorging.</h2>
@@ -143,6 +146,7 @@ export default async function BumprPage() {
           )}
         </div>
       </section>
+      <SupplierCatalogue key={JSON.stringify(initialFilters)} initialFilters={initialFilters} existingProducts={products} />
       <section className="px-6 pb-20">
         <div className="max-w-site mx-auto panel flex flex-wrap justify-between items-center gap-8">
           <div>

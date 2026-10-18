@@ -41,7 +41,7 @@ export function Hero() {
 
       <div className="absolute inset-y-0 right-0 -z-20 w-full lg:w-[59%]">
         <Image
-          src="/hero-garage.jpg"
+          src="/hero-garage-logo.png"
           alt="De Bumperbank mobiele autoservice met servicewagen"
           fill
           priority

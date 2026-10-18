@@ -10,7 +10,7 @@ export function Footer() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-5">
             <Link href="/" aria-label="De Bumperbank home">
-              <BrandLogo className="w-28 sm:w-[190px]" sizes="(max-width: 639px) 112px, 190px" />
+              <BrandLogo className="w-44 sm:w-[190px]" sizes="(max-width: 639px) 176px, 190px" />
             </Link>
             <div className="hidden h-10 w-px bg-white/10 sm:block" />
             <div className="hidden sm:block">

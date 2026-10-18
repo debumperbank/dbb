@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/BrandLogo";
 import { login } from '@/app/admin/auth-actions';
 
 export default async function AdminLoginPage({
@@ -9,6 +10,7 @@ export default async function AdminLoginPage({
   return (
     <main className="min-h-screen flex items-center justify-center bg-bg px-8">
       <div className="w-full max-w-sm">
+        <BrandLogo className="w-64 mb-8" priority />
         <div className="eyebrow mb-3"><span className="dot" />Beheer</div>
         <h1 className="text-2xl mb-6">Inloggen</h1>
         <form action={login} className="grid gap-4">

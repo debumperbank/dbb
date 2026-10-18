@@ -29,11 +29,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.debumperbank.nl",
   ),
+  icons: { icon: "/brand/de-bumperbank-icon.png", apple: "/brand/de-bumperbank-icon.png" },
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: "De Bumperbank",
-    images: [{ url: "/hero-garage.jpg", alt: "De Bumperbank — autoservice in regio Hulst" }],
+    images: [{ url: "/hero-garage-logo.png", alt: "De Bumperbank — autoservice in regio Hulst" }],
   },
   title: "De Bumperbank — Mobiele autoservice in regio Hulst",
   description:

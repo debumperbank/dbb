@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage({searchParams}: {searchParams: Promise<{product?: string | string[]}>}) {
+  const params = await searchParams;
+  const product = typeof params.product === "string" ? params.product.trim().slice(0,200) : "";
   return (
     <main className="px-8 py-20 bg-bg min-h-screen">
       <div className="max-w-site mx-auto">
@@ -18,7 +20,7 @@ export default function ContactPage() {
           Vraag over een wagen, een herstelling, of de mobiele car wash — laat het ons weten en we
           nemen zo snel mogelijk contact op.
         </p>
-        <ContactTabs />
+        <ContactTabs product={product} />
         <div className="mt-10 border-t border-white/10 pt-6">
           <OpeningHours />
         </div>

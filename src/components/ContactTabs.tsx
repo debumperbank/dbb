@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ContactForm } from "./ContactForm";
-export function ContactTabs() {
+export function ContactTabs({product = ""}: {product?: string}) {
   return (
     <div className="max-w-3xl">
       <div className="panel mb-8">
@@ -14,7 +14,7 @@ export function ContactTabs() {
         </Link>
       </div>
       <h2 className="text-xl mb-5">Algemene vraag</h2>
-      <ContactForm />
+      <ContactForm product={product} />
     </div>
   );
 }
