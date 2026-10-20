@@ -14,9 +14,8 @@ export default function VoorwaardenPage() {
           <section>
             <h2 className="text-lg text-paper mb-2">1. Wie we zijn</h2>
             <p>
-              De Bumperbank is een eenmanszaak gevestigd in Hulst. Het huidige aanbod bestaat uit
-              detailing op afspraak, locatie in overleg, en autoverzorgingsproducten.
-              Voertuighandel en onderhouds- en herstellingsdiensten worden voorlopig niet publiek aangeboden.
+              De Bumperbank is een eenmanszaak gevestigd in Hulst. De website is voorlopig uitsluitend een presentatie in opbouw.
+              Producten bestellen, betalen en afspraken maken is momenteel niet mogelijk.
               Bepalingen over deze activiteiten blijven van toepassing op eventuele bestaande overeenkomsten.
               KvK-nummer: 42171617. Btw-identificatienummer: NL005557496B77.
             </p>

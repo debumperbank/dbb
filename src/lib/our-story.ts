@@ -30,8 +30,8 @@ export const storySections = [
     "title": "Bouwen aan een eigen droom.",
     "paragraphs": [
       "De liefde voor auto’s loopt door dat hele verhaal heen. Oldtimers, racen, simracen en zelf iets bijzonders bouwen blijven me bezighouden. De Black Hornet is daar een mooi voorbeeld van. De E36-basis hebben we al; de auto zoals we hem voor ons zien, is een project voor de toekomst.",
-      "Vandaag richt De Bumperbank zich op detailing op afspraak en een webshop voor autoverzorging. Daarnaast bouwen we aan ons eigen merk BUMPR. Ik wil mijn aandacht steken in goed klantenwerk, mensen laten kennismaken met wat we doen en een merk opbouwen dat kan groeien. Uitbreiden wanneer het past, met een eigen garage als grote droom.",
-      "Als de omstandigheden later goed zijn, kunnen herstellingen weer een plek krijgen. Voor nu leggen we de basis met detailing en de webshop, met zorg voor jouw auto en aandacht voor de mensen achter de zaak.",
+      "De Bumperbank is voorlopig in opbouw. Deze website laat zien wie we zijn en welke plannen we hebben. Producten bestellen, betalen en afspraken maken is momenteel niet mogelijk. We bekijken later hoe we verdergaan, met een eigen garage als grote droom.",
+      "Als de omstandigheden later goed zijn, kunnen herstellingen weer een plek krijgen. Voor nu nemen we de tijd voor onze plannen en de mensen achter de zaak.",
       "Dat is De Bumperbank voor mij: iets van onszelf opbouwen, vanuit autopassie en met ons gezin als thuisbasis. Fijn dat je een stukje met ons meegroeit."
     ]
   }

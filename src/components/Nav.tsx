@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { CartLink } from "./CartLink";
 import { BrandLogo } from "./BrandLogo";
-import { PUBLIC_OFFERING, publicNavigationLinks } from "@/lib/public-offering";
+import { EXAMPLE_MODE, PUBLIC_OFFERING, publicNavigationLinks } from "@/lib/public-offering";
 
 const links = publicNavigationLinks();
 
@@ -44,14 +44,14 @@ export function Nav() {
           </div>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2.5">
-            <Link
+            {!EXAMPLE_MODE && <Link
               href="/afspraak"
               onClick={() => setOpen(false)}
               className="btn btn-primary !hidden md:!inline-flex !min-h-[46px] !px-2 sm:!px-5 !text-xs sm:!text-[12.5px] whitespace-nowrap"
             >
               <span className="sm:hidden">Detailing →</span>
               <span className="hidden sm:inline">{PUBLIC_OFFERING.mobileWorkshop ? "Afspraak aanvragen" : "Detailing aanvragen"}&nbsp; →</span>
-            </Link>
+            </Link>}
             <CartLink onClick={() => setOpen(false)} />
             <button
               aria-label={open ? "Menu sluiten" : "Menu openen"}
@@ -72,13 +72,13 @@ export function Nav() {
           hidden={!open}
           className={`${compact ? "2xl:hidden" : "xl:hidden"} border-t border-white/10 pb-5 max-h-[72vh] overflow-y-auto`}
         >
-          <Link
+          {!EXAMPLE_MODE && <Link
             href="/afspraak"
             onClick={() => setOpen(false)}
             className="btn btn-primary md:!hidden w-full justify-center my-4"
           >
             {PUBLIC_OFFERING.mobileWorkshop ? "Afspraak aanvragen →" : "Detailing aanvragen →"}
-          </Link>
+          </Link>}
           {links.map(([label, href]) => (
             <Link
               key={href}

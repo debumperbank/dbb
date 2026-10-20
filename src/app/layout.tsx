@@ -1,3 +1,4 @@
+import { EXAMPLE_MODE } from "@/lib/public-offering";
 import {PublicOnly} from "@/components/PublicOnly";
 import { CartProvider } from "@/components/CartProvider";
 import type { Metadata } from "next";
@@ -34,11 +35,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "nl_NL",
     siteName: "De Bumperbank",
-    images: [{ url: "/detailing-hero.png", alt: "De Bumperbank — Detailing & webshop" }],
+    images: [{ url: "/detailing-hero.png", alt: EXAMPLE_MODE ? "De Bumperbank — In opbouw" : "De Bumperbank — Detailing & webshop" }],
   },
-  title: "De Bumperbank — Detailing & webshop",
+  title: EXAMPLE_MODE ? "De Bumperbank — In opbouw" : "De Bumperbank — Detailing & webshop",
   description:
-    "Persoonlijke auto detailing op afspraak, locatie in overleg. Ontdek autoverzorging van DRIFT, GECKO en Cartec en de ontwikkeling van BUMPR.",
+    EXAMPLE_MODE ? "Maak kennis met De Bumperbank en onze autopassie. Onze website is in opbouw. Bestellen, betalen en afspraken maken is momenteel niet mogelijk." : "Persoonlijke auto detailing op afspraak, locatie in overleg. Ontdek autoverzorging van DRIFT, GECKO en Cartec en de ontwikkeling van BUMPR.",
 };
 
 export default function RootLayout({

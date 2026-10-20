@@ -1,4 +1,5 @@
 "use client";
+import { EXAMPLE_MODE } from "@/lib/public-offering";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCart } from "./CartProvider";
@@ -67,7 +68,7 @@ export function OrderStatus({ id, token }: { id: string; token: string }) {
         {paid
           ? "Mollie heeft je betaling bevestigd. We gaan met je bestelling aan de slag."
           : stopped
-            ? "Er is geen bevestigde betaling. Je producten blijven in je mandje; je kunt opnieuw afrekenen."
+            ? (EXAMPLE_MODE ? "Er is geen bevestigde betaling. Bestellen en betalen is momenteel niet mogelijk." : "Er is geen bevestigde betaling. Je producten blijven in je mandje; je kunt opnieuw afrekenen.")
             : "De verwerking kan even duren. Deze pagina controleert de status automatisch gedurende één minuut."}
       </p>
       {result?.test && (
@@ -75,7 +76,7 @@ export function OrderStatus({ id, token }: { id: string; token: string }) {
           Dit is een testbetaling. Er wordt niets verzonden.
         </p>
       )}
-      {result && (
+      {result && !EXAMPLE_MODE && (
         <p className="mt-5">Totaal: {formatPriceCents(result.total_cents)}</p>
       )}
       <p className="text-xs text-muted break-all mt-4">
@@ -95,13 +96,13 @@ export function OrderStatus({ id, token }: { id: string; token: string }) {
             Status vernieuwen
           </button>
         )}
-        {stopped && (
+        {stopped && !EXAMPLE_MODE && (
           <Link href="/bumpr/mandje" className="btn btn-primary">
             Terug naar je mandje
           </Link>
         )}
-        <Link href="/bumpr" className="btn btn-ghost">
-          Verder naar BUMPR
+        <Link href={EXAMPLE_MODE ? "/" : "/bumpr"} className="btn btn-ghost">
+          {EXAMPLE_MODE ? "Naar de homepage" : "Verder naar BUMPR"}
         </Link>
       </div>
     </div>

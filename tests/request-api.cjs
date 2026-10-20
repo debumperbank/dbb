@@ -5,6 +5,7 @@ const path = require("node:path");
 const ts = require("typescript");
 const vm = require("node:vm");
 function api({
+  exampleMode = false,
   uploadError = false,
   rpcError = false,
   authorized = false,
@@ -39,7 +40,9 @@ function api({
     },
   };
   function load(file) {
-    const code = ts.transpileModule(fs.readFileSync(file, "utf8"), {
+    let source = fs.readFileSync(file, "utf8");
+    if (!exampleMode && file.endsWith("public-offering.ts")) source = source.replace("EXAMPLE_MODE = true", "EXAMPLE_MODE = false");
+    const code = ts.transpileModule(source, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
         target: ts.ScriptTarget.ES2022,
@@ -235,3 +238,5 @@ test("mail failure keeps saved request and photos and returns success", async ()
 });
 
 for (const change of [{service:"onderhoud"},{service:"reparatie"},{service:"diagnose"},{service:"overig"},{location_type:"mobile"},{kind:"trade_in"}]) test("paused public request is rejected before upload or persistence "+JSON.stringify(change),async()=>{const a=api();const f=form();for(const [key,value] of Object.entries(change))f.set(key,value);const response=await a.request(request(f));assert.equal(response.status,503);assert.equal(a.calls.clients,0);assert.equal(a.calls.uploads.length,0);assert.equal(a.calls.notifications.length,0);});
+
+test("presentation mode rejects cached appointment before persistence, photos or notifications",async()=>{const a=api({exampleMode:true});const f=form();photo(f);const response=await a.request(request(f));assert.equal(response.status,503);assert.equal(response.headers.get('Cache-Control'),'no-store');assert.equal(a.calls.clients,0);assert.equal(a.calls.uploads.length,0);assert.equal(a.calls.rpc.length,0);assert.equal(a.calls.notifications.length,0);});

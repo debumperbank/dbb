@@ -1,3 +1,4 @@
+import { EXAMPLE_MODE } from "@/lib/public-offering";
 import { OpeningHours } from "./OpeningHours";
 import Link from "next/link";
 import { BrandLogo } from "./BrandLogo";
@@ -14,7 +15,7 @@ export function Footer() {
             </Link>
             <div className="hidden h-10 w-px bg-white/10 sm:block" />
             <div className="hidden sm:block">
-              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-orange">Detailing & webshop</p>
+              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-orange">{EXAMPLE_MODE ? "In opbouw" : "Detailing & webshop"}</p>
               <p className="mt-1 text-xs text-muted">Hulst · Nederland</p>
             </div>
           </div>
@@ -22,9 +23,9 @@ export function Footer() {
           <OpeningHours />
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-            <Link href="/bumpr" className="inline-flex min-h-11 items-center hover:text-orange">BUMPR</Link>
+            {!EXAMPLE_MODE && <Link href="/bumpr" className="inline-flex min-h-11 items-center hover:text-orange">BUMPR</Link>}
             <Link href="/detailing" className="inline-flex min-h-11 items-center hover:text-orange">Detailing</Link>
-            <Link href="/webshop" className="inline-flex min-h-11 items-center hover:text-orange">Webshop</Link>
+            {!EXAMPLE_MODE && <Link href="/webshop" className="inline-flex min-h-11 items-center hover:text-orange">Webshop</Link>}
             <Link href="/voorwaarden" className="inline-flex min-h-11 items-center hover:text-orange">Algemene voorwaarden</Link>
             <Link href="/privacybeleid" className="inline-flex min-h-11 items-center hover:text-orange">Privacybeleid</Link>
           </div>

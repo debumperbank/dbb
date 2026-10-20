@@ -11,4 +11,4 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/admin")) return updateSession(request);
   return NextResponse.next();
 }
-export const config = { matcher: ["/admin/:path*", "/mobiele-autoservice/:path*", "/werkplaats/:path*", "/diagnose/:path*", "/voertuigdiagnose/:path*", "/onderhoud/:path*", "/reparaties/:path*", "/occasions/:path*", "/voorraad/:path*", "/auto-verkopen/:path*", "/oldtimers/:path*"] };
+export const config = { matcher: ["/afspraak/:path*", "/webshop/:path*", "/bumpr/:path*", "/admin/:path*", "/mobiele-autoservice/:path*", "/werkplaats/:path*", "/diagnose/:path*", "/voertuigdiagnose/:path*", "/onderhoud/:path*", "/reparaties/:path*", "/occasions/:path*", "/voorraad/:path*", "/auto-verkopen/:path*", "/oldtimers/:path*"] };

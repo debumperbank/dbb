@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { PUBLIC_OFFERING } from "@/lib/public-offering";
+import { EXAMPLE_MODE, PUBLIC_OFFERING } from "@/lib/public-offering";
 
 const services = [
-  {title:"Detailing op afspraak",href:"/detailing",desc:"Interieur, lakverzorging en bescherming. Locatie in overleg.",icon:"sparkle"},
-  {title:"Autoverzorging voor thuis",href:"/webshop",desc:"Ontdek DRIFT, GECKO en Cartec in onze productcatalogus.",icon:"bottle"},
+  {title:EXAMPLE_MODE ? "Onze plannen voor detailing" : "Detailing op afspraak",href:"/detailing",desc:EXAMPLE_MODE ? "Een indruk van onze plannen voor autoverzorging." : "Interieur, lakverzorging en bescherming. Locatie in overleg.",icon:"sparkle"},
+  ...(EXAMPLE_MODE ? [{title:"Het verhaal achter De Bumperbank",href:"/over-ons",desc:"Onze autopassie, ons gezin en onze plannen voor later.",icon:"car"}] : [{title:"Autoverzorging voor thuis",href:"/webshop",desc:"Ontdek DRIFT, GECKO en Cartec in onze productcatalogus.",icon:"bottle"}]),
   ...(PUBLIC_OFFERING.mobileWorkshop ? [{title:"Mobiele autoservice",href:"/mobiele-autoservice",desc:"Onderhoud en reparaties in overleg",icon:"wrench"},{title:"Werkplaats",href:"/werkplaats",desc:"Bespreek de herstelling van jouw auto",icon:"gear"}] : []),
   ...(PUBLIC_OFFERING.vehicleTrading ? [{title:"Occasions",href:"/occasions",desc:"Bekijk ons aanbod",icon:"car"},{title:"Auto verkopen",href:"/auto-verkopen",desc:"Bied je auto aan",icon:"tag"}] : []),
 ];
