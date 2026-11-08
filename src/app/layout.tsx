@@ -7,6 +7,7 @@ import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next"
+import { VisitBeacon } from "@/components/VisitBeacon";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
     >
       <body>
         <Analytics />
+        <VisitBeacon />
         <CartProvider>
           <a href="#page-content" className="skip-link">Direct naar de inhoud</a>
           <PublicOnly><Nav /></PublicOnly>

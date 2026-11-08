@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
 const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname : null;
+
+function visitCollectOrigins() {
+  const origins = new Set(["https://www.codedbydefault.com"]);
+  const configured = process.env.NEXT_PUBLIC_VISIT_COLLECT_URL;
+  if (!configured) return [...origins].join(" ");
+  try {
+    const url = new URL(configured);
+    if (url.protocol === "https:" || url.protocol === "http:") origins.add(url.origin);
+  } catch {
+    // The default collector origin stays allowed.
+  }
+  return [...origins].join(" ");
+}
 const nextConfig = {
   poweredByHeader: false,
   images: {
@@ -30,7 +43,7 @@ const nextConfig = {
         // Applies to every route.
         source: '/:path*',
         headers: [
-          { key: 'Content-Security-Policy', value: "object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" },
+          { key: 'Content-Security-Policy', value: `object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; connect-src 'self' https: wss: ${visitCollectOrigins()}` },
           // Prevent the site from being embedded in an iframe elsewhere
           // (protects the /admin login against clickjacking).
           { key: 'X-Frame-Options', value: 'DENY' },
