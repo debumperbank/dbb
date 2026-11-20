@@ -39,8 +39,15 @@ const nextConfig = {
           // Don't leak the full URL (which can include query params) to
           // third-party sites linked from De Bumperbank.
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Isolate browsing context groups without blocking payment or
+          // auth popups. Full same-origin COOP would cut window.opener.
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+          // Other sites may not embed these responses as subresources.
+          // Top-level navigation and our own same-origin assets stay intact.
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+          { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
           // Disable browser features the site never needs.
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), accelerometer=(), gyroscope=(), magnetometer=(), usb=(), bluetooth=(), display-capture=()' },
         ],
       },
     ];
