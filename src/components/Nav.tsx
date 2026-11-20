@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CartLink } from "./CartLink";
 import { BrandLogo } from "./BrandLogo";
 import { EXAMPLE_MODE, PUBLIC_OFFERING, publicNavigationLinks } from "@/lib/public-offering";
@@ -13,6 +13,19 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   const compact = PUBLIC_OFFERING.mobileWorkshop || PUBLIC_OFFERING.vehicleTrading;
+
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const media = window.matchMedia(compact ? "(min-width: 1536px)" : "(min-width: 1280px)");
+    const closeIfWide = () => { if (media.matches) setOpen(false); };
+    media.addEventListener("change", closeIfWide);
+    return () => {
+      document.body.style.overflow = previous;
+      media.removeEventListener("change", closeIfWide);
+    };
+  }, [open, compact]);
 
   return (
     <header onKeyDown={(event) => { if (event.key === "Escape") { setOpen(false); event.currentTarget.querySelector<HTMLButtonElement>('[aria-controls="mobile-nav"]')?.focus(); } }} className="site-header sticky top-0 z-50 border-b border-white/10 bg-[#08090a]/95 backdrop-blur-xl">

@@ -1,13 +1,18 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ConsentCheckbox } from '@/components/ConsentCheckbox';
 
 type Status = 'idle' | 'submitting' | 'done' | 'error';
 
 export function ContactForm({ listingId, product = "" }: { listingId?: string; product?: string }) {
   const formId = useId();
+  const alertRef = useRef<HTMLParagraphElement>(null);
   const [status, setStatus] = useState<Status>('idle');
+
+  useEffect(() => {
+    if (status === 'error') alertRef.current?.focus();
+  }, [status]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -58,7 +63,7 @@ export function ContactForm({ listingId, product = "" }: { listingId?: string; p
         autoComplete="name"
         name="name"
         placeholder="Naam"
-        className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-base placeholder:text-muted focus:outline-none focus:border-orange"
+        className="min-h-12 w-full rounded-[3px] border border-[color:var(--line-dark)] bg-bg-soft px-4 py-3 text-base placeholder:text-paper/70 focus:border-orange"
       />
       <label htmlFor={`${formId}-email`} className="text-sm font-medium -mb-2">E-mailadres</label>
       <input
@@ -68,7 +73,7 @@ export function ContactForm({ listingId, product = "" }: { listingId?: string; p
         autoComplete="email"
         name="email"
         placeholder="E-mailadres"
-        className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-base placeholder:text-muted focus:outline-none focus:border-orange"
+        className="min-h-12 w-full rounded-[3px] border border-[color:var(--line-dark)] bg-bg-soft px-4 py-3 text-base placeholder:text-paper/70 focus:border-orange"
       />
       <label htmlFor={`${formId}-phone`} className="text-sm font-medium -mb-2">Telefoon (optioneel)</label>
       <input
@@ -77,7 +82,7 @@ export function ContactForm({ listingId, product = "" }: { listingId?: string; p
         type="tel"
         name="phone"
         placeholder="Telefoon (optioneel)"
-        className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-base placeholder:text-muted focus:outline-none focus:border-orange"
+        className="min-h-12 w-full rounded-[3px] border border-[color:var(--line-dark)] bg-bg-soft px-4 py-3 text-base placeholder:text-paper/70 focus:border-orange"
       />
       <label htmlFor={`${formId}-message`} className="text-sm font-medium -mb-2">Je bericht</label>
       <textarea
@@ -87,14 +92,14 @@ export function ContactForm({ listingId, product = "" }: { listingId?: string; p
         defaultValue={product ? `Ik heb interesse in ${product}. Kunt u de leverbaarheid en uitvoering bevestigen?` : undefined}
         placeholder="Uw bericht"
         rows={4}
-        className="bg-bg-soft border border-[color:var(--line-dark)] rounded-[3px] px-4 py-3 text-base placeholder:text-muted focus:outline-none focus:border-orange"
+        className="w-full rounded-[3px] border border-[color:var(--line-dark)] bg-bg-soft px-4 py-3 text-base placeholder:text-paper/70 focus:border-orange"
       />
       <ConsentCheckbox />
-      <button type="submit" disabled={status === 'submitting'} className="btn btn-primary w-fit disabled:opacity-60">
+      <button type="submit" disabled={status === 'submitting'} aria-busy={status === 'submitting'} className="btn btn-primary w-fit disabled:opacity-60">
         {status === 'submitting' ? 'Bezig met versturen…' : 'Versturen'}
       </button>
       {status === 'error' && (
-        <p role="alert" className="font-mono text-xs text-orange-bright">
+        <p ref={alertRef} tabIndex={-1} role="alert" className="rounded-md border border-orange/50 bg-orange/10 px-4 py-3 font-mono text-sm text-orange outline-none">
           Er ging iets mis. Probeer het opnieuw of bel ons rechtstreeks.
         </p>
       )}

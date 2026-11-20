@@ -30,7 +30,7 @@ export function BumprSection({
             <Link href="/webshop" className="btn btn-ghost">Webshop in voorbereiding</Link>
           </div>
 
-          <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-5 font-mono text-[9.5px] uppercase tracking-[0.16em] text-paper/45">
+          <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-5 font-mono text-xs uppercase tracking-[0.14em] text-muted">
             <span>Coating</span>
             <span>Detailing</span>
             <span>Polish</span>

@@ -8,7 +8,7 @@ export function ConsentCheckbox() {
         // Never checked by default — under AVG/GDPR a consent checkbox
         // must start unticked; the visitor has to actively agree.
         defaultChecked={false}
-        className="mt-0.5 accent-orange shrink-0"
+        className="mt-0.5 h-6 w-6 shrink-0 accent-orange"
       />
       <span>
         Ik ga akkoord met de{' '}
@@ -16,7 +16,7 @@ export function ConsentCheckbox() {
           href="/voorwaarden"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-orange hover:underline"
+          className="text-orange underline decoration-orange/70 underline-offset-2 hover:decoration-orange"
         >
           Algemene Voorwaarden
         </a>{' '}
@@ -25,7 +25,7 @@ export function ConsentCheckbox() {
           href="/privacybeleid"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-orange hover:underline"
+          className="text-orange underline decoration-orange/70 underline-offset-2 hover:decoration-orange"
         >
           Privacybeleid
         </a>{' '}

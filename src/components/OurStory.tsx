@@ -9,7 +9,7 @@ export function OurStory({full = false}: {full?: boolean}) {
         {storyIntro.map(paragraph => <p key={paragraph} className="mt-6 text-muted leading-8">{paragraph}</p>)}
         {!full && <Link href="/over-ons" className="btn btn-ghost mt-7">Leer ons kennen →</Link>}
       </div>
-      <figure className="min-w-0"><Image src="/ons-verhaal-black-hornet.png" width={1448} height={1086} alt="Visualisatie van onze eigen auto naast de zwart-gele Black Hornet die we in de toekomst willen bouwen" sizes="(max-width: 1023px) 100vw, 55vw" className="w-full h-auto rounded-xl border border-white/10" /><figcaption className="mt-4 text-xs text-muted leading-6">Onze eigen auto naast het toekomstbeeld van de Black Hornet. De E36-basis hebben we al; de afgebeelde Black Hornet is een visualisatie van wat we willen bouwen.</figcaption>
+      <figure className="min-w-0"><Image src="/ons-verhaal-black-hornet.png" width={1448} height={1086} alt="Visualisatie van onze eigen auto naast de zwart-gele Black Hornet die we in de toekomst willen bouwen" sizes="(max-width: 1023px) calc(100vw - 2.5rem), 36rem" quality={60} className="w-full h-auto rounded-xl border border-white/10" /><figcaption className="mt-4 text-xs text-muted leading-6">Onze eigen auto naast het toekomstbeeld van de Black Hornet. De E36-basis hebben we al; de afgebeelde Black Hornet is een visualisatie van wat we willen bouwen.</figcaption>
         <div className="mt-6 border-l-2 border-orange pl-5"><p className="font-display text-xl">Grote plannen beginnen met iets kleins.</p><p className="mt-2 text-sm text-muted leading-7">De Bumperbank is in opbouw. De Black Hornet is één van de projecten waar we voor de toekomst van dromen.</p></div>
       </figure>
     </div>

@@ -15,14 +15,14 @@ export function Footer() {
             </Link>
             <div className="hidden h-10 w-px bg-white/10 sm:block" />
             <div className="hidden sm:block">
-              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-orange">{EXAMPLE_MODE ? "In opbouw" : "Detailing & webshop"}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.16em] text-orange">{EXAMPLE_MODE ? "In opbouw" : "Detailing & webshop"}</p>
               <p className="mt-1 text-xs text-muted">Hulst · Nederland</p>
             </div>
           </div>
 
           <OpeningHours />
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-xs uppercase tracking-[0.06em] text-muted">
             {!EXAMPLE_MODE && <Link href="/bumpr" className="inline-flex min-h-11 items-center hover:text-orange">BUMPR</Link>}
             <Link href="/detailing" className="inline-flex min-h-11 items-center hover:text-orange">Detailing</Link>
             {!EXAMPLE_MODE && <Link href="/webshop" className="inline-flex min-h-11 items-center hover:text-orange">Webshop</Link>}
@@ -31,9 +31,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-paper/35">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
           <span>© {new Date().getFullYear()} De Bumperbank</span>
-          <span className="text-orange/70">Jouw auto. Onze zorg.</span>
+          <span className="text-orange">Jouw auto. Onze zorg.</span>
         </div>
       </div>
     </footer>

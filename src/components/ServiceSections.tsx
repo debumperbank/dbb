@@ -34,7 +34,7 @@ export function ServiceGrid() {
       <div className="mx-auto max-w-[1480px]">
         <div className="mb-3 flex items-center justify-between gap-5 px-1 lg:px-0">
           <div className="eyebrow"><span className="dot" /> Onze aandacht voor jouw auto</div>
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-paper/35 md:block">Ontdek de mogelijkheden →</span>
+          <span className="hidden font-mono text-xs uppercase tracking-[0.14em] text-muted md:block">Ontdek de mogelijkheden →</span>
         </div>
 
         <div className="grid gap-2.5 sm:grid-cols-2">
@@ -47,8 +47,8 @@ export function ServiceGrid() {
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange/65 to-transparent opacity-70" />
               <div className="absolute -right-10 -top-10 h-28 w-28 rotate-45 border border-orange/10" />
               <div className="text-orange"><ServiceIcon icon={service.icon} /></div>
-              <h3 className="mt-6 text-[15px] font-semibold uppercase tracking-[-0.02em]">{service.title}</h3>
-              <p className="mt-2 max-w-[22ch] text-[12px] leading-relaxed text-muted">{service.desc}</p>
+              <h2 className="mt-6 text-[15px] font-semibold uppercase tracking-[-0.02em]">{service.title}</h2>
+              <p className="mt-2 max-w-[36ch] text-[13px] leading-relaxed text-muted">{service.desc}</p>
               <span className="absolute bottom-4 right-4 text-lg text-orange transition-transform group-hover:translate-x-1">→</span>
             </Link>
           ))}
@@ -61,7 +61,7 @@ export function ServiceGrid() {
 export function StripBar() {
   return (
     <div className="brand-strip border-y border-white/10 bg-[#08090a] px-5 py-4 md:px-8">
-      <div className="mx-auto flex max-w-[1480px] flex-wrap justify-center gap-x-10 gap-y-3 text-[9.5px] font-mono uppercase tracking-[0.23em] text-muted sm:justify-between sm:text-[10px]">
+      <div className="mx-auto flex max-w-[1480px] flex-wrap justify-center gap-x-8 gap-y-3 text-xs font-mono uppercase tracking-[0.14em] text-muted sm:justify-between">
         {["Kwaliteit", "Betrouwbaarheid", "Persoonlijke service", "Regio Hulst"].map((s) => (
           <span key={s} className="flex items-center gap-3">
             <span className="h-1 w-1 rotate-45 bg-orange" />

@@ -1,7 +1,7 @@
 import { EXAMPLE_MODE } from "@/lib/public-offering";
 import { OpeningHours } from "@/components/OpeningHours";
 import type { Metadata } from "next";
-import { ContactTabs } from '@/components/ContactTabs';
+import { ContactSection } from '@/components/ContactTabs';
 
 export const metadata: Metadata = {
   title: "Contact in Hulst | De Bumperbank",
@@ -9,18 +9,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default async function ContactPage({searchParams}: {searchParams: Promise<{product?: string | string[]}>}) {
-  const params = await searchParams;
-  const product = typeof params.product === "string" ? params.product.trim().slice(0,200) : "";
+export default function ContactPage() {
   return (
-    <main className="px-8 py-20 bg-bg min-h-screen">
+    <main className="min-h-screen bg-bg px-5 py-16 md:px-8 md:py-20">
       <div className="max-w-site mx-auto">
         <div className="eyebrow"><span className="dot" />Contact</div>
         <h1 className="mt-2.5 text-3xl md:text-4xl mb-3">Stuur ons een bericht</h1>
         <p className="text-muted text-[15px] max-w-[60ch] mb-10">
           {EXAMPLE_MODE ? "Onze website is in opbouw. Je kunt ons een algemene vraag stellen over De Bumperbank of onze plannen. We nemen momenteel geen bestellingen, betalingen of afspraakaanvragen aan." : "Een vraag over detailing, onze producten of een mogelijke samenwerking? Laat het ons weten en we nemen zo snel mogelijk contact op."}
         </p>
-        <ContactTabs product={product} />
+        <ContactSection />
         <div className="mt-10 border-t border-white/10 pt-6">
           <OpeningHours />
         </div>

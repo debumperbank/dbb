@@ -88,6 +88,16 @@ summary:focus-visible {
   outline-offset: 3px;
 }
 
+.btn-primary:focus-visible {
+  outline-color: #f4f3f0;
+}
+
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: #ffe46b;
+}
+
 .field { min-height: 48px; }
 @media (max-width: 639px) { .field { font-size: 16px; } }
 
